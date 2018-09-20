@@ -13,6 +13,9 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ZookeeperClient {
     private static final Logger LOG = LoggerFactory.getLogger(ZookeeperClient.class);
@@ -25,8 +28,12 @@ public class ZookeeperClient {
     private ZooKeeper zookeeper=null;
     private ZookeeperClisterImpl zookeeperClister;
 
+    private Map<String,Watcher> serviceWatcher = new ConcurrentHashMap<> (  );
+
+    private boolean firstInitChildren = true;
+
     //当前服务列表
-    private List<RemoteServer> serverList = new ArrayList<> ();
+    private List<RemoteServer> serverList = new CopyOnWriteArrayList<> ();
 
     public List<RemoteServer> getServerList(){
         return serverList;
@@ -92,7 +99,12 @@ public class ZookeeperClient {
             for(String _childPath:childpaths){
                 //  /env/com.test.service/192.168.3.2:8080
                 String fullPath = path.concat ( "/" ).concat (_childPath  );
-                this.zookeeper.getData ( fullPath,new koalasWatcher(),new Stat (  ) );
+
+                //防止服务多次重启引起的多次监听,使用同一个Watcher会避免这个问题
+                Watcher w = new koalasWatcher();
+                serviceWatcher.put ( _childPath,w );
+
+                this.zookeeper.getData ( fullPath,w,new Stat (  ) );
             }
 
 
@@ -100,6 +112,9 @@ public class ZookeeperClient {
             LOG.error (e.getMessage (),e );
         } catch (InterruptedException e) {
             LOG.error (e.getMessage (),e );
+        }
+        finally {
+            firstInitChildren = false;
         }
     }
 
@@ -124,9 +139,24 @@ public class ZookeeperClient {
                 if (event.getType () == Event.EventType.NodeChildrenChanged) {
                     //  /env/com.test.service
                     String parentPath = event.getPath ();
+                    LOG.info ( "the service { } is changed ! ",serviceName );
                     try {
                         List<String> childpaths = ZookeeperClient.this.zookeeper.getChildren (parentPath,this);
                         ZookeeperClient.this.updateServerList (childpaths,parentPath);
+
+                        //wait the init childChanged
+                        while(firstInitChildren){
+                            Thread.sleep ( 10l );
+                        }
+
+                        for(String _childpaths:childpaths){
+                            //192.168.3.1
+                            if(!serviceWatcher.containsKey ( _childpaths )){
+                                ZookeeperClient.this.zookeeper.getData (parentPath.concat ( "/" ).concat (_childpaths),this,new Stat (  ));
+                                serviceWatcher.put (_childpaths,this);
+                            }
+                        }
+
                     } catch (KeeperException e) {
                         LOG.error (e.getMessage (),e );
                     } catch (InterruptedException e) {
@@ -137,7 +167,13 @@ public class ZookeeperClient {
                 if (event.getType () == Event.EventType.NodeDataChanged) {
                     //  /env/com.test.service/192.168.3.2:6666
                     String fullPath = event.getPath ();
+                    LOG.info ( "the service 【{}】 data { } is changed ! full mess is 【{}】 ",serviceName,fullPath);
+
                     try {
+                        //wait the init childDataChanged
+                        while(firstInitChildren){
+                            Thread.sleep ( 10l );
+                        }
                         String data = new String ( ZookeeperClient.this.zookeeper.getData (fullPath,this,new Stat (  )  ),"UTF-8");
                         JSONObject json =JSONObject.parseObject ( data );
 
@@ -174,7 +210,7 @@ public class ZookeeperClient {
         if(serverList!=null)
         for(int i=0;i<serverList.size ();i++){
             RemoteServer tempServer_ = serverList.get ( i );
-            if(tempServer_.getIp ().equals (remoteServer.getIp ()) && remoteServer.getPort ()==remoteServer.getPort ()){
+            if(tempServer_.getIp ().equals (remoteServer.getIp ()) && remoteServer.getPort ().equals ( remoteServer.getPort () )){
                 serverList.set ( i, remoteServer);
                 tempServer_=null; //help gc
             }
