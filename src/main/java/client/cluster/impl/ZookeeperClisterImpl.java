@@ -9,68 +9,50 @@ import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.apache.thrift.transport.TTransport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import register.ZookeeperClient;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
+public class ZookeeperClisterImpl extends AbstractBaseIcluster {
 
-/**
- * Copyright (C) 22018
- * All rights reserved
- * User: yulong.zhang
- * Date: 2018年09月18日17:44:17
- */
-public class DirectClisterImpl extends AbstractBaseIcluster {
-    private static final Logger LOG = LoggerFactory.getLogger(DirectClisterImpl.class);
-    public static final String REGEX = "[^0-9a-zA-Z_\\-\\.:#]+";
+    private static final Logger LOG = LoggerFactory.getLogger(ZookeeperClisterImpl.class);
 
-    //ip:port
     private String hostAndPorts;
+    private String env;
     //负载策略，默认权重
     private ILoadBalancer iLoadBalancer;
     private String serviceName;
-    //当前服务列表
-    private List<RemoteServer> serverList = new ArrayList<> ();
+    private ZookeeperClient zookeeperClient;
 
 
-    public DirectClisterImpl(String hostAndPorts, ILoadBalancer iLoadBalancer, String serviceName, boolean async, int conTimeOut, int soTimeOut, GenericObjectPoolConfig genericObjectPoolConfig, AbandonedConfig abandonedConfig) {
-
+    public ZookeeperClisterImpl(String hostAndPorts, ILoadBalancer iLoadBalancer, String serviceName,String env, boolean async, int conTimeOut, int soTimeOut, GenericObjectPoolConfig genericObjectPoolConfig, AbandonedConfig abandonedConfig){
         super(iLoadBalancer,serviceName,async,conTimeOut,soTimeOut,genericObjectPoolConfig,abandonedConfig);
-        this.hostAndPorts = hostAndPorts;
-        this.iLoadBalancer = iLoadBalancer;
-        this.serviceName = serviceName;
+        this.hostAndPorts=hostAndPorts;
+        this.iLoadBalancer=iLoadBalancer;
+        this.serviceName=serviceName;
+        this.env=env;
+        initZKclient (hostAndPorts,serviceName,env);
     }
 
     @Override
     public RemoteServer getUseRemote() {
-        if (serverList == null) {
-            if (this.hostAndPorts == null) return null;
-            String[] array = hostAndPorts.split ( REGEX );
-            List<RemoteServer> list = new ArrayList<> ();
-            for (String temp : array) {
-                String hostAndIp = temp.split ( "#" )[0].trim ();
-                Integer weight = Integer.valueOf ( temp.split ( "#" )[1].trim () );
-                String host = hostAndIp.split ( ":" )[0].trim ();
-                String port = hostAndIp.split ( ":" )[1].trim ();
-                list.add ( new RemoteServer ( host, port, weight, true ) );
-            }
-            serverList =list;
+        synchronized (zookeeperClient){
+            return iLoadBalancer.select (zookeeperClient.getServerList ());
         }
-        return iLoadBalancer.select (serverList);
     }
 
     @Override
     public void destroy() {
         LOG.info ( "【{}】shut down",serviceName );
-        serverList=null;//help gc
         if(serverPollMap !=null && serverPollMap.size ()>0){
-
             for(String string:serverPollMap.keySet ()){
                 GenericObjectPool p =serverPollMap.get ( string );
                 if(p!=null) p.close ();
                 serverPollMap.remove (  string);
             }
         }
+        if(zookeeperClient != null)
+            synchronized (zookeeperClient){
+                zookeeperClient.destroy ();
+            }
     }
 
     @Override
@@ -93,6 +75,13 @@ public class DirectClisterImpl extends AbstractBaseIcluster {
         } catch (Exception e) {
             LOG.error ( "borrowObject is wrong,the poll message is:",e );
             return null;
+        }
+    }
+
+    private void initZKclient(String hostAndPorts,String serviceName,String env){
+        if(zookeeperClient==null){
+            zookeeperClient = new ZookeeperClient ( env,hostAndPorts, serviceName,this);
+            zookeeperClient.initZooKeeper ();
         }
     }
 

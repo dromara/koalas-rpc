@@ -14,6 +14,7 @@ import poolfactory.KoalasPoolableObjectFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Copyright (C) 22018
@@ -32,6 +33,8 @@ public abstract class AbstractBaseIcluster implements Icluster {
     private int soTimeOut;
     private GenericObjectPoolConfig genericObjectPoolConfig;
     private AbandonedConfig abandonedConfig;
+    //服务资源连接池
+    public ConcurrentHashMap<String,GenericObjectPool<TTransport>> serverPollMap = new ConcurrentHashMap<> (  );
 
     public AbstractBaseIcluster(ILoadBalancer iLoadBalancer, String serviceName, boolean async, int conTimeOut, int soTimeOut, GenericObjectPoolConfig genericObjectPoolConfig, AbandonedConfig abandonedConfig) {
         this.iLoadBalancer = iLoadBalancer;

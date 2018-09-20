@@ -10,9 +10,6 @@ import java.util.List;
  */
 public interface Icluster {
 
-    //更新远程服务
-    public void updateRemoteServer(RemoteServer list);
-
     //获取当前使用的远程服务
     public RemoteServer getUseRemote();
 

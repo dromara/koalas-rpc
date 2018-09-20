@@ -4,6 +4,7 @@ import client.cluster.ILoadBalancer;
 import client.cluster.Icluster;
 import client.cluster.impl.DirectClisterImpl;
 import client.cluster.impl.RandomLoadBalancer;
+import client.cluster.impl.ZookeeperClisterImpl;
 import client.invoker.KoalsaMothodInterceptor;
 import client.invoker.LocalMockInterceptor;
 import org.apache.commons.lang3.StringUtils;
@@ -86,7 +87,7 @@ public class KoalasClientProxy implements FactoryBean<Object>, ApplicationContex
     private boolean testWhileIdle = true;
     private Icluster icluster;
     private ILoadBalancer iLoadBalancer;
-
+    private String env;
     AbandonedConfig abandonedConfig;
     private boolean removeAbandonedOnBorrow = true;
     private boolean removeAbandonedOnMaintenance = true;
@@ -331,6 +332,12 @@ public class KoalasClientProxy implements FactoryBean<Object>, ApplicationContex
         this.retryTimes = retryTimes;
     }
 
+    public String getEnv() {
+        return env;
+    }
+    public void setEnv(String env) {
+        this.env = env;
+    }
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
@@ -483,12 +490,14 @@ public class KoalasClientProxy implements FactoryBean<Object>, ApplicationContex
 
         if (!StringUtils.isEmpty ( serverIpPorts )) {
             icluster = new DirectClisterImpl ( serverIpPorts, iLoadBalancer == null ? new RandomLoadBalancer () : iLoadBalancer, serviceInterface.getName (), async, connTimeout, readTimeout, genericObjectPoolConfig, abandonedConfig );
+        } else{
+            icluster = new ZookeeperClisterImpl ( zkPath ,iLoadBalancer == null ? new RandomLoadBalancer () : iLoadBalancer, serviceInterface.getName (),env,async,connTimeout,readTimeout,genericObjectPoolConfig,abandonedConfig);
         }
 
         KoalsaMothodInterceptor koalsaMothodInterceptor = new KoalsaMothodInterceptor ( icluster, retryTimes, retryRequest, this );
         _interface = getIfaceInterface ();
 
-        loalsServiceProxy = new ProxyFactory ( _interface, koalsaMothodInterceptor );
+        loalsServiceProxy = new ProxyFactory ( _interface, koalsaMothodInterceptor ).getProxy ();
 
         logger.info ( "the service【[]】is start !", serviceInterface.getName () );
     }
