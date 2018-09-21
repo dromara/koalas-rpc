@@ -31,10 +31,10 @@ public class RandomLoadBalancer extends  AbstractLoadBalancer {
         }
 
         Random r =new Random ();
-        curr = r.nextInt (total-1);
+        curr = r.nextInt (total);
 
         for(int c=0;c<array.length;c++){
-            if(curr<=array[c]){
+            if(curr<array[c]){
                 return list.get ( c );
             }
         }
