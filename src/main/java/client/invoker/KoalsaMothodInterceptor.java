@@ -6,6 +6,7 @@ import client.proxyfactory.KoalasClientProxy;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.apache.commons.pool2.impl.GenericObjectPool;
+import org.apache.thrift.transport.TSocket;
 import org.apache.thrift.transport.TTransport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,10 +58,11 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
             return this.equals(args[0]);
         }
 
+        TTransport socket=null;
         while (retryRequest && retryTimes-->0){
             ServerObject serverObject = icluster.getObjectForRemote ();
+            if(serverObject==null) return null;
             GenericObjectPool<TTransport> genericObjectPool = serverObject.getGenericObjectPool ();
-            TTransport socket=null;
             try {
                 long before = System.currentTimeMillis();
                 socket = genericObjectPool.borrowObject ();
@@ -100,6 +102,11 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
                 if(socket != null)
                     genericObjectPool.returnObject (socket);
                 LOG.error ( "invoke server error,server ip -【{}】,port -【{}】", serverObject.getRemoteServer ().getIp (),serverObject.getRemoteServer ().getPort ());
+            }
+            finally {
+                if (socket != null && socket instanceof TSocket) {
+                    genericObjectPool.returnObject (socket);
+                }
             }
         }
         return null;

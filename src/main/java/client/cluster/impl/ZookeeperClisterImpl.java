@@ -29,7 +29,7 @@ public class ZookeeperClisterImpl extends AbstractBaseIcluster {
         this.iLoadBalancer=iLoadBalancer;
         this.serviceName=serviceName;
         this.env=env;
-        initZKclient (hostAndPorts,serviceName,env);
+        initZKclient (this.hostAndPorts,this.serviceName,this.env);
     }
 
     @Override
@@ -58,6 +58,10 @@ public class ZookeeperClisterImpl extends AbstractBaseIcluster {
     @Override
     public ServerObject getObjectForRemote() {
         RemoteServer remoteServer= this.getUseRemote();
+        if(remoteServer==null){
+            LOG.error ( "there is no server list serviceName={},hostAndPorts={},env={}",serviceName,hostAndPorts,env);
+            return null;
+        }
         if(serverPollMap.containsKey ( createMapKey(remoteServer) )){
             GenericObjectPool<TTransport> pool = serverPollMap.get ( createMapKey(remoteServer) );
             try {
