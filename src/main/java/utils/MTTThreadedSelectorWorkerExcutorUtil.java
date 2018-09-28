@@ -10,8 +10,10 @@ import java.util.concurrent.TimeUnit;
 public class MTTThreadedSelectorWorkerExcutorUtil {
 
     public static ThreadPoolExecutor getWorkerExcutor(int threadcount, KoalasDefaultThreadFactory koalasDefaultThreadFactory) {
-        return new ThreadPoolExecutor(threadcount, threadcount, 30L, TimeUnit.SECONDS,
+        ThreadPoolExecutor executor = new ThreadPoolExecutor(threadcount, threadcount, 30L, TimeUnit.SECONDS,
                 new SynchronousQueue<Runnable> (), koalasDefaultThreadFactory);
+        executor.prestartAllCoreThreads();
+        return executor;
     }
 
     public static ThreadPoolExecutor getWorkerExecutorWithQueue(int min, int max, int workQueueSize, KoalasDefaultThreadFactory koalasDefaultThreadFactory) {
