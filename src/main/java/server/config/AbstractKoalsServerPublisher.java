@@ -78,10 +78,4 @@ public class AbstractKoalsServerPublisher {
             }
         throw new IllegalArgumentException("serviceInterface must contain Sub Interface of Processor");
     }
-
-    public void getExcutePool(){
-
-
-    }
-
 }
