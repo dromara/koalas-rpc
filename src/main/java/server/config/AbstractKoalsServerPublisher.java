@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import server.IkoalasServer;
-import server.KoalasServerPublisher;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -37,8 +36,10 @@ public class AbstractKoalsServerPublisher {
     public String zkpath;
     public int port;
     public String env;
+    public int weight;
     public Object serviceImpl;
     public String serverType;
+    public int workQueue;
 
     public ApplicationContext applicationContext;
     public IkoalasServer ikoalasServer;
