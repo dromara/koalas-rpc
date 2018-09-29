@@ -51,6 +51,7 @@ public class ThriftServer implements IkoalasServer {
             TProtocolFactory tProtocolFactory = new TBinaryProtocol.Factory();
             tArgs.transportFactory(transportFactory);
             tArgs.protocolFactory(tProtocolFactory);
+            tArgs.processor (tProcessor);
             tArgs.selectorThreads ( serverPublisher.bossThreadCount==0?AbstractKoalsServerPublisher.DEFAULT_EVENT_LOOP_THREADS:serverPublisher.bossThreadCount );
             tArgs.workerThreads ( serverPublisher.workThreadCount==0? AbstractKoalsServerPublisher.DEFAULT_EVENT_LOOP_THREADS*2:serverPublisher.workThreadCount);
             executorService = MTTThreadedSelectorWorkerExcutorUtil.getWorkerExcutor (serverPublisher.koalasThreadCount==0?AbstractKoalsServerPublisher.DEFAULT_KOALAS_THREADS:serverPublisher.koalasThreadCount,new KoalasDefaultThreadFactory (serverPublisher.serviceInterface.getName ()));
