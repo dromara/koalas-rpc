@@ -7,7 +7,7 @@ import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-public class MTTThreadedSelectorWorkerExcutorUtil {
+public class KoalasThreadedSelectorWorkerExcutorUtil {
 
     public static ThreadPoolExecutor getWorkerExcutor(int threadcount, KoalasDefaultThreadFactory koalasDefaultThreadFactory) {
         ThreadPoolExecutor executor = new ThreadPoolExecutor(threadcount, threadcount, 30L, TimeUnit.SECONDS,

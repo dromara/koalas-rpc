@@ -19,7 +19,7 @@ import server.IkoalasServer;
 import server.KoalasDefaultThreadFactory;
 import server.config.AbstractKoalsServerPublisher;
 import server.config.ZookServerConfig;
-import utils.MTTThreadedSelectorWorkerExcutorUtil;
+import utils.KoalasThreadedSelectorWorkerExcutorUtil;
 
 import java.util.concurrent.ExecutorService;
 
@@ -46,7 +46,7 @@ public class NettyServer implements IkoalasServer {
                 bossGroup = new NioEventLoopGroup (serverPublisher.bossThreadCount==0?AbstractKoalsServerPublisher.DEFAULT_EVENT_LOOP_THREADS:serverPublisher.bossThreadCount);
                 workerGroup = new NioEventLoopGroup ( serverPublisher.workThreadCount==0? AbstractKoalsServerPublisher.DEFAULT_EVENT_LOOP_THREADS*2:serverPublisher.workThreadCount );
             }
-            executorService = MTTThreadedSelectorWorkerExcutorUtil.getWorkerExecutorWithQueue (serverPublisher.koalasThreadCount==0?AbstractKoalsServerPublisher.DEFAULT_KOALAS_THREADS:serverPublisher.koalasThreadCount,serverPublisher.koalasThreadCount==0?AbstractKoalsServerPublisher.DEFAULT_KOALAS_THREADS:serverPublisher.koalasThreadCount,serverPublisher.workQueue,new KoalasDefaultThreadFactory (serverPublisher.serviceInterface.getName ()));
+            executorService = KoalasThreadedSelectorWorkerExcutorUtil.getWorkerExecutorWithQueue (serverPublisher.koalasThreadCount==0?AbstractKoalsServerPublisher.DEFAULT_KOALAS_THREADS:serverPublisher.koalasThreadCount,serverPublisher.koalasThreadCount==0?AbstractKoalsServerPublisher.DEFAULT_KOALAS_THREADS:serverPublisher.koalasThreadCount,serverPublisher.workQueue,new KoalasDefaultThreadFactory (serverPublisher.serviceInterface.getName ()));
 
             ServerBootstrap b = new ServerBootstrap ();
             b.group ( bossGroup, workerGroup ).channel ( workerGroup instanceof EpollEventLoopGroup ? EpollServerSocketChannel.class : NioServerSocketChannel.class )

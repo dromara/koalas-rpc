@@ -15,7 +15,7 @@ import server.IkoalasServer;
 import server.KoalasDefaultThreadFactory;
 import server.config.AbstractKoalsServerPublisher;
 import server.config.ZookServerConfig;
-import utils.MTTThreadedSelectorWorkerExcutorUtil;
+import utils.KoalasThreadedSelectorWorkerExcutorUtil;
 
 import java.util.concurrent.ExecutorService;
 
@@ -54,7 +54,7 @@ public class ThriftServer implements IkoalasServer {
             tArgs.processor (tProcessor);
             tArgs.selectorThreads ( serverPublisher.bossThreadCount==0?AbstractKoalsServerPublisher.DEFAULT_EVENT_LOOP_THREADS:serverPublisher.bossThreadCount );
             tArgs.workerThreads ( serverPublisher.workThreadCount==0? AbstractKoalsServerPublisher.DEFAULT_EVENT_LOOP_THREADS*2:serverPublisher.workThreadCount);
-            executorService = MTTThreadedSelectorWorkerExcutorUtil.getWorkerExcutor (serverPublisher.koalasThreadCount==0?AbstractKoalsServerPublisher.DEFAULT_KOALAS_THREADS:serverPublisher.koalasThreadCount,new KoalasDefaultThreadFactory (serverPublisher.serviceInterface.getName ()));
+            executorService = KoalasThreadedSelectorWorkerExcutorUtil.getWorkerExcutor (serverPublisher.koalasThreadCount==0?AbstractKoalsServerPublisher.DEFAULT_KOALAS_THREADS:serverPublisher.koalasThreadCount,new KoalasDefaultThreadFactory (serverPublisher.serviceInterface.getName ()));
             tArgs.executorService (executorService);
             tArgs.acceptQueueSizePerThread(AbstractKoalsServerPublisher.DEFAULT_THRIFT_ACCETT_THREAD);
             tServer = new TThreadedSelectorServer(tArgs);
