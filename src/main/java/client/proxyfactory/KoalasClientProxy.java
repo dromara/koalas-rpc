@@ -494,7 +494,7 @@ public class KoalasClientProxy implements FactoryBean<Object>, ApplicationContex
             icluster = new ZookeeperClisterImpl ( zkPath ,iLoadBalancer == null ? new RandomLoadBalancer () : iLoadBalancer, serviceInterface.getName (),env,async,connTimeout,readTimeout,genericObjectPoolConfig,abandonedConfig);
         }
 
-        KoalsaMothodInterceptor koalsaMothodInterceptor = new KoalsaMothodInterceptor ( icluster, retryTimes, retryRequest, this );
+        KoalsaMothodInterceptor koalsaMothodInterceptor = new KoalsaMothodInterceptor ( icluster, retryTimes, retryRequest, this,readTimeout );
         _interface = getIfaceInterface ();
 
         loalsServiceProxy = new ProxyFactory ( _interface, koalsaMothodInterceptor ).getProxy ();

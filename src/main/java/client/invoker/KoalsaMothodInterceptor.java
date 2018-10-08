@@ -7,6 +7,7 @@ import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.apache.thrift.TApplicationException;
+import org.apache.thrift.async.TAsyncClient;
 import org.apache.thrift.transport.TSocket;
 import org.apache.thrift.transport.TTransport;
 import org.slf4j.Logger;
@@ -24,12 +25,14 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
     private int retryTimes;
     private boolean retryRequest;
     private KoalasClientProxy koalasClientProxy;
+    private int asyncTimeOut;
 
-    public KoalsaMothodInterceptor(Icluster icluster, int retryTimes, boolean retryRequest, KoalasClientProxy koalasClientProxy) {
+    public KoalsaMothodInterceptor(Icluster icluster, int retryTimes, boolean retryRequest, KoalasClientProxy koalasClientProxy,int asyncTimeOut) {
         this.icluster = icluster;
         this.retryTimes = retryTimes;
         this.retryRequest = retryRequest;
         this.koalasClientProxy = koalasClientProxy;
+        this.asyncTimeOut =asyncTimeOut;
     }
 
     @Override
@@ -77,6 +80,10 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
             }
 
             Object obj = koalasClientProxy.getInterfaceClientInstance (socket);
+
+            if(obj instanceof TAsyncClient){
+                ((TAsyncClient) obj).setTimeout ( asyncTimeOut );
+            }
 
             try {
                return method.invoke ( obj, args);
