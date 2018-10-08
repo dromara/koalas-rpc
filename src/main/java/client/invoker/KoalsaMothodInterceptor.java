@@ -33,7 +33,7 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
     }
 
     @Override
-    public Object invoke(MethodInvocation invocation)  {
+    public Object invoke(MethodInvocation invocation) throws InvocationTargetException, IllegalAccessException {
 
         Method method = invocation.getMethod();
         String methodName = method.getName();
@@ -115,6 +115,7 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
                 if(socket != null)
                     genericObjectPool.returnObject (socket);
                 LOG.error ( "invoke server error,server ip -【{}】,port -【{}】", serverObject.getRemoteServer ().getIp (),serverObject.getRemoteServer ().getPort ());
+                throw e;
             }
             finally {
                 if (socket != null && socket instanceof TSocket) {
