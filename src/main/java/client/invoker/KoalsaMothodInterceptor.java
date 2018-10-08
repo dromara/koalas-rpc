@@ -6,6 +6,7 @@ import client.proxyfactory.KoalasClientProxy;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.apache.commons.pool2.impl.GenericObjectPool;
+import org.apache.thrift.TApplicationException;
 import org.apache.thrift.transport.TSocket;
 import org.apache.thrift.transport.TTransport;
 import org.slf4j.Logger;
@@ -81,8 +82,20 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
                return method.invoke ( obj, args);
             } catch(Exception e){
 
-                if(e.getCause () != null && e.getCause () instanceof ConnectException){
-                    LOG.info ( "the server mabe is shutdown ,retry it!" );
+                if(e instanceof TApplicationException){
+                    if(((TApplicationException) e).getType () ==6666){
+                        LOG.info ( "the server{} thread pool is busy ,retry it!",serverObject.getRemoteServer ());
+                        if(socket != null)
+                            genericObjectPool.returnObject (socket);
+                        Thread.yield ();
+                        continue;
+                    }
+                }
+
+                Throwable cause = (e.getCause() == null) ? e : e.getCause();
+
+                if(cause instanceof ConnectException){
+                    LOG.info ( "the server {} maybe is shutdown ,retry it!",serverObject.getRemoteServer () );
                     try {
                         genericObjectPool.invalidateObject ( socket );
                         if(socket != null)
@@ -93,8 +106,8 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
                     }
                 }
 
-                if(e.getCause () != null && e.getCause () instanceof SocketTimeoutException){
-                    LOG.info ( "read timeout SocketTimeoutException,retry it!" );
+                if(cause instanceof SocketTimeoutException){
+                    LOG.info ( "read timeout SocketTimeoutException,retry it! {}" ,serverObject.getRemoteServer ());
                     if(socket != null)
                         genericObjectPool.returnObject (socket);
                     continue;

@@ -3,20 +3,22 @@ package netty.hanlder;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import netty.NettyServer;
+import org.apache.thrift.TApplicationException;
 import org.apache.thrift.TException;
 import org.apache.thrift.TProcessor;
-import org.apache.thrift.protocol.TBinaryProtocol;
-import org.apache.thrift.protocol.TProtocol;
-import org.apache.thrift.protocol.TProtocolFactory;
+import org.apache.thrift.protocol.*;
 import org.apache.thrift.transport.TFramedTransport;
 import org.apache.thrift.transport.TIOStreamTransport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import server.domain.ErrorType;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.net.InetSocketAddress;
+import java.text.MessageFormat;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.RejectedExecutionException;
 
 public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
     private final static Logger logger = LoggerFactory.getLogger ( KoalasHandler.class );
@@ -48,7 +50,12 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
         TProtocolFactory tProtocolFactory =new TBinaryProtocol.Factory();
         TProtocol in =tProtocolFactory.getProtocol ( inTransport );
         TProtocol out =tProtocolFactory.getProtocol ( outTransport );
-        executorService.execute ( new NettyRunable (  ctx,in,out,outputStream,tprocessor));
+        try {
+            executorService.execute ( new NettyRunable (  ctx,in,out,outputStream,tprocessor,b));
+        } catch (RejectedExecutionException e){
+            handlerException(b,ctx,e,ErrorType.THREAD);
+
+        }
     }
 
     public static class NettyRunable implements  Runnable{
@@ -58,23 +65,82 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
         private TProtocol out;
         private ByteArrayOutputStream outputStream;
         private TProcessor tprocessor;
+        private byte[] b;
 
-        public NettyRunable(ChannelHandlerContext ctx, TProtocol in, TProtocol out, ByteArrayOutputStream outputStream, TProcessor tprocessor) {
+        public NettyRunable(ChannelHandlerContext ctx, TProtocol in, TProtocol out, ByteArrayOutputStream outputStream, TProcessor tprocessor, byte[] b) {
             this.ctx = ctx;
             this.in = in;
             this.out = out;
             this.outputStream = outputStream;
             this.tprocessor = tprocessor;
+            this.b = b;
         }
 
         @Override
         public void run() {
             try {
                 tprocessor.process ( in,out );
+                ctx.writeAndFlush (outputStream);
             } catch (TException e) {
                 logger.error ( e.getMessage (),e );
+                handlerException(this.b,ctx,e,ErrorType.APPLICATION);
             }
-            ctx.writeAndFlush (outputStream);
         }
+
+    }
+
+    public static void handlerException(byte[] b, ChannelHandlerContext ctx, Exception e, ErrorType type){
+        ByteArrayInputStream inputStream = new ByteArrayInputStream ( b );
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream (  );
+
+        TIOStreamTransport tioStreamTransportInput = new TIOStreamTransport (  inputStream);
+        TIOStreamTransport tioStreamTransportOutput = new TIOStreamTransport (  outputStream);
+
+        TFramedTransport inTransport = new TFramedTransport ( tioStreamTransportInput );
+        TFramedTransport outTransport = new TFramedTransport ( tioStreamTransportOutput );
+
+
+        TProtocolFactory tProtocolFactory =new TBinaryProtocol.Factory();
+        TProtocol in =tProtocolFactory.getProtocol ( inTransport );
+        TProtocol out =tProtocolFactory.getProtocol ( outTransport );
+
+        String clientIP = getClientIP(ctx);
+
+        String value = MessageFormat.format("the remote ip: {0} invoke error ,the error message is: {1}", clientIP,e.getMessage ());
+
+        try {
+            TMessage message  = in.readMessageBegin ();
+            TProtocolUtil.skip(in, TType.STRUCT);
+            in.readMessageEnd();
+
+            TApplicationException tApplicationException=null;
+            switch (type){
+                case THREAD:
+                    tApplicationException = new TApplicationException(TApplicationException.INTERNAL_ERROR,value);
+                    break;
+                case APPLICATION:
+                    tApplicationException = new TApplicationException(6666,value);
+                    break;
+            }
+
+            out.writeMessageBegin(new TMessage(message.name, TMessageType.EXCEPTION, message.seqid));
+            tApplicationException.write (out  );
+            out.writeMessageEnd();
+            out.getTransport ().flush ();
+            ctx.writeAndFlush ( outputStream);
+        } catch (TException e1) {
+            logger.error ( "unknown Exception:",e );
+        }
+    }
+
+    public static String getClientIP(ChannelHandlerContext ctx) {
+        String ip;
+        try {
+            InetSocketAddress socketAddress = (InetSocketAddress) ctx.channel().remoteAddress();
+            ip = socketAddress.getAddress().getHostAddress();
+        } catch (Exception e) {
+            ip = "unknown";
+        }
+        return ip;
     }
 }
