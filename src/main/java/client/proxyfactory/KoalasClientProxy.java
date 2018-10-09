@@ -34,7 +34,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Copyright (C) 22018
+ * Copyright (C) 2018
  * All rights reserved
  * User: yulong.zhang
  * Date:2018年09月18日17:44:58
@@ -45,42 +45,53 @@ public class KoalasClientProxy implements FactoryBean<Object>, ApplicationContex
     public static final String IFACE = "Iface";
     public static final String CLIENT = "Client";
     public static final String ASYNC_CLIENT = "AsyncClient";
+    //请求体最大长度
     public static final int DEFUAL_MAXLENGTH = 10 * 1024 * 1024;
-    //代理对象,所有client-server类型统一代理
-    private Object loalsServiceProxy;
-    //spring上下文对象
-    private ApplicationContext applicationContext;
+    //连接超时
+    public static final int DEFUAL_CONNTIMEOUT = 5*1000;
+    //读取超时
+    public static final int DEFUAL_READTIMEOUT = 30*1000;
+
     //client端service
     private Class<?> serviceInterface;
     // 方式1：zk管理的动态集群,格式192.168.3.253:6666
     private String zkPath;
     // 方式2：指定的server列表，逗号分隔，#分隔权重,格式192.168.3.253:6666#10,192.168.3.253:6667#10
     private String serverIpPorts;
+
+    //代理对象,所有client-server类型统一代理
+    private Object loalsServiceProxy;
+    //spring上下文对象
+    private ApplicationContext applicationContext;
     // 同步还是异步,默认同步。
     private boolean async = false;
     //连接超时时间
-    private int connTimeout;
+    private int connTimeout=DEFUAL_CONNTIMEOUT;
     //读取超时时间
-    private int readTimeout;
+    private int readTimeout=DEFUAL_READTIMEOUT;
     //本地client测试用实现
     private String locatMockServiceImpl;
     //重试
     private boolean retryRequest = true;
     private int retryTimes = 3;
-    GenericObjectPoolConfig genericObjectPoolConfig;
+    private GenericObjectPoolConfig genericObjectPoolConfig;
     //最大连接数
-    private int maxTotal;
+    private int maxTotal=100;
     //最大闲置数
-    private int maxIdle;
+    private int maxIdle=50;
     //最小闲置数量
-    private int minIdle;
+    private int minIdle=10;
     private boolean lifo = true;
     private boolean fairness = false;
     private long maxWaitMillis = 30 * 1000;
-    private long timeBetweenEvictionRunsMillis = 3 * 60 * 1000l;
-    private long minEvictableIdleTimeMillis = 5 * 60 * 1000l;
-    private long softMinEvictableIdleTimeMillis = 10 * 60 * 1000l;
-    private int numTestsPerEvictionRun = 5;
+    //多长时间运行一次
+    private long timeBetweenEvictionRunsMillis = 3 * 60 * 1000;
+    private long minEvictableIdleTimeMillis = 5 * 60 * 1000;
+
+    //对象空闲多久后逐出, 当空闲时间>该值 且 空闲连接>最大空闲数 时直接逐出,
+    //不再根据MinEvictableIdleTimeMillis判断  (默认逐出策略)
+    private long softMinEvictableIdleTimeMillis = 10 * 60 * 1000;
+    private int numTestsPerEvictionRun = 20;
     private boolean testOnCreate = false;
     private boolean testOnBorrow = false;
     private boolean testOnReturn = false;
@@ -390,8 +401,6 @@ public class KoalasClientProxy implements FactoryBean<Object>, ApplicationContex
                 logger.error ( "get InvocationTargetException", e );
             }
         } else {
-
-            if (async) {
                 if (null == asyncClientManagerList) {
                     synchronized (this) {
                         if (null == asyncClientManagerList) {
@@ -406,7 +415,6 @@ public class KoalasClientProxy implements FactoryBean<Object>, ApplicationContex
                         }
                     }
                 }
-            }
             Class<?> clazz = getAsyncClientClass ();
 
             if (asyncConstructor == null) {

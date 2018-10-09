@@ -61,7 +61,7 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
         }
 
         TTransport socket = null;
-        while (retryRequest && retryTimes-- > 0) {
+        while (retryTimes-- > 0) {
             ServerObject serverObject = icluster.getObjectForRemote ();
             if (serverObject == null) return null;
             GenericObjectPool<TTransport> genericObjectPool = serverObject.getGenericObjectPool ();
@@ -91,12 +91,16 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
             } catch (Exception e) {
                 Throwable cause = (e.getCause () == null) ? e : e.getCause ();
 
+                boolean ifreturn = false;
                 if (cause instanceof TApplicationException) {
                     if (((TApplicationException) cause).getType () == 6666) {
                         LOG.info ( "the server{} thread pool is busy ,retry it!", serverObject.getRemoteServer () );
-                        if (socket != null)
+                        if (socket != null){
                             genericObjectPool.returnObject ( socket );
+                            ifreturn = true;
+                        }
                         Thread.yield ();
+                        if(retryRequest)
                         continue;
                     }
                 }
@@ -104,9 +108,13 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
                 if (cause.getCause () != null && cause.getCause () instanceof ConnectException) {
                     LOG.info ( "the server {} maybe is shutdown ,retry it!", serverObject.getRemoteServer () );
                     try {
-                        if (socket != null)
+                        if (socket != null){
                             genericObjectPool.returnObject ( socket );
-                        continue;
+                            ifreturn = true;
+                        }
+
+                         if(retryRequest)
+                            continue;
                     } catch (Exception e1) {
                         LOG.error ( "invalidateObject error!", e1 );
                     }
@@ -117,14 +125,16 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
                     if (socket != null) {
                         try {
                             genericObjectPool.invalidateObject ( socket );
+                            ifreturn = true;
                         } catch (Exception e1) {
                             LOG.error ( "invalidateObject error ,", e );
                             return null;
                         }
                     }
-                    continue;
+                    if(retryRequest)
+                        continue;
                 }
-                if (socket != null)
+                if (socket != null && !ifreturn)
                     genericObjectPool.returnObject ( socket );
                 LOG.error ( "invoke server error,server ip -【{}】,port -【{}】", serverObject.getRemoteServer ().getIp (), serverObject.getRemoteServer ().getPort () );
                 throw e;
