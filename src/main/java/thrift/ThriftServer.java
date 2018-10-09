@@ -1,5 +1,6 @@
 package thrift;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.thrift.TProcessor;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocolFactory;
@@ -70,9 +71,13 @@ public class ThriftServer implements IkoalasServer {
                 }
             });
             new Thread (new ThriftRunable(tServer) ).start ();
-            ZookServerConfig zookServerConfig = new ZookServerConfig ( serverPublisher.zkpath,serverPublisher.serviceInterface.getName (),serverPublisher.env,serverPublisher.port,serverPublisher.weight );
-            zookeeperServer = new ZookeeperServer ( zookServerConfig );
-            zookeeperServer.init ();
+
+            if(StringUtils.isNotEmpty ( serverPublisher.zkpath )){
+                ZookServerConfig zookServerConfig = new ZookServerConfig ( serverPublisher.zkpath,serverPublisher.serviceInterface.getName (),serverPublisher.env,serverPublisher.port,serverPublisher.weight );
+                zookeeperServer = new ZookeeperServer ( zookServerConfig );
+                zookeeperServer.init ();
+            }
+
          } catch (TTransportException e) {
             logger.error ( "the tProcessor can't be null serverInfo={}",serverPublisher );
             throw new IllegalArgumentException("the tProcessor can't be null");

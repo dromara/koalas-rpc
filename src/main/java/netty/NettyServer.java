@@ -12,6 +12,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import netty.initializer.NettyServerInitiator;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import register.ZookeeperServer;
@@ -69,14 +70,20 @@ public class NettyServer implements IkoalasServer {
                     }
                 }
             });
-            ZookServerConfig zookServerConfig = new ZookServerConfig ( serverPublisher.zkpath,serverPublisher.serviceInterface.getName (),serverPublisher.env,serverPublisher.port,serverPublisher.weight );
-            zookeeperServer = new ZookeeperServer ( zookServerConfig );
-            zookeeperServer.init ();
+
+            if(StringUtils.isNotEmpty ( serverPublisher.zkpath )){
+                ZookServerConfig zookServerConfig = new ZookServerConfig ( serverPublisher.zkpath,serverPublisher.serviceInterface.getName (),serverPublisher.env,serverPublisher.port,serverPublisher.weight );
+                zookeeperServer = new ZookeeperServer ( zookServerConfig );
+                zookeeperServer.init ();
+            }
         } catch ( Exception e){
             logger.error ( "NettyServer start faid !",e );
             if(bossGroup != null) bossGroup.shutdownGracefully ();
             if(workerGroup != null) workerGroup.shutdownGracefully ();
         }
+
+        logger.info("netty server init success server={}",serverPublisher);
+
     }
 
     @Override

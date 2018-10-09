@@ -28,22 +28,22 @@ public class AbstractKoalsServerPublisher {
 
     public static final String IFACE = "Iface";
     public static final String PROCESSOR = "Processor";
+
+    public Object serviceImpl;
+    public Class<?> serviceInterface;
+    public int port;
+
     public int bossThreadCount;
     public int workThreadCount;
     public int koalasThreadCount;
-
-    public Class<?> serviceInterface;
     public String zkpath;
-    public int port;
-    public String env;
-    public int weight;
-    public Object serviceImpl;
-    public String serverType;
+    public String env="dev";
+    public int weight=10;
+    public String serverType="NETTY";
     public int workQueue;
 
     public ApplicationContext applicationContext;
     public IkoalasServer ikoalasServer;
-
 
     public TProcessor getTProcessor(){
         Class iface = getSynIfaceInterface(serviceInterface);
