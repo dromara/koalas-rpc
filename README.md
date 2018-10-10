@@ -111,11 +111,38 @@ wmCreateAccountServiceImpl简单实现类的截图如下
 client.proxyfactory.KoalasClientProxy
 
 | 参数名称  | 默认值  |  是否必须  |
-|---|---|---|
-|---|---|---|
-|---|---|---|
-|---|---|---|
-|---|---|---|
+|serviceInterface|无|是，service服务名称|
+|zkPath|无|否，zookeeper服务发现地址，和serverIpPorts参数必须有一个|
+|serverIpPorts|无|否，zookeeper服务发现地址，和zkPath参数必须有一个|
+|async|---|---|
+|connTimeout|---|---|
+|readTimeout|---|---|
+|locatMockServiceImpl|---|---|
+|retryRequest|---|---|
+|retryTimes|---|---|
+|maxTotal|---|---|
+|maxIdle|---|---|
+|minIdle|---|---|
+|lifo|---|---|
+|fairness|---|---|
+|maxWaitMillis|---|---|
+|timeBetweenEvictionRunsMillis|---|---|
+|minEvictableIdleTimeMillis|---|---|
+|softMinEvictableIdleTimeMillis|---|---|
+|numTestsPerEvictionRun|---|---|
+|testOnCreate|---|---|
+|testOnBorrow|---|---|
+|testOnReturn|---|---|
+|testWhileIdle|---|---|
+|env|---|---|
+|removeAbandonedOnBorrow|---|---|
+|removeAbandonedOnMaintenance|---|---|
+|removeAbandonedTimeout|---|---|
+|maxLength_|---|---|
+|asyncSelectorThreadCount|---|---|
+|testWhileIdle|---|---|
+|testWhileIdle|---|---|
+|testWhileIdle|---|---|
 
 
 
