@@ -2,7 +2,7 @@
 
 #### 项目介绍
 考拉RPC
-个人业务作品，提供大家交流学习，有意见请私信，欢迎拍砖。
+    个人业务作品，提供大家交流学习，有意见请私信，欢迎拍砖。客户端采用thrift协议，服务端支持netty和thrift的TThreadedSelectorServer半同步半异步线程模型，支持动态扩容，服务上下线，（权重动态，可用性配置，页面流量统计等，2.0版本）持续为个人以及中小型公司提供可靠的RPC框架技术方案。
 
 为什么要写这个RPC
     市面上常见的RPC框架很多，grpc，motan，dubbo等，但是随着越来越多的元素加入，复杂的架构设计等因素似使得这些框架就想spring一样，虽然号称是轻量级，但是用起来却是让我们很蹩脚，大量的配置，繁杂的API设计，其实，我们根本用不上这些东西！！！
@@ -34,7 +34,7 @@ spring,apache pool,thrift，netty等
 考拉RPC确保精简，轻量的原则，只需要zk服务器进行服务发现（后续版本服务治理可能需要Datasource），对于zookeeper的各个环境安装教程请自行google，不在本安装教程内特意说明
 
 
-#### 使用说明
+# 使用说明
 
 服务端和客户端都需要引入考拉RPC服务（目前还没有上传到码云，阿里云，和maven中央镜像，本地下载源码后clean install到本地仓库使用即可，2.0版本功能全面之后会统一上传）
 
@@ -51,10 +51,9 @@ spring,apache pool,thrift，netty等
             </exclusions>
         </dependency>
 
-1：客户端api
+#### 1：客户端使用方式
 
-以下是最精简配置，serviceInterface为
-
+以下是最精简配置
 
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
@@ -67,7 +66,53 @@ spring,apache pool,thrift，netty等
 		<property name="zkPath" value="127.0.0.1:2181"/>
 	</bean>
 
+        <bean id="xxxx" class="client.proxyfactory.KoalasClientProxy" destroy-method="destroy">
+		<property name="serviceInterface" value="thrift.xxxx.WmCreateAccountService"/>
+		<property name="zkPath" value="127.0.0.1:2181"/>
+	</bean>
 </beans>
+
+
+client.proxyfactory.KoalasClientProxy 为基础服务类，copy引入即可。
+其中serviceInterface为thrift生成的服务类，需要全局唯一，（关于thrift服务类生成请自行google，网上很多，这里不多阐述），zkPath为zookeeper的地址，集群环境请用逗号分隔 【127.0.0.1:2181,127.0.0.1:2182,127.0.0.1:2183】
+
+
+![输入图片说明](https://images.gitee.com/uploads/images/2018/1010/172210_ed5d3a00_536094.png "屏幕截图.png")
+
+在你的服务类里面对服务类进行注入就可以了，注意是xxxx.iface。
+
+
+#### 2：服务端使用方式
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+	<bean class ="server.KoalasServerPublisher" destroy-method="destroy">
+		<property name="serviceInterface" value="thrift.service.WmCreateAccountService"/>
+		<property name="serviceImpl" ref="wmCreateAccountServiceImpl"/>
+		<property name="port" value="8001"/>
+		<property name="zkpath" value="127.0.0.1:2181"/>
+	</bean>
+
+</beans>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 #### 联系作者 :
