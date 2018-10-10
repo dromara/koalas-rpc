@@ -105,7 +105,13 @@ wmCreateAccountServiceImpl简单实现类的截图如下
 实现WmCreateAccountService.Iface接口即可。
 
 
+#### 3：所有参数配置说明
 
+客户端
+client.proxyfactory.KoalasClientProxy
+
+| 参数名称  | 默认值  |  是否必须  |
+|---|---|---|
 
 
 
