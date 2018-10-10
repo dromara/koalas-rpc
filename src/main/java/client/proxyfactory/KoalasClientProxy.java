@@ -98,7 +98,7 @@ public class KoalasClientProxy implements FactoryBean<Object>, ApplicationContex
     private boolean testWhileIdle = true;
     private Icluster icluster;
     private ILoadBalancer iLoadBalancer;
-    private String env;
+    private String env="env";
     AbandonedConfig abandonedConfig;
     private boolean removeAbandonedOnBorrow = true;
     private boolean removeAbandonedOnMaintenance = true;
@@ -535,6 +535,10 @@ public class KoalasClientProxy implements FactoryBean<Object>, ApplicationContex
         genericObjectPoolConfig.setTestOnReturn ( isTestOnReturn () );
         genericObjectPoolConfig.setTestWhileIdle ( isTestWhileIdle () );
         return genericObjectPoolConfig;
+    }
+
+    public void destroy(){
+        if(icluster!= null) icluster.destroy ();
     }
 
     public static void main(String[] args) {

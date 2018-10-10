@@ -32,11 +32,11 @@ public class AbstractKoalsServerPublisher {
     public Object serviceImpl;
     public Class<?> serviceInterface;
     public int port;
+    public String zkpath;
 
     public int bossThreadCount;
     public int workThreadCount;
     public int koalasThreadCount;
-    public String zkpath;
     public String env="dev";
     public int weight=10;
     public String serverType="NETTY";
@@ -44,6 +44,94 @@ public class AbstractKoalsServerPublisher {
 
     public ApplicationContext applicationContext;
     public IkoalasServer ikoalasServer;
+
+    public Object getServiceImpl() {
+        return serviceImpl;
+    }
+
+    public void setServiceImpl(Object serviceImpl) {
+        this.serviceImpl = serviceImpl;
+    }
+
+    public Class<?> getServiceInterface() {
+        return serviceInterface;
+    }
+
+    public void setServiceInterface(Class<?> serviceInterface) {
+        this.serviceInterface = serviceInterface;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
+    }
+
+    public int getBossThreadCount() {
+        return bossThreadCount;
+    }
+
+    public void setBossThreadCount(int bossThreadCount) {
+        this.bossThreadCount = bossThreadCount;
+    }
+
+    public int getWorkThreadCount() {
+        return workThreadCount;
+    }
+
+    public void setWorkThreadCount(int workThreadCount) {
+        this.workThreadCount = workThreadCount;
+    }
+
+    public int getKoalasThreadCount() {
+        return koalasThreadCount;
+    }
+
+    public void setKoalasThreadCount(int koalasThreadCount) {
+        this.koalasThreadCount = koalasThreadCount;
+    }
+
+    public String getZkpath() {
+        return zkpath;
+    }
+
+    public void setZkpath(String zkpath) {
+        this.zkpath = zkpath;
+    }
+
+    public String getEnv() {
+        return env;
+    }
+
+    public void setEnv(String env) {
+        this.env = env;
+    }
+
+    public int getWeight() {
+        return weight;
+    }
+
+    public void setWeight(int weight) {
+        this.weight = weight;
+    }
+
+    public String getServerType() {
+        return serverType;
+    }
+
+    public void setServerType(String serverType) {
+        this.serverType = serverType;
+    }
+
+    public int getWorkQueue() {
+        return workQueue;
+    }
+
+    public void setWorkQueue(int workQueue) {
+        this.workQueue = workQueue;
+    }
 
     public TProcessor getTProcessor(){
         Class iface = getSynIfaceInterface(serviceInterface);
