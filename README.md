@@ -16,7 +16,7 @@ spring,apache pool,thrift等
 服务端
 spring,apache pool,thrift，netty等
 
-####关于技术选型
+#### 关于技术选型
 
 1：序列化篇
   考察了很多个序列化组件，其中包括jdk原生，kryo、hessian、protostuff,thrift，json等，最终选择了Thrift，原因如下
@@ -31,7 +31,7 @@ spring,apache pool,thrift，netty等
 到目前为止 序列化+IO模型+高可用服务发现机制的技术选型已经落实，也就是RPC性能三大要素：序列化+IO线程模型+高可用服务发现集群。
 
 #### 安装教程
-考拉RPC确保精简，轻量的原则，只需要zk服务器进行服务发现（后续版本服务治理可能需要Datasource），对于zookeeper的各个环境安装教程请自行google，不在本安全教程内特意说明
+考拉RPC确保精简，轻量的原则，只需要zk服务器进行服务发现（后续版本服务治理可能需要Datasource），对于zookeeper的各个环境安装教程请自行google，不在本安装教程内特意说明
 
 
 #### 使用说明
