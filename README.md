@@ -38,6 +38,7 @@ spring,apache pool,thrift，netty等
 
 文档整理中
 
-#### 码云特技
 
-联系作者 :zhangyulong1988@163.com
+
+#### 联系作者 :
+QQ 492926917
