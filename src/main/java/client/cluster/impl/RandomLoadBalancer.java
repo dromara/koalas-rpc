@@ -30,6 +30,10 @@ public class RandomLoadBalancer extends  AbstractLoadBalancer {
             array[curr++] = total;
         }
 
+        if(total==0){
+            throw  new IllegalArgumentException ( "the remote serverList is empty!" );
+        }
+
         Random r =new Random ();
         curr = r.nextInt (total);
 

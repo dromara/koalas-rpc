@@ -61,7 +61,8 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
         }
 
         TTransport socket = null;
-        while (retryTimes-- > 0) {
+        int currTryTimes=0;
+        while (currTryTimes++ <retryTimes) {
             ServerObject serverObject = icluster.getObjectForRemote ();
             if (serverObject == null) return null;
             GenericObjectPool<TTransport> genericObjectPool = serverObject.getGenericObjectPool ();
@@ -69,7 +70,7 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
                 long before = System.currentTimeMillis ();
                 socket = genericObjectPool.borrowObject ();
                 long after = System.currentTimeMillis ();
-                LOG.info ( "get Object from pool with {} ms", after - before );
+                LOG.debug ( "get Object from pool with {} ms", after - before );
             } catch (Exception e) {
                 if (socket != null)
                     genericObjectPool.returnObject ( socket );

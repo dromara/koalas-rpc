@@ -59,7 +59,7 @@ public class ZookeeperClient {
         if (zookeeper == null) {
             int retry = 0;
             //网络抖动重试3次
-            while (retry++ > RETRY_TIMES) {
+            while (retry++ < RETRY_TIMES) {
                 try {
                     zookeeper = new ZooKeeper ( path, SESSION_TIMEOUT, NULL );
                     break;

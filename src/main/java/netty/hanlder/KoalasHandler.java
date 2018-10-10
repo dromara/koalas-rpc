@@ -81,7 +81,7 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
             try {
                 tprocessor.process ( in,out );
                 ctx.writeAndFlush (outputStream);
-            } catch (TException e) {
+            } catch (Exception e) {
                 logger.error ( e.getMessage (),e );
                 handlerException(this.b,ctx,e,ErrorType.APPLICATION);
             }
@@ -116,10 +116,10 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
             TApplicationException tApplicationException=null;
             switch (type){
                 case THREAD:
-                    tApplicationException = new TApplicationException(TApplicationException.INTERNAL_ERROR,value);
+                    tApplicationException = new TApplicationException(6666,value);
                     break;
                 case APPLICATION:
-                    tApplicationException = new TApplicationException(6666,value);
+                    tApplicationException = new TApplicationException(TApplicationException.INTERNAL_ERROR,value);
                     break;
             }
 

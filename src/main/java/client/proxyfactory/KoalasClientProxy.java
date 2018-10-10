@@ -98,7 +98,7 @@ public class KoalasClientProxy implements FactoryBean<Object>, ApplicationContex
     private boolean testWhileIdle = true;
     private Icluster icluster;
     private ILoadBalancer iLoadBalancer;
-    private String env="env";
+    private String env="dev";
     AbandonedConfig abandonedConfig;
     private boolean removeAbandonedOnBorrow = true;
     private boolean removeAbandonedOnMaintenance = true;

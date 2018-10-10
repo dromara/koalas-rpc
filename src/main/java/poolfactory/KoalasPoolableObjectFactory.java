@@ -149,7 +149,7 @@ public class KoalasPoolableObjectFactory extends BasePooledObjectFactory<TTransp
      */
     @Override
     public void activateObject(PooledObject<TTransport> p) throws Exception {
-        LOG.info ( "activateObject:PooledObject:【{}】",p );
+        LOG.debug ( "activateObject:PooledObject:【{}】",p );
     }
 
     /**
@@ -160,6 +160,6 @@ public class KoalasPoolableObjectFactory extends BasePooledObjectFactory<TTransp
     @Override
     public void passivateObject(PooledObject<TTransport> p)
             throws Exception {
-        LOG.info ( "passivateObject:PooledObject:【{}】",p );
+        LOG.debug ( "passivateObject:PooledObject:【{}】",p );
     }
 }
