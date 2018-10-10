@@ -37,7 +37,9 @@ spring,apache pool,thrift，netty等
 #### 使用说明
 
 服务端和客户端都需要引入考拉RPC服务（目前还没有上传到码云，阿里云，和maven中央镜像，本地下载源码后clean install到本地仓库使用即可，2.0版本功能全面之后会统一上传）
-       `<dependency>
+
+       `<?xml version="1.0" encoding="UTF-8"?>
+       <dependency>
             <groupId>koalas.rpc</groupId>
             <artifactId>com.Koalas.rpc</artifactId>
             <version>Koalas-1.0-SNAPSHOT</version>
