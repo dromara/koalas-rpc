@@ -95,8 +95,14 @@ client.proxyfactory.KoalasClientProxy 为基础服务类，copy引入即可。
 
 </beans>
 
+serviceInterface和客户端一样是thrift生成的服务类。
+serviceImpl是服务类实现。
+port是服务类暴露端口，可以自定义设置，同一台机器上不重复即可，客户端会根据serviceInterface自动查找。
+zkpath注册的zookeeper的地址。
 
-
+wmCreateAccountServiceImpl简单实现类的截图如下
+![输入图片说明](https://images.gitee.com/uploads/images/2018/1010/173130_78d04258_536094.png "屏幕截图.png")
+实现WmCreateAccountService.Iface接口即可。
 
 
 
