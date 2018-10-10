@@ -145,14 +145,18 @@ public class ZookeeperClient {
 
                         //wait the init childChanged
                         while (firstInitChildren) {
-                            Thread.sleep ( 10l );
+                            Thread.sleep ( 10 );
                         }
 
                         for (String _childpaths : childpaths) {
+
+                            String fullapth = parentPath.concat ( "/" ).concat ( _childpaths );
                             //192.168.3.1
-                            if (!serviceWatcher.containsKey ( _childpaths )) {
-                                ZookeeperClient.this.zookeeper.getData ( parentPath.concat ( "/" ).concat ( _childpaths ), this, new Stat () );
-                                serviceWatcher.put ( _childpaths, this );
+                            if (!serviceWatcher.containsKey ( fullapth )) {
+                                ZookeeperClient.this.zookeeper.getData (fullapth, this, new Stat () );
+                                serviceWatcher.put ( fullapth , this );
+                            } else{
+                                ZookeeperClient.this.zookeeper.getData ( fullapth, serviceWatcher.get (fullapth ), new Stat () );
                             }
                         }
 
@@ -171,7 +175,7 @@ public class ZookeeperClient {
                     try {
                         //wait the init childDataChanged
                         while (firstInitChildren) {
-                            Thread.sleep ( 10l );
+                            Thread.sleep ( 10 );
                         }
                         String data = new String ( ZookeeperClient.this.zookeeper.getData ( fullPath, this, new Stat () ), UTF_8 );
                         JSONObject json = JSONObject.parseObject ( data );
