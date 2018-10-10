@@ -34,7 +34,7 @@ public class KoalasServerPublisher extends AbstractKoalsServerPublisher implemen
     @Override
     public void afterPropertiesSet() throws Exception {
 
-        if("NETTY".equals ( this.serverType.toLowerCase ().trim () ) || StringUtils.isEmpty ( this.serverType )){
+        if("netty".equals ( this.serverType.toLowerCase ().trim () ) || StringUtils.isEmpty ( this.serverType )){
             ikoalasServer = new NettyServer ( this );
         } else{
             ikoalasServer = new ThriftServer ( this );

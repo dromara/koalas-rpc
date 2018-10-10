@@ -2,10 +2,7 @@ package register;
 
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.zookeeper.CreateMode;
-import org.apache.zookeeper.KeeperException;
-import org.apache.zookeeper.ZooDefs;
-import org.apache.zookeeper.ZooKeeper;
+import org.apache.zookeeper.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import server.config.ZookServerConfig;
@@ -13,6 +10,7 @@ import utils.IPUtil;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.concurrent.CountDownLatch;
 
 public class ZookeeperServer {
     private static final Logger LOG = LoggerFactory.getLogger ( ZookeeperServer.class );
@@ -35,12 +33,13 @@ public class ZookeeperServer {
         int weight = zookServerConfig.getWeight ();
         String zkpath = zookServerConfig.getZkpath ();
 
+        CountDownLatch c = new CountDownLatch ( 1 );
         if (zookeeper == null) {
             int retry = 0;
             //网络抖动重试3次
-            while (retry++ > RETRY_TIMES) {
+            while (retry++ < RETRY_TIMES) {
                 try {
-                    zookeeper = new ZooKeeper ( zkpath, SESSION_TIMEOUT, null );
+                    zookeeper = new ZooKeeper ( zkpath, SESSION_TIMEOUT, new koalasWatcher ( c ) );
                     break;
                 } catch (IOException e) {
                     LOG.error ( "zk server faild service:" + env + "-" + service, e );
@@ -55,7 +54,7 @@ public class ZookeeperServer {
 
         try {
             String envPath = env.startsWith ( "/" ) ? env : "/".concat ( env );
-
+            c.await ();
             if (zookeeper.exists ( envPath, null ) == null) {
                 zookeeper.create ( envPath, "".getBytes (), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT );
             }
@@ -76,26 +75,42 @@ public class ZookeeperServer {
             String childPathData = jsonChildData.toJSONString ();
 
             String childpath;
-            if (zookeeper.exists ( childpath = (envPath + servicePath + "/" + ip + ":" + port), null ) != null) {
-                zookeeper.delete ( childpath, -1 );
+            if (zookeeper.exists ( childpath = (envPath + servicePath + "/" + ip + ":" + port), null ) == null) {
                 zookeeper.create ( childpath, childPathData.getBytes ( UTF_8 ), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL );
             }
-            LOG.info ( "zk server init success,info={}",zookServerConfig );
+            LOG.info ( "zk server init success,info={}", zookServerConfig );
         } catch (KeeperException e) {
-            LOG.error ( e.getMessage (),e );
+            e.printStackTrace ();
+            LOG.error ( e.getMessage (), e );
         } catch (InterruptedException e) {
-            LOG.error ( e.getMessage (),e );
+            LOG.error ( e.getMessage (), e );
         } catch (UnsupportedEncodingException e) {
-            LOG.error ( e.getMessage (),e );
+            LOG.error ( e.getMessage (), e );
         }
     }
 
     public void destroy() {
-         if (zookeeper != null) {
+        if (zookeeper != null) {
             try {
                 zookeeper.close ();
             } catch (InterruptedException e) {
-                LOG.error ( "the service 【{}】zk close faild info={}",zookServerConfig);
+                LOG.error ( "the service 【{}】zk close faild info={}", zookServerConfig );
+            }
+        }
+    }
+
+    private class koalasWatcher implements Watcher {
+
+        private CountDownLatch countDownLatch;
+
+        public koalasWatcher(CountDownLatch countDownLatch) {
+            this.countDownLatch = countDownLatch;
+        }
+
+        @Override
+        public void process(WatchedEvent event) {
+            if (Event.KeeperState.SyncConnected == event.getState ()) {
+                countDownLatch.countDown ();
             }
         }
     }
