@@ -106,54 +106,18 @@ wmCreateAccountServiceImpl简单实现类的截图如下
 
 
 #### 3：所有参数配置说明
-
-客户端
-client.proxyfactory.KoalasClientProxy
-
-| 参数名称  | 默认值  |  是否必须  |
-|serviceInterface|无|是，service服务名称|
-|zkPath|无|否，zookeeper服务发现地址，和serverIpPorts参数必须有一个|
-|serverIpPorts|无|否，zookeeper服务发现地址，和zkPath参数必须有一个|
-|async|---|---|
-|connTimeout|---|---|
-|readTimeout|---|---|
-|locatMockServiceImpl|---|---|
-|retryRequest|---|---|
-|retryTimes|---|---|
-|maxTotal|---|---|
-|maxIdle|---|---|
-|minIdle|---|---|
-|lifo|---|---|
-|fairness|---|---|
-|maxWaitMillis|---|---|
-|timeBetweenEvictionRunsMillis|---|---|
-|minEvictableIdleTimeMillis|---|---|
-|softMinEvictableIdleTimeMillis|---|---|
-|numTestsPerEvictionRun|---|---|
-|testOnCreate|---|---|
-|testOnBorrow|---|---|
-|testOnReturn|---|---|
-|testWhileIdle|---|---|
-|env|---|---|
-|removeAbandonedOnBorrow|---|---|
-|removeAbandonedOnMaintenance|---|---|
-|removeAbandonedTimeout|---|---|
-|maxLength_|---|---|
-|asyncSelectorThreadCount|---|---|
-|testWhileIdle|---|---|
-|testWhileIdle|---|---|
-|testWhileIdle|---|---|
+整理中
 
 
+# 实际性能压测
+8C 16G mac开发本，单机10000次请求耗时截图
+![输入图片说明](https://images.gitee.com/uploads/images/2018/1010/174547_9325018d_536094.png "屏幕截图.png")
+
+10w次请求，大约耗时12s，平均qps在8000左右，在集群环境下会有不错的性能表现
 
 
-
-
-
-
-
-
-
+# 下版本计划
+服务治理支持，数据统计（错误率，tp90，tp99等），数据大盘统计，自定义标签等
 
 
 
