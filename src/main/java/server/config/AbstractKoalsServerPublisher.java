@@ -167,4 +167,18 @@ public class AbstractKoalsServerPublisher {
             }
         throw new IllegalArgumentException("serviceInterface must contain Sub Interface of Processor");
     }
+
+    protected  void checkparam(){
+        if(serviceImpl ==null){
+            throw new IllegalArgumentException ( "the serviceImpl can't be null" );
+        }
+        if(serviceInterface ==null){
+            throw new IllegalArgumentException ( "the serviceInterface can't be null" );
+        }
+        if(port ==0){
+            throw new IllegalArgumentException ( "set the right port" );
+        }
+
+    }
+
 }

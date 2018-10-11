@@ -1,7 +1,6 @@
 package server;
 
 import netty.NettyServer;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -34,8 +33,9 @@ public class KoalasServerPublisher extends AbstractKoalsServerPublisher implemen
     }
 
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
 
+        this.checkparam();
         if(NETTY.equals ( this.serverType.toLowerCase ().trim () )){
             ikoalasServer = new NettyServer ( this );
         } else if(THRIFT.equals ( this.serverType.toLowerCase ().trim () )){

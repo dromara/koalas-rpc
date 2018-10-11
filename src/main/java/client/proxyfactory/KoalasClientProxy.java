@@ -484,6 +484,15 @@ public class KoalasClientProxy implements FactoryBean<Object>, ApplicationContex
     @Override
     public void afterPropertiesSet() throws Exception {
 
+
+        if(serviceInterface==null){
+            throw  new IllegalArgumentException ( "serviceInterface can't be null" );
+        }
+
+        if(zkPath==null && serverIpPorts==null){
+            throw  new IllegalArgumentException ( "zkPath or serverIpPorts at least ones can't be null" );
+        }
+
         Class<?> _interface = null;
         if (locatMockServiceImpl != null && !StringUtils.isEmpty ( locatMockServiceImpl.trim () )) {
             LocalMockInterceptor localMockInterceptor = new LocalMockInterceptor ( locatMockServiceImpl );
