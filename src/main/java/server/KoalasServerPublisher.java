@@ -15,6 +15,8 @@ import thrift.ThriftServer;
 public class KoalasServerPublisher extends AbstractKoalsServerPublisher implements FactoryBean<Object>, ApplicationContextAware, InitializingBean {
 
     private final static Logger logger = LoggerFactory.getLogger ( KoalasServerPublisher.class );
+    public static final String NETTY = "netty";
+    public static final String THRIFT = "thrift";
 
     @Override
     public Object getObject() throws Exception {
@@ -34,10 +36,12 @@ public class KoalasServerPublisher extends AbstractKoalsServerPublisher implemen
     @Override
     public void afterPropertiesSet() throws Exception {
 
-        if("netty".equals ( this.serverType.toLowerCase ().trim () ) || StringUtils.isEmpty ( this.serverType )){
+        if(NETTY.equals ( this.serverType.toLowerCase ().trim () )){
             ikoalasServer = new NettyServer ( this );
-        } else{
+        } else if(THRIFT.equals ( this.serverType.toLowerCase ().trim () )){
             ikoalasServer = new ThriftServer ( this );
+        } else{
+            throw  new IllegalArgumentException("other server is not support at since v1.0");
         }
         ikoalasServer.run ();
     }
