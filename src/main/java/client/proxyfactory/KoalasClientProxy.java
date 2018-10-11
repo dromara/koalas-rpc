@@ -427,15 +427,6 @@ public class KoalasClientProxy implements FactoryBean<Object>, ApplicationContex
             }
 
             try {
-
-                /*try {
-                    Object o = new TNonblockingSocket ("127.0.0.1", 8001, 3000);
-                    return  asyncConstructor.newInstance ( new TBinaryProtocol.Factory (), new TAsyncClientManager(),  o);
-                } catch (IOException e) {
-                    e.printStackTrace ();
-                }*/
-
-
                 return asyncConstructor.newInstance ( new TBinaryProtocol.Factory (), asyncClientManagerList.get (socket.hashCode () % asyncSelectorThreadCount), socket );
             } catch (InstantiationException e) {
                 logger.error ( "get InstantiationException", e );

@@ -28,6 +28,8 @@ public class KoalasDecoder extends ByteToMessageDecoder {
             int length = decodeFrameSize ( b );
 
             if (in.readableBytes () < length) {
+                //reset the readerIndex
+                in.resetReaderIndex ();
                 return;
             }
 
@@ -40,7 +42,6 @@ public class KoalasDecoder extends ByteToMessageDecoder {
         } catch (Exception e) {
             logger.error ( "decode error",e );
         }
-
 
     }
 
