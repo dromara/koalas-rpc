@@ -15,6 +15,7 @@ import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.protocol.TProtocolFactory;
 import org.apache.thrift.transport.TFramedTransport;
+import org.apache.thrift.transport.TNonblockingSocket;
 import org.apache.thrift.transport.TNonblockingTransport;
 import org.apache.thrift.transport.TTransport;
 import org.slf4j.Logger;
@@ -404,7 +405,7 @@ public class KoalasClientProxy implements FactoryBean<Object>, ApplicationContex
                 if (null == asyncClientManagerList) {
                     synchronized (this) {
                         if (null == asyncClientManagerList) {
-                            asyncClientManagerList = new ArrayList<TAsyncClientManager> ();
+                            asyncClientManagerList = new ArrayList<> ();
                             for (int i = 0; i < asyncSelectorThreadCount; i++) {
                                 try {
                                     asyncClientManagerList.add(new TAsyncClientManager());
@@ -426,6 +427,15 @@ public class KoalasClientProxy implements FactoryBean<Object>, ApplicationContex
             }
 
             try {
+
+                /*try {
+                    Object o = new TNonblockingSocket ("127.0.0.1", 8001, 3000);
+                    return  asyncConstructor.newInstance ( new TBinaryProtocol.Factory (), new TAsyncClientManager(),  o);
+                } catch (IOException e) {
+                    e.printStackTrace ();
+                }*/
+
+
                 return asyncConstructor.newInstance ( new TBinaryProtocol.Factory (), asyncClientManagerList.get (socket.hashCode () % asyncSelectorThreadCount), socket );
             } catch (InstantiationException e) {
                 logger.error ( "get InstantiationException", e );

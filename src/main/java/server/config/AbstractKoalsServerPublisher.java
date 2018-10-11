@@ -181,4 +181,15 @@ public class AbstractKoalsServerPublisher {
 
     }
 
+    @Override
+    public String toString() {
+        return "KoalasServerPublisher{" +
+                "serviceImpl=" + serviceImpl +
+                ", serviceInterface=" + serviceInterface +
+                ", port=" + port +
+                ", zkpath='" + zkpath + '\'' +
+                ", env='" + env + '\'' +
+                ", serverType='" + serverType + '\'' +
+                '}';
+    }
 }

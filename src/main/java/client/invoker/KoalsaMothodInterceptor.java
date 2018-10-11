@@ -1,5 +1,6 @@
 package client.invoker;
 
+import client.async.ReleaseResourcesKoalasAsyncCallBack;
 import client.cluster.Icluster;
 import client.cluster.ServerObject;
 import client.proxyfactory.KoalasClientProxy;
@@ -7,6 +8,7 @@ import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.apache.thrift.TApplicationException;
+import org.apache.thrift.async.AsyncMethodCallback;
 import org.apache.thrift.async.TAsyncClient;
 import org.apache.thrift.transport.TSocket;
 import org.apache.thrift.transport.TTransport;
@@ -82,6 +84,21 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
 
             if (obj instanceof TAsyncClient) {
                 ((TAsyncClient) obj).setTimeout ( asyncTimeOut );
+                if(args.length<1){
+                    genericObjectPool.returnObject ( socket );
+                    throw new IllegalStateException("args number error");
+                }
+
+                Object argslast = args[args.length-1];
+                if(!(argslast instanceof AsyncMethodCallback)){
+                    genericObjectPool.returnObject ( socket );
+                    throw new IllegalStateException("args type error");
+                }
+
+                AsyncMethodCallback callback = (AsyncMethodCallback) argslast;
+                ReleaseResourcesKoalasAsyncCallBack releaseResourcesKoalasAsyncCallBack = new ReleaseResourcesKoalasAsyncCallBack (callback,serverObject,socket);
+                args[args.length-1] = releaseResourcesKoalasAsyncCallBack;
+
             }
             try {
                 Object o = method.invoke ( obj, args );
