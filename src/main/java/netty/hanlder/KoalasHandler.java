@@ -12,6 +12,7 @@ import org.apache.thrift.transport.TIOStreamTransport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import server.domain.ErrorType;
+import transport.TKoalasFramedTransport;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -38,14 +39,21 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
         byte[] b = new byte[i];
         msg.readBytes ( b );
 
+        boolean ifUserProtocol;
+        if(b[4]==TKoalasFramedTransport.first && b[5]==TKoalasFramedTransport.second){
+            ifUserProtocol = true;
+        }else{
+            ifUserProtocol = false;
+        }
+
         ByteArrayInputStream inputStream = new ByteArrayInputStream ( b );
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream (  );
 
         TIOStreamTransport tioStreamTransportInput = new TIOStreamTransport (  inputStream);
         TIOStreamTransport tioStreamTransportOutput = new TIOStreamTransport (  outputStream);
 
-        TFramedTransport inTransport = new TFramedTransport ( tioStreamTransportInput );
-        TFramedTransport outTransport = new TFramedTransport ( tioStreamTransportOutput );
+        TKoalasFramedTransport inTransport = new TKoalasFramedTransport( tioStreamTransportInput );
+        TKoalasFramedTransport outTransport = new TKoalasFramedTransport ( tioStreamTransportOutput,16384000,ifUserProtocol );
 
         TProtocolFactory tProtocolFactory =new TBinaryProtocol.Factory();
         TProtocol in =tProtocolFactory.getProtocol ( inTransport );

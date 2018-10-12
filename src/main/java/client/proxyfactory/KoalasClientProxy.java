@@ -26,6 +26,7 @@ import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import transport.TKoalasFramedTransport;
 
 import java.io.IOException;
 import java.lang.reflect.Constructor;
@@ -387,7 +388,7 @@ public class KoalasClientProxy implements FactoryBean<Object>, ApplicationContex
                 if (synConstructor == null) {
                     synConstructor = clazz.getDeclaredConstructor ( TProtocol.class );
                 }
-                TTransport transport = new TFramedTransport ( socket, maxLength_ );
+                TTransport transport = new TKoalasFramedTransport ( socket, maxLength_ );
                 TProtocol protocol = new TBinaryProtocol ( transport );
 
                 return synConstructor.newInstance ( protocol );
