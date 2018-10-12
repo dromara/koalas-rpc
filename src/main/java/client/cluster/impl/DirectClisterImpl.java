@@ -52,7 +52,8 @@ public class DirectClisterImpl extends AbstractBaseIcluster {
                 Integer weight = Integer.valueOf ( temp.split ( "#" )[1].trim () );
                 String host = hostAndIp.split ( ":" )[0].trim ();
                 String port = hostAndIp.split ( ":" )[1].trim ();
-                list.add ( new RemoteServer ( host, port, weight, true ) );
+                String server = temp.split ( "#" )[2].trim ();
+                list.add ( new RemoteServer ( host, port, weight, true,server ) );
             }
             serverList =list;
         }

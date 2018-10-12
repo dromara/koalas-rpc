@@ -73,7 +73,7 @@ public class ThriftServer implements IkoalasServer {
             new Thread (new ThriftRunable(tServer) ).start ();
 
             if(StringUtils.isNotEmpty ( serverPublisher.zkpath )){
-                ZookServerConfig zookServerConfig = new ZookServerConfig ( serverPublisher.zkpath,serverPublisher.serviceInterface.getName (),serverPublisher.env,serverPublisher.port,serverPublisher.weight );
+                ZookServerConfig zookServerConfig = new ZookServerConfig ( serverPublisher.zkpath,serverPublisher.serviceInterface.getName (),serverPublisher.env,serverPublisher.port,serverPublisher.weight,"thrift" );
                 zookeeperServer = new ZookeeperServer ( zookServerConfig );
                 zookeeperServer.init ();
             }

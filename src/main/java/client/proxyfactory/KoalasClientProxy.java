@@ -380,7 +380,7 @@ public class KoalasClientProxy implements FactoryBean<Object>, ApplicationContex
     private Constructor<?> synConstructor;
     private Constructor<?> asyncConstructor;
 
-    public Object getInterfaceClientInstance(TTransport socket) {
+    public Object getInterfaceClientInstance(TTransport socket,String server) {
 
         if (!async) {
             Class<?> clazz = getSynClientClass ();
@@ -388,7 +388,12 @@ public class KoalasClientProxy implements FactoryBean<Object>, ApplicationContex
                 if (synConstructor == null) {
                     synConstructor = clazz.getDeclaredConstructor ( TProtocol.class );
                 }
-                TTransport transport = new TKoalasFramedTransport ( socket, maxLength_ );
+                TTransport transport = null;
+                if("netty".equals(server.toLowerCase())){
+                    transport = new TKoalasFramedTransport ( socket, maxLength_ );
+                } else{
+                    transport = new TFramedTransport ( socket, maxLength_ );
+                }
                 TProtocol protocol = new TBinaryProtocol ( transport );
 
                 return synConstructor.newInstance ( protocol );
@@ -553,7 +558,7 @@ public class KoalasClientProxy implements FactoryBean<Object>, ApplicationContex
     }
 
     public static void main(String[] args) {
-        String a = "192.168.3.253:6666#10,192.168.3.253:6667#10";
+        String a = "192.168.3.253:6666#10#thrift,192.168.3.253:6667#10#netty";
         System.out.println ( Arrays.toString ( a.split ( "[^0-9a-zA-Z_\\-\\.:#]+" ) ) );
     }
 }

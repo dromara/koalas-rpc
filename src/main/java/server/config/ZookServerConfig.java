@@ -8,14 +8,7 @@ public class ZookServerConfig {
     private String env;
     private int port;
     private int weight;
-
-    public ZookServerConfig(String zkpath, String service, String env, int port, int weight) {
-        this.zkpath = zkpath;
-        this.service = service;
-        this.env = env;
-        this.port = port;
-        this.weight = weight;
-    }
+    private String server;
 
     @Override
     public String toString() {
@@ -25,10 +18,31 @@ public class ZookServerConfig {
                 ", env='" + env + '\'' +
                 ", port=" + port +
                 ", weight=" + weight +
+                ", server='" + server + '\'' +
                 '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ZookServerConfig that = (ZookServerConfig) o;
+        return port == that.port &&
+                weight == that.weight &&
+                Objects.equals(zkpath, that.zkpath) &&
+                Objects.equals(service, that.service) &&
+                Objects.equals(env, that.env) &&
+                Objects.equals(server, that.server);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(zkpath, service, env, port, weight, server);
+    }
+
     public String getZkpath() {
+
         return zkpath;
     }
 
@@ -66,5 +80,22 @@ public class ZookServerConfig {
 
     public void setWeight(int weight) {
         this.weight = weight;
+    }
+
+    public String getServer() {
+        return server;
+    }
+
+    public void setServer(String server) {
+        this.server = server;
+    }
+
+    public ZookServerConfig(String zkpath, String service, String env, int port, int weight, String server) {
+        this.zkpath = zkpath;
+        this.service = service;
+        this.env = env;
+        this.port = port;
+        this.weight = weight;
+        this.server = server;
     }
 }

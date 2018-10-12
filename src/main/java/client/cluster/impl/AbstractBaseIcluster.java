@@ -47,8 +47,8 @@ public abstract class AbstractBaseIcluster implements Icluster {
     }
 
 
-    protected GenericObjectPool createGenericObjectPool(RemoteServer remoteServer) {
-        GenericObjectPool<TTransport> genericObjectPool = new GenericObjectPool ( new KoalasPoolableObjectFactory (remoteServer, this.conTimeOut, this.soTimeOut, this.async ), this.genericObjectPoolConfig );
+    protected GenericObjectPool<TTransport> createGenericObjectPool(RemoteServer remoteServer) {
+        GenericObjectPool<TTransport> genericObjectPool = new GenericObjectPool<> ( new KoalasPoolableObjectFactory (remoteServer, this.conTimeOut, this.soTimeOut, this.async ), this.genericObjectPoolConfig );
         genericObjectPool.setAbandonedConfig ( this.abandonedConfig );
         if (genericObjectPoolConfig.getMinIdle () == 0) {
             genericObjectPool.setMinEvictableIdleTimeMillis ( -1 );

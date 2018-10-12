@@ -33,6 +33,8 @@ public class ZookeeperServer {
         int weight = zookServerConfig.getWeight ();
         String zkpath = zookServerConfig.getZkpath ();
 
+        String server = zookServerConfig.getServer();
+
         CountDownLatch c = new CountDownLatch ( 1 );
         if (zookeeper == null) {
             int retry = 0;
@@ -67,7 +69,7 @@ public class ZookeeperServer {
             JSONObject jsonChildData = new JSONObject ();
             jsonChildData.put ( "weight", weight == 0 ? 10 : weight );
             jsonChildData.put ( "enable", 1 );
-
+            jsonChildData.put("server",server);
             String ip = IPUtil.getIpV4 ();
             if (StringUtils.isEmpty ( ip )) {
                 throw new IllegalArgumentException ( "ip can't be null" );

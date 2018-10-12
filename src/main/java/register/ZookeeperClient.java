@@ -27,7 +27,6 @@ public class ZookeeperClient {
     private String serviceName;
     private ZooKeeper zookeeper = null;
     private ZookeeperClisterImpl zookeeperClister;
-
     private Map<String, Watcher> serviceWatcher = new ConcurrentHashMap<> ();
 
     private boolean firstInitChildren = true;
@@ -190,8 +189,10 @@ public class ZookeeperClient {
                         String weight = json.getString ( "weight" );
                         //是否可用
                         String enable = json.getString ( "enable" );
+                        //注冊类型
+                        String server = json.getString ( "server" );
 
-                        RemoteServer remoteServer = new RemoteServer ( ip, port, Integer.valueOf ( weight ), "1".equals ( enable ) );
+                        RemoteServer remoteServer = new RemoteServer ( ip, port, Integer.valueOf ( weight ), "1".equals ( enable ),server );
                         ZookeeperClient.this.updateServer ( remoteServer );
 
 
@@ -213,7 +214,7 @@ public class ZookeeperClient {
         if (serverList != null)
             for (int i = 0; i < serverList.size (); i++) {
                 RemoteServer tempServer_ = serverList.get ( i );
-                if (tempServer_.getIp ().equals ( remoteServer.getIp () ) && remoteServer.getPort ().equals ( remoteServer.getPort () )) {
+                if (tempServer_.getIp ().equals ( remoteServer.getIp () ) && tempServer_.getPort ().equals ( remoteServer.getPort () )) {
                     serverList.set ( i, remoteServer );
                     tempServer_ = null; //help gc
                 }
@@ -251,8 +252,9 @@ public class ZookeeperClient {
                     String weight = json.getString ( "weight" );
                     //是否可用
                     String enable = json.getString ( "enable" );
-
-                    RemoteServer remoteServer = new RemoteServer ( ip, port, Integer.valueOf ( weight ), "1".equals ( enable ) );
+                    //注冊类型
+                    String server = json.getString ( "server" );
+                    RemoteServer remoteServer = new RemoteServer ( ip, port, Integer.valueOf ( weight ), "1".equals ( enable ),server);
                     serverList.add ( remoteServer );
 
                 } catch (UnsupportedEncodingException e) {

@@ -72,7 +72,7 @@ public class ZookeeperClisterImpl extends AbstractBaseIcluster {
             }
         }
 
-        GenericObjectPool pool = createGenericObjectPool(remoteServer);
+        GenericObjectPool<TTransport> pool = createGenericObjectPool(remoteServer);
         serverPollMap.put (createMapKey(remoteServer) ,pool);
         try {
             return createServerObject(pool,remoteServer);
@@ -89,7 +89,7 @@ public class ZookeeperClisterImpl extends AbstractBaseIcluster {
         }
     }
 
-    private ServerObject createServerObject(GenericObjectPool pool,RemoteServer remoteServer){
+    private ServerObject createServerObject(GenericObjectPool<TTransport> pool,RemoteServer remoteServer){
         ServerObject serverObject = new ServerObject ();
         serverObject.setGenericObjectPool ( pool );
         serverObject.setRemoteServer ( remoteServer );

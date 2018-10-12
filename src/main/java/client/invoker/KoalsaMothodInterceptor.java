@@ -80,7 +80,7 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
                 return null;
             }
 
-            Object obj = koalasClientProxy.getInterfaceClientInstance ( socket );
+            Object obj = koalasClientProxy.getInterfaceClientInstance ( socket,serverObject.getRemoteServer().getServer() );
 
             if (obj instanceof TAsyncClient) {
                 ((TAsyncClient) obj).setTimeout ( asyncTimeOut );

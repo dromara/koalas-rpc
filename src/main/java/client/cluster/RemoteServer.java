@@ -10,17 +10,27 @@ import java.util.Objects;
  */
 public class RemoteServer {
 
-    public RemoteServer(String ip, String port, int weight, boolean isEnable) {
+    public RemoteServer(String ip, String port, int weight, boolean isEnable,String server) {
         this.ip = ip;
         this.port = port;
         this.weight = weight;
         this.isEnable = isEnable;
+        this.server =server;
     }
 
     private String ip;
     private String port;
     private int weight;
     private boolean isEnable=true;
+    private String server;
+
+    public String getServer() {
+        return server;
+    }
+
+    public void setServer(String server) {
+        this.server = server;
+    }
 
     public String getIp() {
         return ip;
