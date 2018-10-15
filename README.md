@@ -36,7 +36,6 @@ spring,apache pool,thrift，netty等
 #### 安装教程
 考拉RPC确保精简，轻量的原则，只需要zk服务器进行服务发现（后续版本服务治理可能需要Datasource），对于zookeeper的各个环境安装教程请自行google，不在本安装教程内特意说明
 
-
 # 使用说明
 
 服务端和客户端都需要引入考拉RPC服务（目前还没有上传到码云，阿里云，和maven中央镜像，本地下载源码后clean install到本地仓库使用即可，2.0版本功能全面之后会统一上传）
@@ -73,10 +72,8 @@ spring,apache pool,thrift，netty等
 	</bean>
 </beans>
 
-
 client.proxyfactory.KoalasClientProxy 为基础服务类，copy引入即可。
-其中serviceInterface为thrift生成的服务类，需要全局唯一，（关于thrift服务类生成请自行google，网上很多，这里不多阐述），zkPath为zookeeper的地址，集群环境请用逗号分隔 【127.0.0.1:2181,127.0.0.1:2182,127.0.0.1:2183】
-
+其中serviceInterface为thrift生成的服务类需要全局唯一,（关于thrift服务类生成请自行google，网上很多，这里不多阐述），zkPath为zookeeper的地址，集群环境请用逗号分隔 【127.0.0.1:2181,127.0.0.1:2182,127.0.0.1:2183】
 
 ```
 package thrift.service;
@@ -105,12 +102,10 @@ public class TestService {
         WmCreateAccountRespone respone = wmCreateAccountService.getRPC (  request);
         System.out.println (respone);
      }
-
 }
 ```
 
 在你的服务类里面对服务类进行注入就可以了，注意是xxxx.iface。
-
 
 #### 异步
 
@@ -126,8 +121,6 @@ public class TestService {
 		<property name="async" value="true"/>
 	</bean>
 </beans>
-
-
 
 ```
 package thrift.service;
@@ -172,7 +165,6 @@ public class TestService2 {
 KoalasAsyncCallBack为我为大家写的统一callback方法，支持future接口，并且支持future.get ()同步获取和future.get(long timeout, TimeUnit unit)超时获取两种方式，推荐大家使用。或者你可以自定义你自己的AsyncMethodCallback，具体实现方法参照Thrift官网。
 值得说明的是 KoalasAsyncCallBack泛型类型一共有两个参数，第一个参数是方法返回类型，第二个是thrift自动生成xxxxxx_call，和原生callback接口一致
 
-
 #### 2：服务端使用方式
 
 <?xml version="1.0" encoding="UTF-8"?>
@@ -195,10 +187,8 @@ wmCreateAccountServiceImpl简单实现类的截图如下
 ![输入图片说明](https://images.gitee.com/uploads/images/2018/1010/173130_78d04258_536094.png "屏幕截图.png")
 实现WmCreateAccountService.Iface接口即可。
 
-
 #### 3：所有参数配置说明
 整理中，会统一发布，尝鲜请阅读源码
-
 
 # 实际性能压测
 8C 16G mac开发本，单机10000次请求耗时截图
@@ -206,12 +196,8 @@ wmCreateAccountServiceImpl简单实现类的截图如下
 
 10w次请求，大约耗时12s，平均qps在8000左右，在集群环境下会有不错的性能表现
 
-
 # 下版本计划
 服务治理支持，数据统计（错误率，tp90，tp99等），数据大盘统计，自定义标签等
 
-
-
-
 #### 联系作者 :
-QQ 492926917
+高级java QQ群：492926917
