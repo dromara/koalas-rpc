@@ -56,7 +56,7 @@ spring,apache pool,thrift，netty等
 #### 1：客户端使用方式
 
 以下是最精简配置
-
+#### 同步
 <beans xmlns="http://www.springframework.org/schema/beans"
 	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans
@@ -81,6 +81,36 @@ client.proxyfactory.KoalasClientProxy 为基础服务类，copy引入即可。
 ![输入图片说明](https://images.gitee.com/uploads/images/2018/1010/172210_ed5d3a00_536094.png "屏幕截图.png")
 
 在你的服务类里面对服务类进行注入就可以了，注意是xxxx.iface。
+
+
+####异步
+
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-4.2.xsd">
+
+	<bean id="wmCreateAccountService" class="client.proxyfactory.KoalasClientProxy" destroy-method="destroy">
+		<property name="serviceInterface" value="thrift.service.WmCreateAccountService"/>
+		<property name="zkPath" value="127.0.0.1:2181"/>
+		<property name="async" value="true"/>
+	</bean>
+
+</beans>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 #### 2：服务端使用方式
