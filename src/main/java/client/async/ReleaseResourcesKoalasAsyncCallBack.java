@@ -32,19 +32,21 @@ public class ReleaseResourcesKoalasAsyncCallBack<T> implements AsyncMethodCallba
             m = t.getClass ().getDeclaredMethod ( "getResult" );
             o = m.invoke ( t );
             serverObject.getGenericObjectPool ().returnObject ( socket );
-            if (asyncMethodCallback instanceof KoalasAsyncCallBack) {
-                ((KoalasAsyncCallBack) asyncMethodCallback).onCompleteWithoutReflect ( o );
-            } else {
-                asyncMethodCallback.onComplete ( t );
-            }
-        } catch (Exception e) {
-            if (e instanceof InvocationTargetException && e.getCause () instanceof TApplicationException
-                    && ((TApplicationException) e.getCause ()).getType () == TApplicationException.MISSING_RESULT) {
+            if (asyncMethodCallback != null)
                 if (asyncMethodCallback instanceof KoalasAsyncCallBack) {
-                    ((KoalasAsyncCallBack) asyncMethodCallback).onCompleteWithoutReflect ( null );
+                    ((KoalasAsyncCallBack) asyncMethodCallback).onCompleteWithoutReflect ( o );
                 } else {
                     asyncMethodCallback.onComplete ( t );
                 }
+        } catch (Exception e) {
+            if (e instanceof InvocationTargetException && e.getCause () instanceof TApplicationException
+                    && ((TApplicationException) e.getCause ()).getType () == TApplicationException.MISSING_RESULT) {
+                if (asyncMethodCallback != null)
+                    if (asyncMethodCallback instanceof KoalasAsyncCallBack) {
+                        ((KoalasAsyncCallBack) asyncMethodCallback).onCompleteWithoutReflect ( null );
+                    } else {
+                        asyncMethodCallback.onComplete ( t );
+                    }
             }
             try {
                 serverObject.getGenericObjectPool ().invalidateObject ( socket );
