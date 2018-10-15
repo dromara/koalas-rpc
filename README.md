@@ -67,7 +67,7 @@ spring,apache pool,thrift，netty等
 		<property name="zkPath" value="127.0.0.1:2181"/>
 	</bean>
 
-    <bean id="xxxx" class="client.proxyfactory.KoalasClientProxy" destroy-method="destroy">
+        <bean id="xxxx" class="client.proxyfactory.KoalasClientProxy" destroy-method="destroy">
 		<property name="serviceInterface" value="thrift.xxxx.WmCreateAccountService"/>
 		<property name="zkPath" value="127.0.0.1:2181"/>
 	</bean>
@@ -78,12 +78,41 @@ client.proxyfactory.KoalasClientProxy 为基础服务类，copy引入即可。
 其中serviceInterface为thrift生成的服务类，需要全局唯一，（关于thrift服务类生成请自行google，网上很多，这里不多阐述），zkPath为zookeeper的地址，集群环境请用逗号分隔 【127.0.0.1:2181,127.0.0.1:2182,127.0.0.1:2183】
 
 
-![输入图片说明](https://images.gitee.com/uploads/images/2018/1010/172210_ed5d3a00_536094.png "屏幕截图.png")
+```
+package thrift.service;
+
+import org.apache.thrift.TException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import thrift.domain.WmCreateAccountRequest;
+import thrift.domain.WmCreateAccountRespone;
+
+@Service("testService")
+public class TestService {
+
+    @Autowired
+    WmCreateAccountService.Iface wmCreateAccountService;
+
+    public void getRemoteRpc() throws TException {
+
+        WmCreateAccountRequest request= new WmCreateAccountRequest (  );
+        //request.setSource ( 10 );
+        request.setAccountType ( 1 );
+        request.setPartnerId ( 1 );
+        request.setPartnerType ( 1 );
+        request.setPartnerName ( "你好" );
+        request.setPoiFlag ( 1 );
+        WmCreateAccountRespone respone = wmCreateAccountService.getRPC (  request);
+        System.out.println (respone);
+     }
+
+}
+```
 
 在你的服务类里面对服务类进行注入就可以了，注意是xxxx.iface。
 
 
-####异步
+#### 异步
 
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
@@ -96,21 +125,52 @@ client.proxyfactory.KoalasClientProxy 为基础服务类，copy引入即可。
 		<property name="zkPath" value="127.0.0.1:2181"/>
 		<property name="async" value="true"/>
 	</bean>
-
 </beans>
 
 
 
+```
+package thrift.service;
 
+import client.async.KoalasAsyncCallBack;
+import org.apache.thrift.TException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import thrift.domain.WmCreateAccountRequest;
+import thrift.domain.WmCreateAccountRespone;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+@Service("testService")
+public class TestService2 {
+    @Autowired
+    WmCreateAccountService.AsyncIface wmCreateAccountService;
+    public void getRemoteRpc() throws TException{
+        KoalasAsyncCallBack<WmCreateAccountRespone, WmCreateAccountService.AsyncClient.getRPC_call> 
+        koalasAsyncCallBack = new KoalasAsyncCallBack<> ();
+        WmCreateAccountRequest request= new WmCreateAccountRequest (  );
+        //request.setSource ( 10 );
+        request.setAccountType ( 1 );
+        request.setPartnerId ( 1 );
+        request.setPartnerType ( 1 );
+        request.setPartnerName ( "你好啊" );
+        request.setPoiFlag ( 1 );
+        wmCreateAccountService.getRPC ( request ,koalasAsyncCallBack);
+        Future<WmCreateAccountRespone> future= koalasAsyncCallBack.getFuture ();
+        try {
+            System.out.println (future.get ());
+        } catch (InterruptedException e) {
+            e.printStackTrace ();
+        } catch (ExecutionException e) {
+            e.printStackTrace ();
+        }
+    }
 
+}
+```
+在你的服务类里面对服务类进行注入就可以了，注意是xxxx.AsyncIface。
 
-
-
-
-
-
-
-
+KoalasAsyncCallBack为我为大家写的统一callback方法，支持future接口，并且支持future.get ()同步获取和future.get(long timeout, TimeUnit unit)超时获取两种方式，推荐大家使用。或者你可以自定义你自己的AsyncMethodCallback，具体实现方法参照Thrift官网。
+值得说明的是 KoalasAsyncCallBack泛型类型一共有两个参数，第一个参数是方法返回类型，第二个是thrift自动生成xxxxxx_call，和原生callback接口一致
 
 
 #### 2：服务端使用方式
