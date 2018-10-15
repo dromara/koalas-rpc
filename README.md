@@ -66,7 +66,7 @@ spring,apache pool,thrift，netty等
 		<property name="zkPath" value="127.0.0.1:2181"/>
 	</bean>
 
-        <bean id="xxxx" class="client.proxyfactory.KoalasClientProxy" destroy-method="destroy">
+  <bean id="xxxx" class="client.proxyfactory.KoalasClientProxy" destroy-method="destroy">
 		<property name="serviceInterface" value="thrift.xxxx.WmCreateAccountService"/>
 		<property name="zkPath" value="127.0.0.1:2181"/>
 	</bean>
