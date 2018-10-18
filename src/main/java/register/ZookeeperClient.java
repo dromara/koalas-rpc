@@ -137,11 +137,11 @@ public class ZookeeperClient {
                 if (event.getType () == Event.EventType.NodeChildrenChanged) {
                     //  /env/com.test.service
                     String parentPath = event.getPath ();
-                    LOG.info ( "the service { } is changed ! ", serviceName );
+                    LOG.info ( "the service {} is changed ! ", serviceName );
                     try {
                         List<String> childpaths = ZookeeperClient.this.zookeeper.getChildren ( parentPath, this );
                         ZookeeperClient.this.updateServerList ( childpaths, parentPath );
-
+                        LOG.info ( "the serviceList: {} ! ", childpaths );
                         //wait the init childChanged
                         while (firstInitChildren) {
                             Thread.sleep ( 10 );
@@ -169,7 +169,7 @@ public class ZookeeperClient {
                 if (event.getType () == Event.EventType.NodeDataChanged) {
                     //  /env/com.test.service/192.168.3.2:6666
                     String fullPath = event.getPath ();
-                    LOG.info ( "the service 【{}】 data { } is changed ! full mess is 【{}】 ", serviceName, fullPath );
+                    LOG.info ( "the service 【{}】 data {} is changed ! full mess is 【{}】 ", serviceName, fullPath );
 
                     try {
                         //wait the init childDataChanged
