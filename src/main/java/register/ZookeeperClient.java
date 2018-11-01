@@ -299,6 +299,7 @@ public class ZookeeperClient {
         @Override
         public void process(WatchedEvent event) {
             if (Event.KeeperState.SyncConnected == event.getState ()) {
+                LOG.warn ( "the service {} is SyncConnected!", IPUtil.getIpV4 () );
                 countDownLatch.countDown ();
             }
             if (Event.KeeperState.Expired == event.getState ()) {
