@@ -45,7 +45,7 @@ public class ZookeeperClisterImpl extends AbstractBaseIcluster {
         if(serverPollMap !=null && serverPollMap.size ()>0){
             for(String string:serverPollMap.keySet ()){
                 GenericObjectPool p =serverPollMap.get ( string );
-                if(p!=null) p.close ();
+                if(p!=null) destroyGenericObjectPool(p);
                 serverPollMap.remove (  string);
             }
         }

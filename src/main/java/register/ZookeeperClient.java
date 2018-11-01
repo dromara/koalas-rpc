@@ -8,6 +8,7 @@ import org.apache.zookeeper.*;
 import org.apache.zookeeper.data.Stat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import utils.IPUtil;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -15,6 +16,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 public class ZookeeperClient {
     private static final Logger LOG = LoggerFactory.getLogger ( ZookeeperClient.class );
@@ -55,17 +58,33 @@ public class ZookeeperClient {
     }
 
     public void initZooKeeper() {
+
+        CountDownLatch c = new CountDownLatch ( 1 );
+
         if (zookeeper == null) {
-            int retry = 0;
+            try {
+                zookeeper = new ZooKeeper ( path, SESSION_TIMEOUT, new ClinetInitWatcher(c) );
+            } catch (IOException e) {
+                LOG.error ( "zk server faild service:" + env + "-" + serviceName, e );
+            }
+        }
+
+        try {
             //网络抖动重试3次
+            int retry = 0;
+            boolean connected = false;
             while (retry++ < RETRY_TIMES) {
-                try {
-                    zookeeper = new ZooKeeper ( path, SESSION_TIMEOUT, NULL );
+                if (c.await ( 5, TimeUnit.SECONDS )) {
+                    connected=true;
                     break;
-                } catch (IOException e) {
-                    LOG.error ( "zk server faild service:" + env + "-" + serviceName, e );
                 }
             }
+            if(!connected){
+                LOG.error ( "zk connected fail! :" + env + "-" + serviceName );
+                throw new IllegalArgumentException ( "zk connected fail!" );
+            }
+        } catch (InterruptedException e) {
+            LOG.error ( e.getMessage (),e);
         }
 
         try {
@@ -268,11 +287,46 @@ public class ZookeeperClient {
         }
     }
 
+
+    private class ClinetInitWatcher implements Watcher {
+
+        private CountDownLatch countDownLatch;
+
+        public ClinetInitWatcher(CountDownLatch countDownLatch) {
+            this.countDownLatch = countDownLatch;
+        }
+
+        @Override
+        public void process(WatchedEvent event) {
+            if (Event.KeeperState.SyncConnected == event.getState ()) {
+                countDownLatch.countDown ();
+            }
+            if (Event.KeeperState.Expired == event.getState ()) {
+                LOG.warn ( "the service {} is expired!", IPUtil.getIpV4 () );
+                reConnected();
+            }
+            if (Event.KeeperState.Disconnected == event.getState ()) {
+                LOG.warn ( "the service {} is Disconnected!", IPUtil.getIpV4 () );
+                reConnected();
+            }
+        }
+
+        private  void reConnected(){
+            ZookeeperClient.this.destroy ();
+            serviceWatcher = new ConcurrentHashMap<> ();
+            firstInitChildren = true;
+            serverList = new CopyOnWriteArrayList<> ();
+            ZookeeperClient.this.initZooKeeper ();
+        }
+    }
+
     public void destroy() {
         serverList = null; //help gc
+        serviceWatcher = null;//help gc
         if (zookeeper != null) {
             try {
                 zookeeper.close ();
+                zookeeper=null;
             } catch (InterruptedException e) {
                 LOG.error ( "the service 【{}】zk close faild", env.concat ( serviceName ) );
             }
