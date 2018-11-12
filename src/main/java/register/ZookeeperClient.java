@@ -13,8 +13,6 @@ import utils.IPUtil;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -30,7 +28,7 @@ public class ZookeeperClient {
     private String serviceName;
     private ZooKeeper zookeeper = null;
     private ZookeeperClisterImpl zookeeperClister;
-    private Map<String, Watcher> serviceWatcher = new ConcurrentHashMap<> ();
+    //private Map<String, Watcher> serviceWatcher = new ConcurrentHashMap<> ();
 
     private boolean firstInitChildren = true;
 
@@ -97,9 +95,10 @@ public class ZookeeperClient {
                 zookeeper.create ( envPath + servicePath, "".getBytes (), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT );
             }
 
+            Watcher w =new koalasWatcher ();
             //    /env/com.test.service
-            getChildren ( envPath + servicePath );
-            watchChildDateChange ( envPath + servicePath );
+            getChildren ( envPath + servicePath,w );
+            watchChildDateChange ( envPath + servicePath,w );
 
         } catch (KeeperException e) {
             LOG.error ( e.getMessage (), e );
@@ -108,7 +107,7 @@ public class ZookeeperClient {
         }
     }
 
-    public void watchChildDateChange(String path) {
+    public void watchChildDateChange(String path,Watcher w) {
         //path /env/com.test.service
         try {
             //192.168.3.1:6666 192.168.3.1:9990 192.168.3.1:9999
@@ -117,10 +116,6 @@ public class ZookeeperClient {
             for (String _childPath : childpaths) {
                 //  /env/com.test.service/192.168.3.2:8080
                 String fullPath = path.concat ( "/" ).concat ( _childPath );
-
-                //防止服务多次重启引起的多次监听,使用同一个Watcher会避免这个问题
-                Watcher w = new koalasWatcher ();
-                serviceWatcher.put ( _childPath, w );
 
                 this.zookeeper.getData ( fullPath, w, new Stat () );
             }
@@ -135,11 +130,11 @@ public class ZookeeperClient {
         }
     }
 
-    public void getChildren(String path) {
+    public void getChildren(String path,Watcher w) {
         //path /env/com.test.service
         try {
             //192.168.3.1:6666 192.168.3.1:9990 192.168.3.1:9999
-            List<String> childpaths = this.zookeeper.getChildren ( path, new koalasWatcher () );
+            List<String> childpaths = this.zookeeper.getChildren ( path, w );
             updateServerList ( childpaths, path );
         } catch (KeeperException e) {
             LOG.error ( e.getMessage (), e );
@@ -167,15 +162,9 @@ public class ZookeeperClient {
                         }
 
                         for (String _childpaths : childpaths) {
-
                             String fullpath = parentPath.concat ( "/" ).concat ( _childpaths );
                             //192.168.3.1
-                            if (!serviceWatcher.containsKey ( fullpath )) {
-                                ZookeeperClient.this.zookeeper.getData (fullpath, this, new Stat () );
-                                serviceWatcher.put ( fullpath , this );
-                            } else{
-                                ZookeeperClient.this.zookeeper.getData ( fullpath, serviceWatcher.get (fullpath ), new Stat () );
-                            }
+                            ZookeeperClient.this.zookeeper.getData (fullpath, this, new Stat () );
                         }
 
                     } catch (KeeperException e) {
@@ -313,7 +302,6 @@ public class ZookeeperClient {
 
         private  void reConnected(){
             ZookeeperClient.this.destroy ();
-            serviceWatcher = new ConcurrentHashMap<> ();
             firstInitChildren = true;
             serverList = new CopyOnWriteArrayList<> ();
             ZookeeperClient.this.initZooKeeper ();
@@ -322,7 +310,6 @@ public class ZookeeperClient {
 
     public void destroy() {
         serverList = null; //help gc
-        serviceWatcher = null;//help gc
         if (zookeeper != null) {
             try {
                 zookeeper.close ();
