@@ -168,13 +168,13 @@ public class ZookeeperClient {
 
                         for (String _childpaths : childpaths) {
 
-                            String fullapth = parentPath.concat ( "/" ).concat ( _childpaths );
+                            String fullpath = parentPath.concat ( "/" ).concat ( _childpaths );
                             //192.168.3.1
-                            if (!serviceWatcher.containsKey ( fullapth )) {
-                                ZookeeperClient.this.zookeeper.getData (fullapth, this, new Stat () );
-                                serviceWatcher.put ( fullapth , this );
+                            if (!serviceWatcher.containsKey ( fullpath )) {
+                                ZookeeperClient.this.zookeeper.getData (fullpath, this, new Stat () );
+                                serviceWatcher.put ( fullpath , this );
                             } else{
-                                ZookeeperClient.this.zookeeper.getData ( fullapth, serviceWatcher.get (fullapth ), new Stat () );
+                                ZookeeperClient.this.zookeeper.getData ( fullpath, serviceWatcher.get (fullpath ), new Stat () );
                             }
                         }
 
