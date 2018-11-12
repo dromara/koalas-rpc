@@ -124,6 +124,7 @@ public class ZookeeperServer {
         @Override
         public void process(WatchedEvent event) {
             if (Event.KeeperState.SyncConnected == event.getState ()) {
+                LOG.info ( "the service {} is SyncConnected!", IPUtil.getIpV4 () );
                 countDownLatch.countDown ();
             }
             if (Event.KeeperState.Expired == event.getState ()) {
@@ -132,7 +133,6 @@ public class ZookeeperServer {
             }
             if (Event.KeeperState.Disconnected == event.getState ()) {
                 LOG.warn ( "the service {} is Disconnected!", IPUtil.getIpV4 () );
-                reConnected();
             }
         }
 

@@ -299,16 +299,15 @@ public class ZookeeperClient {
         @Override
         public void process(WatchedEvent event) {
             if (Event.KeeperState.SyncConnected == event.getState ()) {
-                LOG.warn ( "the service {} is SyncConnected!", IPUtil.getIpV4 () );
+                LOG.info ( "the service {}-{}-{} is SyncConnected!", IPUtil.getIpV4 (),ZookeeperClient.this.env,ZookeeperClient.this.serviceName);
                 countDownLatch.countDown ();
             }
             if (Event.KeeperState.Expired == event.getState ()) {
-                LOG.warn ( "the service {} is expired!", IPUtil.getIpV4 () );
+                LOG.warn ( "the service {}-{}-{} is expired!", IPUtil.getIpV4 (),ZookeeperClient.this.env,ZookeeperClient.this.serviceName);
                 reConnected();
             }
             if (Event.KeeperState.Disconnected == event.getState ()) {
-                LOG.warn ( "the service {} is Disconnected!", IPUtil.getIpV4 () );
-                reConnected();
+                LOG.warn ( "the service {}-{}-{} is Disconnected!", IPUtil.getIpV4 (),ZookeeperClient.this.env,ZookeeperClient.this.serviceName);
             }
         }
 
