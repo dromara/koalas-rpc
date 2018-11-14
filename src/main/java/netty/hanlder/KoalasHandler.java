@@ -137,7 +137,7 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
             out.getTransport ().flush ();
             ctx.writeAndFlush ( outputStream);
         } catch (TException e1) {
-            logger.error ( "unknown Exception:",e );
+            logger.error ( "unknown Exception:" + type,e );
         }
     }
 
