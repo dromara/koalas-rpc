@@ -60,6 +60,7 @@ public class NettyServer implements IkoalasServer {
             Runtime.getRuntime().addShutdownHook(new Thread(){
                 @Override
                 public void run(){
+                    logger.info ( "Shutdown by Runtime" );
                     if(executorService!=null){
                         executorService.shutdown ();
                     }
@@ -88,6 +89,7 @@ public class NettyServer implements IkoalasServer {
 
     @Override
     public void stop() {
+        logger.info ( "Shutdown by stop" );
         if(executorService!=null){
             executorService.shutdown ();
         }
