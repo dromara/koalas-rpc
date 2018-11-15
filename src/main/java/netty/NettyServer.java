@@ -61,14 +61,19 @@ public class NettyServer implements IkoalasServer {
                 @Override
                 public void run(){
                     logger.info ( "Shutdown by Runtime" );
+                    if(zookeeperServer != null){
+                        zookeeperServer.destroy ();
+                    }
+                    logger.info ( "wait for service over 3000ms" );
+                    try {
+                        Thread.sleep ( 3000 );
+                    } catch (Exception e) {
+                    }
                     if(executorService!=null){
                         executorService.shutdown ();
                     }
                     if(bossGroup != null) bossGroup.shutdownGracefully ();
                     if(workerGroup != null) workerGroup.shutdownGracefully ();
-                    if(zookeeperServer != null){
-                        zookeeperServer.destroy ();
-                    }
                 }
             });
 
@@ -90,15 +95,20 @@ public class NettyServer implements IkoalasServer {
     @Override
     public void stop() {
         logger.info ( "Shutdown by stop" );
+        if(zookeeperServer != null){
+            zookeeperServer.destroy ();
+        }
+        logger.info ( "wait for service over 3000ms" );
+        try {
+            Thread.sleep ( 3000 );
+        } catch (Exception e) {
+        }
         if(executorService!=null){
             executorService.shutdown ();
         }
         if(bossGroup != null) bossGroup.shutdownGracefully ();
         if(workerGroup != null) workerGroup.shutdownGracefully ();
-        if(zookeeperServer != null){
-            zookeeperServer.destroy ();
-        }
-        logger.info("netty server stop success server={}",serverPublisher);
 
+        logger.info("netty server stop success server={}",serverPublisher);
     }
 }

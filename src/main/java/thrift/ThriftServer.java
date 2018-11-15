@@ -62,11 +62,19 @@ public class ThriftServer implements IkoalasServer {
             Runtime.getRuntime().addShutdownHook(new Thread(){
                 @Override
                 public void run(){
+                    if(zookeeperServer != null){
+                        zookeeperServer.destroy ();
+                    }
+                    logger.info ( "wait for service over 3000ms" );
+                    try {
+                        Thread.sleep ( 3000 );
+                    } catch (InterruptedException e) {
+                    }
                     if(tServer!= null && tServer.isServing ()){
                         tServer.stop ();
                     }
-                    if(zookeeperServer != null){
-                        zookeeperServer.destroy ();
+                    if(executorService!=null){
+                        executorService.shutdown ();
                     }
                 }
             });
@@ -88,16 +96,25 @@ public class ThriftServer implements IkoalasServer {
     @Override
     public void stop() {
 
-        if(executorService!=null){
-            executorService.shutdown ();
+        if(zookeeperServer != null){
+            zookeeperServer.destroy ();
+        }
+
+        logger.info ( "wait for service over 3000ms" );
+        try {
+            Thread.sleep ( 3000 );
+        } catch (InterruptedException e) {
         }
 
         if(tServer!= null && tServer.isServing ()){
             tServer.stop ();
         }
-        zookeeperServer.destroy ();
-        logger.info("thrift server stop success server={}",serverPublisher);
 
+        if(executorService!=null){
+            executorService.shutdown ();
+        }
+
+         logger.info("thrift server stop success server={}",serverPublisher);
     }
 
     private class ThriftRunable implements Runnable {
