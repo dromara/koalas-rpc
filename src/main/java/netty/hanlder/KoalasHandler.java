@@ -61,8 +61,8 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
         try {
             executorService.execute ( new NettyRunable (  ctx,in,out,outputStream,tprocessor,b));
         } catch (RejectedExecutionException e){
+            logger.error ( e.getMessage ()+ErrorType.THREAD,e );
             handlerException(b,ctx,e,ErrorType.THREAD);
-
         }
     }
 
@@ -90,7 +90,7 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
                 tprocessor.process ( in,out );
                 ctx.writeAndFlush (outputStream);
             } catch (Exception e) {
-                logger.error ( e.getMessage (),e );
+                logger.error ( e.getMessage () + ErrorType.APPLICATION,e );
                 handlerException(this.b,ctx,e,ErrorType.APPLICATION);
             }
         }
@@ -98,15 +98,21 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
     }
 
     public static void handlerException(byte[] b, ChannelHandlerContext ctx, Exception e, ErrorType type){
+        boolean ifUserProtocol;
+        if(b[4]==TKoalasFramedTransport.first && b[5]==TKoalasFramedTransport.second){
+            ifUserProtocol = true;
+        }else{
+            ifUserProtocol = false;
+        }
+
         ByteArrayInputStream inputStream = new ByteArrayInputStream ( b );
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream (  );
 
         TIOStreamTransport tioStreamTransportInput = new TIOStreamTransport (  inputStream);
         TIOStreamTransport tioStreamTransportOutput = new TIOStreamTransport (  outputStream);
 
-        TFramedTransport inTransport = new TFramedTransport ( tioStreamTransportInput );
-        TFramedTransport outTransport = new TFramedTransport ( tioStreamTransportOutput );
-
+        TKoalasFramedTransport inTransport = new TKoalasFramedTransport( tioStreamTransportInput );
+        TKoalasFramedTransport outTransport = new TKoalasFramedTransport ( tioStreamTransportOutput,16384000,ifUserProtocol );
 
         TProtocolFactory tProtocolFactory =new TBinaryProtocol.Factory();
         TProtocol in =tProtocolFactory.getProtocol ( inTransport );
@@ -136,8 +142,9 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
             out.writeMessageEnd();
             out.getTransport ().flush ();
             ctx.writeAndFlush ( outputStream);
+            logger.info ( "handlerException:" + tApplicationException.getType () );
         } catch (TException e1) {
-            logger.error ( "unknown Exception:" + type,e );
+            logger.error ( "unknown Exception:" + type,e1 );
         }
     }
 
