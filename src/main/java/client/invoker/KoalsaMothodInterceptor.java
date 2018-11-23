@@ -19,7 +19,12 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
-
+/**
+ * Copyright (C) 2018
+ * All rights reserved
+ * User: yulong.zhang
+ * Date:2018年11月23日11:13:33
+ */
 public class KoalsaMothodInterceptor implements MethodInterceptor {
     private static final Logger LOG = LoggerFactory.getLogger ( KoalsaMothodInterceptor.class );
 

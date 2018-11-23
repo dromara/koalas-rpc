@@ -9,6 +9,12 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.concurrent.*;
 
+/**
+ * Copyright (C) 2018
+ * All rights reserved
+ * User: yulong.zhang
+ * Date:2018年09月18日17:44:58
+ */
 public class KoalasAsyncCallBack<R, T> implements AsyncMethodCallback<T> {
 
     private final static Logger logger = LoggerFactory.getLogger ( KoalasAsyncCallBack.class );

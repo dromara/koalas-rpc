@@ -8,7 +8,12 @@ import netty.hanlder.KoalasHandler;
 import org.apache.thrift.TProcessor;
 
 import java.util.concurrent.ExecutorService;
-
+/**
+ * Copyright (C) 2018
+ * All rights reserved
+ * User: yulong.zhang
+ * Date:2018年11月23日11:13:33
+ */
 public class NettyServerInitiator extends ChannelInitializer<SocketChannel> {
 
     private TProcessor tProcessor;

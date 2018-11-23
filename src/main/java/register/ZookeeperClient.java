@@ -16,7 +16,12 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-
+/**
+ * Copyright (C) 2018
+ * All rights reserved
+ * User: yulong.zhang
+ * Date:2018年11月23日11:13:33
+ */
 public class ZookeeperClient {
     private static final Logger LOG = LoggerFactory.getLogger ( ZookeeperClient.class );
     public static final int RETRY_TIMES = 2;

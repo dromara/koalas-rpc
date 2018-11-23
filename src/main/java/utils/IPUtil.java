@@ -6,7 +6,12 @@ import java.net.*;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
-
+/**
+ * Copyright (C) 2018
+ * All rights reserved
+ * User: yulong.zhang
+ * Date:2018年11月23日11:13:33
+ */
 public class IPUtil {
     public static String getIpV4() {
         String ip = "";

@@ -8,7 +8,12 @@ import org.springframework.context.ApplicationContext;
 import server.IkoalasServer;
 
 import java.lang.reflect.InvocationTargetException;
-
+/**
+ * Copyright (C) 2018
+ * All rights reserved
+ * User: yulong.zhang
+ * Date:2018年11月23日11:13:33
+ */
 public class AbstractKoalsServerPublisher {
     private final static Logger logger = LoggerFactory.getLogger ( AbstractKoalsServerPublisher.class );
     public static final int DEFAULT_EVENT_LOOP_THREADS;

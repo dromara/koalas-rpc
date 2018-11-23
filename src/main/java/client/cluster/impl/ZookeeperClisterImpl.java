@@ -10,7 +10,12 @@ import org.apache.thrift.transport.TTransport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import register.ZookeeperClient;
-
+/**
+ * Copyright (C) 2018
+ * All rights reserved
+ * User: yulong.zhang
+ * Date:2018年11月23日11:13:33
+ */
 public class ZookeeperClisterImpl extends AbstractBaseIcluster {
 
     private static final Logger LOG = LoggerFactory.getLogger(ZookeeperClisterImpl.class);

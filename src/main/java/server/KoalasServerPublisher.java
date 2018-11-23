@@ -10,7 +10,12 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import server.config.AbstractKoalsServerPublisher;
 import thrift.ThriftServer;
-
+/**
+ * Copyright (C) 2018
+ * All rights reserved
+ * User: yulong.zhang
+ * Date:2018年11月23日11:13:33
+ */
 public class KoalasServerPublisher extends AbstractKoalsServerPublisher implements FactoryBean<Object>, ApplicationContextAware, InitializingBean {
 
     private final static Logger logger = LoggerFactory.getLogger ( KoalasServerPublisher.class );

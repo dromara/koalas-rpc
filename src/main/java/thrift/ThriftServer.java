@@ -19,7 +19,12 @@ import server.config.ZookServerConfig;
 import utils.KoalasThreadedSelectorWorkerExcutorUtil;
 
 import java.util.concurrent.ExecutorService;
-
+/**
+ * Copyright (C) 2018
+ * All rights reserved
+ * User: yulong.zhang
+ * Date:2018年11月23日11:13:33
+ */
 public class ThriftServer implements IkoalasServer {
     private final static Logger logger = LoggerFactory.getLogger ( ThriftServer.class );
 

@@ -8,7 +8,12 @@ import org.slf4j.LoggerFactory;
 import server.KoalasServerPublisher;
 
 import java.util.List;
-
+/**
+ * Copyright (C) 2018
+ * All rights reserved
+ * User: yulong.zhang
+ * Date:2018年11月23日11:13:33
+ */
 public class KoalasDecoder extends ByteToMessageDecoder {
 
     private final static Logger logger = LoggerFactory.getLogger ( KoalasDecoder.class );

@@ -12,7 +12,12 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-
+/**
+ * Copyright (C) 2018
+ * All rights reserved
+ * User: yulong.zhang
+ * Date:2018年11月23日11:13:33
+ */
 public class ZookeeperServer {
     private static final Logger LOG = LoggerFactory.getLogger ( ZookeeperServer.class );
     public static final int RETRY_TIMES = 2;

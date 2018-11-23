@@ -6,7 +6,12 @@ import org.apache.thrift.transport.TTransport;
 import org.apache.thrift.transport.TTransportException;
 import org.apache.thrift.transport.TTransportFactory;
 
-
+/**
+ * Copyright (C) 2018
+ * All rights reserved
+ * User: yulong.zhang
+ * Date:2018年11月23日11:13:33
+ */
 public class TKoalasFramedTransport extends TTransport {
 
   protected static final int DEFAULT_MAX_LENGTH = 16384000;

@@ -1,7 +1,12 @@
 package server.config;
 
 import java.util.Objects;
-
+/**
+ * Copyright (C) 2018
+ * All rights reserved
+ * User: yulong.zhang
+ * Date:2018年11月23日11:13:33
+ */
 public class ZookServerConfig {
     private String zkpath;
     private String service;

@@ -20,7 +20,12 @@ import java.net.InetSocketAddress;
 import java.text.MessageFormat;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.RejectedExecutionException;
-
+/**
+ * Copyright (C) 2018
+ * All rights reserved
+ * User: yulong.zhang
+ * Date:2018年11月23日11:13:33
+ */
 public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
     private final static Logger logger = LoggerFactory.getLogger ( KoalasHandler.class );
 
