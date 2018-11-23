@@ -57,7 +57,7 @@ public class NettyServer implements IkoalasServer {
             ServerBootstrap b = new ServerBootstrap ();
             b.group ( bossGroup, workerGroup ).channel ( workerGroup instanceof EpollEventLoopGroup ? EpollServerSocketChannel.class : NioServerSocketChannel.class )
                     .handler ( new LoggingHandler ( LogLevel.INFO ) )
-                    .childHandler ( new NettyServerInitiator (serverPublisher.getTProcessor (),executorService))
+                    .childHandler ( new NettyServerInitiator (serverPublisher.getTProcessor (),executorService,serverPublisher.getPrivateKey (),serverPublisher.getPublicKey ()))
                     .option ( ChannelOption.SO_BACKLOG, 1024 )
                     .option ( ChannelOption.SO_REUSEADDR, true )
                     .option ( ChannelOption.SO_KEEPALIVE, true );

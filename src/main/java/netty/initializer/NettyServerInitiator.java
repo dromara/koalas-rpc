@@ -20,16 +20,21 @@ public class NettyServerInitiator extends ChannelInitializer<SocketChannel> {
 
     private ExecutorService executorService;
 
-    public NettyServerInitiator(TProcessor tProcessor, ExecutorService executorService) {
+    private String privateKey;
+    private String publicKey;
+
+    public NettyServerInitiator(TProcessor tProcessor, ExecutorService executorService, String privateKey, String publicKey) {
         this.tProcessor = tProcessor;
         this.executorService = executorService;
+        this.privateKey = privateKey;
+        this.publicKey = publicKey;
     }
 
     @Override
     protected void initChannel(SocketChannel ch) {
         ch.pipeline ().addLast ( "decoder",new KoalasDecoder () );
         ch.pipeline ().addLast ( "encoder",new KoalasEncoder ());
-        ch.pipeline ().addLast ( "handler",new KoalasHandler (tProcessor,executorService) );
+        ch.pipeline ().addLast ( "handler",new KoalasHandler (tProcessor,executorService,privateKey,publicKey) );
     }
 
 }

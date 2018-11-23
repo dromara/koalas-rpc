@@ -47,6 +47,10 @@ public class AbstractKoalsServerPublisher {
     public String serverType="NETTY";
     public int workQueue;
 
+    //RSA service
+    public String privateKey;
+    public String publicKey;
+
     public ApplicationContext applicationContext;
     public IkoalasServer ikoalasServer;
 
@@ -136,6 +140,22 @@ public class AbstractKoalsServerPublisher {
 
     public void setWorkQueue(int workQueue) {
         this.workQueue = workQueue;
+    }
+
+    public String getPrivateKey() {
+        return privateKey;
+    }
+
+    public void setPrivateKey(String privateKey) {
+        this.privateKey = privateKey;
+    }
+
+    public String getPublicKey() {
+        return publicKey;
+    }
+
+    public void setPublicKey(String publicKey) {
+        this.publicKey = publicKey;
     }
 
     public TProcessor getTProcessor(){

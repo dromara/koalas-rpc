@@ -126,6 +126,14 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
                         if(retryRequest)
                         continue;
                     }
+
+                    if (((TApplicationException) cause).getType () == 9999) {
+                        LOG.error ( "rsa error with service", serverObject.getRemoteServer () );
+                        if (socket != null){
+                            genericObjectPool.returnObject ( socket );
+                        }
+                        return null;
+                    }
                 }
 
                 if (cause.getCause () != null && cause.getCause () instanceof ConnectException) {
