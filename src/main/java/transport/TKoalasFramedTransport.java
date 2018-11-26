@@ -283,7 +283,7 @@ public class TKoalasFramedTransport extends TTransport {
                     //signlength
                     len += signlength;
                 } catch (Exception e) {
-                    throw new RSAException ( "rsa error", e );
+                    throw new RSAException ( "rsa error by client", e );
                 }
             }
             len = len + 6;

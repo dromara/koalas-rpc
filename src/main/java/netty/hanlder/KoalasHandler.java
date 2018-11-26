@@ -67,6 +67,14 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
         TKoalasFramedTransport inTransport = new TKoalasFramedTransport( tioStreamTransportInput );
         TKoalasFramedTransport outTransport = new TKoalasFramedTransport ( tioStreamTransportOutput,16384000,ifUserProtocol );
 
+        if(this.privateKey != null && this.publicKey!=null){
+            if(b[8] != (byte) 1 || !(b[4]==TKoalasFramedTransport.first && b[5]==TKoalasFramedTransport.second)){
+                logger.error ("rsa error the client is not ras support!");
+                handlerException(b,ctx,new RSAException ( "rsa error" ),ErrorType.APPLICATION,privateKey,publicKey);
+                return;
+            }
+        }
+
         if(b[4]==TKoalasFramedTransport.first && b[5]==TKoalasFramedTransport.second){
             if(b[8] == (byte) 1){
                 //in
@@ -177,11 +185,24 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
                     } catch (Exception e2){
                         logger.error ( e2.getMessage (),e2);
                     }
-
+                }
+            } else{
+                if(e instanceof RSAException){
+                    try {
+                        TMessage tMessage =  new TMessage("", TMessageType.EXCEPTION, -1);
+                        TApplicationException exception = new TApplicationException(6699,"【rsa error】:" + value);
+                        out.writeMessageBegin ( tMessage );
+                        exception.write (out  );
+                        out.writeMessageEnd();
+                        out.getTransport ().flush ();
+                        ctx.writeAndFlush ( outputStream);
+                        return;
+                    } catch (Exception e2){
+                        logger.error ( e2.getMessage (),e2);
+                    }
                 }
             }
         }
-
 
         try {
             TMessage message  = in.readMessageBegin ();
@@ -203,9 +224,9 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
             out.writeMessageEnd();
             out.getTransport ().flush ();
             ctx.writeAndFlush ( outputStream);
-            logger.info ( "handlerException:" + tApplicationException.getType () );
+            logger.info ( "handlerException:" + tApplicationException.getType () + value );
         } catch (TException e1) {
-            logger.error ( "unknown Exception:" + type,e1 );
+            logger.error ( "unknown Exception:" + type + value,e1 );
         }
     }
 

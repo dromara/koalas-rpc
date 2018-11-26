@@ -548,7 +548,7 @@ public class KoalasClientProxy implements FactoryBean<Object>, ApplicationContex
 
         loalsServiceProxy = new ProxyFactory ( _interface, koalsaMothodInterceptor ).getProxy ();
 
-        logger.info ( "the service【[]】is start !", serviceInterface.getName () );
+        logger.info ( "the service【{}】is start !", serviceInterface.getName () );
     }
 
     private AbandonedConfig getAbandonedConfig() {
