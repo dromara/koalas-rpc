@@ -65,23 +65,6 @@ public class RemoteServer {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass () != o.getClass ()) return false;
-        RemoteServer that = (RemoteServer) o;
-        return isEnable == that.isEnable &&
-                Objects.equals ( ip, that.ip ) &&
-                Objects.equals ( port, that.port ) &&
-                Objects.equals ( weight, that.weight );
-    }
-
-    @Override
-    public int hashCode() {
-
-        return Objects.hash ( ip, port, weight, isEnable );
-    }
-
-    @Override
     public String toString() {
         return "RemoteServer{" +
                 "ip='" + ip + '\'' +
@@ -89,5 +72,23 @@ public class RemoteServer {
                 ", weight='" + weight + '\'' +
                 ", isEnable=" + isEnable +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass () != o.getClass ()) return false;
+        RemoteServer that = (RemoteServer) o;
+        return weight == that.weight &&
+                isEnable == that.isEnable &&
+                Objects.equals ( ip, that.ip ) &&
+                Objects.equals ( port, that.port ) &&
+                Objects.equals ( server, that.server );
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash ( ip, port, weight, isEnable, server );
     }
 }

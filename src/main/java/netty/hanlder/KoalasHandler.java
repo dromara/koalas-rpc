@@ -1,5 +1,6 @@
 package netty.hanlder;
 
+import ex.RSAException;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -33,9 +34,15 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
 
     private ExecutorService executorService;
 
-    public KoalasHandler(TProcessor tprocessor, ExecutorService executorService) {
+    private String privateKey;
+
+    private String publicKey;
+
+    public KoalasHandler(TProcessor tprocessor, ExecutorService executorService, String privateKey, String publicKey) {
         this.tprocessor = tprocessor;
         this.executorService = executorService;
+        this.privateKey = privateKey;
+        this.publicKey = publicKey;
     }
 
     @Override
@@ -60,14 +67,35 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
         TKoalasFramedTransport inTransport = new TKoalasFramedTransport( tioStreamTransportInput );
         TKoalasFramedTransport outTransport = new TKoalasFramedTransport ( tioStreamTransportOutput,16384000,ifUserProtocol );
 
+        if(this.privateKey != null && this.publicKey!=null){
+            if(b[8] != (byte) 1 || !(b[4]==TKoalasFramedTransport.first && b[5]==TKoalasFramedTransport.second)){
+                logger.error ("rsa error the client is not ras support!");
+                handlerException(b,ctx,new RSAException ( "rsa error" ),ErrorType.APPLICATION,privateKey,publicKey);
+                return;
+            }
+        }
+
+        if(b[4]==TKoalasFramedTransport.first && b[5]==TKoalasFramedTransport.second){
+            if(b[8] == (byte) 1){
+                //in
+                inTransport.setPrivateKey ( this.privateKey );
+                inTransport.setPublicKey ( this.publicKey );
+
+                //out
+                outTransport.setRsa ( (byte) 1 );
+                outTransport.setPrivateKey ( this.privateKey );
+                outTransport.setPublicKey ( this.publicKey );
+            }
+        }
+
         TProtocolFactory tProtocolFactory =new TBinaryProtocol.Factory();
         TProtocol in =tProtocolFactory.getProtocol ( inTransport );
         TProtocol out =tProtocolFactory.getProtocol ( outTransport );
         try {
-            executorService.execute ( new NettyRunable (  ctx,in,out,outputStream,tprocessor,b));
+            executorService.execute ( new NettyRunable (  ctx,in,out,outputStream,tprocessor,b,privateKey,publicKey));
         } catch (RejectedExecutionException e){
             logger.error ( e.getMessage ()+ErrorType.THREAD,e );
-            handlerException(b,ctx,e,ErrorType.THREAD);
+            handlerException(b,ctx,e,ErrorType.THREAD,privateKey,publicKey);
         }
     }
 
@@ -79,14 +107,18 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
         private ByteArrayOutputStream outputStream;
         private TProcessor tprocessor;
         private byte[] b;
+        private String privateKey;
+        private String publicKey;
 
-        public NettyRunable(ChannelHandlerContext ctx, TProtocol in, TProtocol out, ByteArrayOutputStream outputStream, TProcessor tprocessor, byte[] b) {
+        public NettyRunable(ChannelHandlerContext ctx, TProtocol in, TProtocol out, ByteArrayOutputStream outputStream, TProcessor tprocessor, byte[] b, String privateKey, String publicKey) {
             this.ctx = ctx;
             this.in = in;
             this.out = out;
             this.outputStream = outputStream;
             this.tprocessor = tprocessor;
             this.b = b;
+            this.privateKey = privateKey;
+            this.publicKey = publicKey;
         }
 
         @Override
@@ -96,13 +128,18 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
                 ctx.writeAndFlush (outputStream);
             } catch (Exception e) {
                 logger.error ( e.getMessage () + ErrorType.APPLICATION,e );
-                handlerException(this.b,ctx,e,ErrorType.APPLICATION);
+                handlerException(this.b,ctx,e,ErrorType.APPLICATION,privateKey,publicKey);
             }
         }
 
     }
 
-    public static void handlerException(byte[] b, ChannelHandlerContext ctx, Exception e, ErrorType type){
+    public static void handlerException(byte[] b, ChannelHandlerContext ctx, Exception e, ErrorType type, String privateKey, String publicKey){
+
+        String clientIP = getClientIP(ctx);
+
+        String value = MessageFormat.format("the remote ip: {0} invoke error ,the error message is: {1}", clientIP,e.getMessage ());
+
         boolean ifUserProtocol;
         if(b[4]==TKoalasFramedTransport.first && b[5]==TKoalasFramedTransport.second){
             ifUserProtocol = true;
@@ -123,9 +160,49 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
         TProtocol in =tProtocolFactory.getProtocol ( inTransport );
         TProtocol out =tProtocolFactory.getProtocol ( outTransport );
 
-        String clientIP = getClientIP(ctx);
+        if(ifUserProtocol){
+            //rsa support
+            if(b[8]==(byte)1){
+                if(!(e instanceof RSAException)){
+                    //in
+                    inTransport.setPrivateKey ( privateKey );
+                    inTransport.setPublicKey ( publicKey );
 
-        String value = MessageFormat.format("the remote ip: {0} invoke error ,the error message is: {1}", clientIP,e.getMessage ());
+                    //out
+                    outTransport.setRsa ( (byte) 1 );
+                    outTransport.setPrivateKey (privateKey );
+                    outTransport.setPublicKey ( publicKey );
+                } else{
+                    try {
+                        TMessage tMessage =  new TMessage("", TMessageType.EXCEPTION, -1);
+                        TApplicationException exception = new TApplicationException(9999,"【rsa error】:" + value);
+                        out.writeMessageBegin ( tMessage );
+                        exception.write (out  );
+                        out.writeMessageEnd();
+                        out.getTransport ().flush ();
+                        ctx.writeAndFlush ( outputStream);
+                        return;
+                    } catch (Exception e2){
+                        logger.error ( e2.getMessage (),e2);
+                    }
+                }
+            } else{
+                if(e instanceof RSAException){
+                    try {
+                        TMessage tMessage =  new TMessage("", TMessageType.EXCEPTION, -1);
+                        TApplicationException exception = new TApplicationException(6699,"【rsa error】:" + value);
+                        out.writeMessageBegin ( tMessage );
+                        exception.write (out  );
+                        out.writeMessageEnd();
+                        out.getTransport ().flush ();
+                        ctx.writeAndFlush ( outputStream);
+                        return;
+                    } catch (Exception e2){
+                        logger.error ( e2.getMessage (),e2);
+                    }
+                }
+            }
+        }
 
         try {
             TMessage message  = in.readMessageBegin ();
@@ -147,9 +224,9 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
             out.writeMessageEnd();
             out.getTransport ().flush ();
             ctx.writeAndFlush ( outputStream);
-            logger.info ( "handlerException:" + tApplicationException.getType () );
+            logger.info ( "handlerException:" + tApplicationException.getType () + value );
         } catch (TException e1) {
-            logger.error ( "unknown Exception:" + type,e1 );
+            logger.error ( "unknown Exception:" + type + value,e1 );
         }
     }
 

@@ -28,10 +28,10 @@ public class KoalasPoolableObjectFactory extends BasePooledObjectFactory<TTransp
     private int connTimeOut;
     private boolean async;
 
-    public KoalasPoolableObjectFactory(RemoteServer remoteServer, int timeOut, int connTimeOut, boolean async) {
+    public KoalasPoolableObjectFactory(RemoteServer remoteServer, int connTimeOut, int soTimeOut, boolean async) {
         this.remoteServer = remoteServer;
-        this.timeOut = timeOut;
         this.connTimeOut = connTimeOut;
+        this.timeOut = soTimeOut;
         this.async = async;
     }
 

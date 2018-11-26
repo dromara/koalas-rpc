@@ -109,6 +109,26 @@ public class KoalasClientProxy implements FactoryBean<Object>, ApplicationContex
     private static int cores = Runtime.getRuntime().availableProcessors();
     private int asyncSelectorThreadCount = cores * 2;
     private static List<TAsyncClientManager> asyncClientManagerList = null;
+
+    private String privateKey;
+    private String publicKey;
+
+    public String getPrivateKey() {
+        return privateKey;
+    }
+
+    public void setPrivateKey(String privateKey) {
+        this.privateKey = privateKey;
+    }
+
+    public String getPublicKey() {
+        return publicKey;
+    }
+
+    public void setPublicKey(String publicKey) {
+        this.publicKey = publicKey;
+    }
+
     public int getMaxLength_() {
         return maxLength_;
     }
@@ -391,6 +411,11 @@ public class KoalasClientProxy implements FactoryBean<Object>, ApplicationContex
                 TTransport transport = null;
                 if("netty".equals(server.toLowerCase())){
                     transport = new TKoalasFramedTransport ( socket, maxLength_ );
+                    if(this.getPrivateKey ()!=null && this.getPublicKey () != null){
+                        ((TKoalasFramedTransport) transport).setRsa ( (byte) 1 );
+                        ((TKoalasFramedTransport) transport).setPrivateKey ( this.privateKey );
+                        ((TKoalasFramedTransport) transport).setPublicKey ( this.publicKey );
+                    }
                 } else{
                     transport = new TFramedTransport ( socket, maxLength_ );
                 }
@@ -523,7 +548,7 @@ public class KoalasClientProxy implements FactoryBean<Object>, ApplicationContex
 
         loalsServiceProxy = new ProxyFactory ( _interface, koalsaMothodInterceptor ).getProxy ();
 
-        logger.info ( "the service【[]】is start !", serviceInterface.getName () );
+        logger.info ( "the service【{}】is start !", serviceInterface.getName () );
     }
 
     private AbandonedConfig getAbandonedConfig() {
