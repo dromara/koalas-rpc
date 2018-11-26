@@ -199,6 +199,11 @@ wmCreateAccountServiceImpl简单实现类的截图如下
 ![输入图片说明](https://images.gitee.com/uploads/images/2018/1126/150530_82c8bb6c_536094.png "屏幕截图.png")
 ![输入图片说明](https://images.gitee.com/uploads/images/2018/1126/150559_56305a69_536094.png "屏幕截图.png")
 
+当其中一方的RSA秘钥无法对应，请求会报错。
+
+![输入图片说明](https://images.gitee.com/uploads/images/2018/1126/150900_491f3ec4_536094.png "屏幕截图.png")
+此时客户端会返回null
+RSA对称加密适合给三方系统进行调用,对称加密会影响传输性能。
 
 # 实际性能压测
 8C 16G mac开发本，单机10000次请求耗时截图
