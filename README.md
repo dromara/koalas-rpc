@@ -190,6 +190,16 @@ wmCreateAccountServiceImpl简单实现类的截图如下
 #### 3：所有参数配置说明
 整理中，会统一发布，尝鲜请阅读源码
 
+
+#### 4：客户端服务端RSA双向加密
+源码中utils.KoalasRsaUtil的main方法已经为大家写好生成私钥和公钥的代码，执行即可
+![输入图片说明](https://images.gitee.com/uploads/images/2018/1126/150109_89b08514_536094.png "屏幕截图.png")
+自动生成4个很长的字符串
+将前两个字符串放进client中，后面两个字符串放进server中，依次对应privateKey和publicKey，按照1，2，3，4傻瓜式复制即可:如图
+![输入图片说明](https://images.gitee.com/uploads/images/2018/1126/150530_82c8bb6c_536094.png "屏幕截图.png")
+![输入图片说明](https://images.gitee.com/uploads/images/2018/1126/150559_56305a69_536094.png "屏幕截图.png")
+
+
 # 实际性能压测
 8C 16G mac开发本，单机10000次请求耗时截图
 ![输入图片说明](https://images.gitee.com/uploads/images/2018/1010/174547_9325018d_536094.png "屏幕截图.png")
