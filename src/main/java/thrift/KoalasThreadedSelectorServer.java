@@ -32,20 +32,6 @@ import java.nio.channels.spi.SelectorProvider;
 import java.util.*;
 import java.util.concurrent.*;
 
-/**
- * A Half-Sync/Half-Async server with a separate pool of threads to handle
- * non-blocking I/O. Accepts are handled on a single thread, and a configurable
- * number of nonblocking selector threads manage reading and writing of client
- * connections. A synchronous worker thread pool handles processing of requests.
- * 
- * Performs better than TNonblockingServer/THsHaServer in multi-core
- * environments when the the bottleneck is CPU on the single selector thread
- * handling I/O. In addition, because the accept handling is decoupled from
- * reads/writes and invocation, the server has better ability to handle back-
- * pressure from new connections (e.g. stop accepting when busy).
- * 
- * Like TNonblockingServer, it relies on the use of TFramedTransport.
- */
 public class KoalasThreadedSelectorServer extends KoalasAbstractNonblockingServer {
   private static final Logger LOGGER = LoggerFactory.getLogger( KoalasThreadedSelectorServer.class.getName());
 
@@ -169,18 +155,12 @@ public class KoalasThreadedSelectorServer extends KoalasAbstractNonblockingServe
     }
   }
 
-  // Flag for stopping the server
   private volatile boolean stopped_ = true;
 
-  // The thread handling all accepts
   private AcceptThread acceptThread;
 
-  // Threads handling events on client transports
   private final Set<SelectorThread> selectorThreads = new HashSet<SelectorThread>();
 
-  // This wraps all the functionality of queueing and thread pool management
-  // for the passing of Invocations from the selector thread(s) to the workers
-  // (if any).
   private final ExecutorService invoker;
 
   private final Args args;
@@ -204,9 +184,6 @@ public class KoalasThreadedSelectorServer extends KoalasAbstractNonblockingServe
     this.publicKey = publicKey;
   }
 
-  /**
-   * Create the server with the specified Args configuration
-   */
   public KoalasThreadedSelectorServer(Args args) {
     super(args);
     args.validate();
@@ -214,12 +191,6 @@ public class KoalasThreadedSelectorServer extends KoalasAbstractNonblockingServe
     this.args = args;
   }
 
-  /**
-   * Start the accept and selector threads running to deal with clients.
-   * 
-   * @return true if everything went ok, false if we couldn't start for some
-   *         reason.
-   */
   @Override
   protected boolean startThreads() {
     try {
@@ -240,36 +211,26 @@ public class KoalasThreadedSelectorServer extends KoalasAbstractNonblockingServe
     }
   }
 
-  /**
-   * Joins the accept and selector threads and shuts down the executor service.
-   */
   @Override
   protected void waitForShutdown() {
     try {
       joinThreads();
     } catch (InterruptedException e) {
-      // Non-graceful shutdown occurred
       LOGGER.error("Interrupted while joining threads!", e);
     }
     gracefullyShutdownInvokerPool();
   }
 
   protected void joinThreads() throws InterruptedException {
-    // wait until the io threads exit
     acceptThread.join();
     for (SelectorThread thread : selectorThreads) {
       thread.join();
     }
   }
 
-  /**
-   * Stop serving and shut everything down.
-   */
   @Override
   public void stop() {
     stopped_ = true;
-
-    // Stop queuing connect attempts asap
     stopListening();
 
     if (acceptThread != null) {
@@ -284,13 +245,8 @@ public class KoalasThreadedSelectorServer extends KoalasAbstractNonblockingServe
   }
 
   protected void gracefullyShutdownInvokerPool() {
-    // try to gracefully shut down the executor service
     invoker.shutdown();
 
-    // Loop until awaitTermination finally does return without a interrupted
-    // exception. If we don't do this, then we'll shut down prematurely. We want
-    // to let the executorService clear it's task queue, closing client sockets
-    // appropriately.
     long timeoutMS = args.stopTimeoutUnit.toMillis(args.stopTimeoutVal);
     long now = System.currentTimeMillis();
     while (timeoutMS >= 0) {
@@ -305,11 +261,6 @@ public class KoalasThreadedSelectorServer extends KoalasAbstractNonblockingServe
     }
   }
 
-  /**
-   * We override the standard invoke method here to queue the invocation for
-   * invoker service instead of immediately invoking. If there is no thread
-   * pool, handle the invocation inline on this thread
-   */
   @Override
   protected boolean requestInvoke(FrameBuffer frameBuffer) {
     Runnable invocation = getRunnable(frameBuffer);
@@ -322,7 +273,6 @@ public class KoalasThreadedSelectorServer extends KoalasAbstractNonblockingServe
         return false;
       }
     } else {
-      // Invoke on the caller's thread
       invocation.run();
       return true;
     }
@@ -332,38 +282,25 @@ public class KoalasThreadedSelectorServer extends KoalasAbstractNonblockingServe
     return new Invocation(frameBuffer);
   }
 
-  /**
-   * Helper to create the invoker if one is not specified
-   */
   protected static ExecutorService createDefaultExecutor(Args options) {
     return (options.workerThreads > 0) ? Executors.newFixedThreadPool(options.workerThreads) : null;
   }
 
   private static BlockingQueue<TNonblockingTransport> createDefaultAcceptQueue(int queueSize) {
     if (queueSize == 0) {
-      // Unbounded queue
       return new LinkedBlockingQueue<TNonblockingTransport>();
     }
     return new ArrayBlockingQueue<TNonblockingTransport>(queueSize);
   }
 
-  /**
-   * The thread that selects on the server transport (listen socket) and accepts
-   * new connections to hand off to the IO selector threads
-   */
+
   protected class AcceptThread extends Thread {
 
-    // The listen socket to accept on
     private final TNonblockingServerTransport serverTransport;
     private final Selector acceptSelector;
 
     private final SelectorThreadLoadBalancer threadChooser;
 
-    /**
-     * Set up the AcceptThead
-     * 
-     * @throws IOException
-     */
     public AcceptThread(TNonblockingServerTransport serverTransport,
         SelectorThreadLoadBalancer threadChooser) throws IOException {
       this.serverTransport = serverTransport;
@@ -372,11 +309,6 @@ public class KoalasThreadedSelectorServer extends KoalasAbstractNonblockingServe
       this.serverTransport.registerSelector(acceptSelector);
     }
 
-    /**
-     * The work loop. Selects on the server transport and accepts. If there was
-     * a server transport that had blocking accepts, and returned on blocking
-     * client transports, that should be used instead
-     */
     public void run() {
       try {
         while (!stopped_) {
@@ -385,34 +317,23 @@ public class KoalasThreadedSelectorServer extends KoalasAbstractNonblockingServe
       } catch (Throwable t) {
         LOGGER.error("run() exiting due to uncaught error", t);
       } finally {
-        // This will wake up the selector threads
         KoalasThreadedSelectorServer.this.stop();
       }
     }
 
-    /**
-     * If the selector is blocked, wake it up.
-     */
     public void wakeupSelector() {
       acceptSelector.wakeup();
     }
 
-    /**
-     * Select and process IO events appropriately: If there are connections to
-     * be accepted, accept them.
-     */
     private void select() {
       try {
-        // wait for connect events.
         acceptSelector.select();
 
-        // process the io events we received
         Iterator<SelectionKey> selectedKeys = acceptSelector.selectedKeys().iterator();
         while (!stopped_ && selectedKeys.hasNext()) {
           SelectionKey key = selectedKeys.next();
           selectedKeys.remove();
 
-          // skip if not valid
           if (!key.isValid()) {
             continue;
           }
@@ -428,19 +349,14 @@ public class KoalasThreadedSelectorServer extends KoalasAbstractNonblockingServe
       }
     }
 
-    /**
-     * Accept a new connection.
-     */
     private void handleAccept() {
       final TNonblockingTransport client = doAccept();
       if (client != null) {
-        // Pass this connection to a selector thread
         final SelectorThread targetThread = threadChooser.nextThread();
 
         if (args.acceptPolicy == Args.AcceptPolicy.FAST_ACCEPT || invoker == null) {
           doAddAccept(targetThread, client);
         } else {
-          // FAIR_ACCEPT
           try {
             invoker.submit(new Runnable() {
               public void run() {
@@ -449,7 +365,6 @@ public class KoalasThreadedSelectorServer extends KoalasAbstractNonblockingServe
             });
           } catch (RejectedExecutionException rx) {
             LOGGER.warn("ExecutorService rejected accept registration!", rx);
-            // close immediately
             client.close();
           }
         }
@@ -460,7 +375,6 @@ public class KoalasThreadedSelectorServer extends KoalasAbstractNonblockingServe
       try {
         return (TNonblockingTransport) serverTransport.accept();
       } catch (TTransportException tte) {
-        // something went wrong accepting.
         LOGGER.warn("Exception trying to accept!", tte);
         return null;
       }
@@ -471,58 +385,24 @@ public class KoalasThreadedSelectorServer extends KoalasAbstractNonblockingServe
         client.close();
       }
     }
-  } // AcceptThread
+  }
 
-  /**
-   * The SelectorThread(s) will be doing all the selecting on accepted active
-   * connections.
-   */
   protected class SelectorThread extends AbstractSelectThread {
 
-    // Accepted connections added by the accept thread.
     private final BlockingQueue<TNonblockingTransport> acceptedQueue;
 
-    /**
-     * Set up the SelectorThread with an unbounded queue for incoming accepts.
-     * 
-     * @throws IOException
-     *           if a selector cannot be created
-     */
     public SelectorThread() throws IOException {
       this(new LinkedBlockingQueue<TNonblockingTransport>());
     }
 
-    /**
-     * Set up the SelectorThread with an bounded queue for incoming accepts.
-     * 
-     * @throws IOException
-     *           if a selector cannot be created
-     */
     public SelectorThread(int maxPendingAccepts) throws IOException {
       this(createDefaultAcceptQueue(maxPendingAccepts));
     }
 
-    /**
-     * Set up the SelectorThread with a specified queue for connections.
-     * 
-     * @param acceptedQueue
-     *          The BlockingQueue implementation for holding incoming accepted
-     *          connections.
-     * @throws IOException
-     *           if a selector cannot be created.
-     */
     public SelectorThread(BlockingQueue<TNonblockingTransport> acceptedQueue) throws IOException {
       this.acceptedQueue = acceptedQueue;
     }
 
-    /**
-     * Hands off an accepted connection to be handled by this thread. This
-     * method will block if the queue for new connections is at capacity.
-     * 
-     * @param accepted
-     *          The connection that has been accepted.
-     * @return true if the connection has been successfully added.
-     */
     public boolean addAcceptedConnection(TNonblockingTransport accepted) {
       try {
         acceptedQueue.put(accepted);
@@ -534,10 +414,6 @@ public class KoalasThreadedSelectorServer extends KoalasAbstractNonblockingServe
       return true;
     }
 
-    /**
-     * The work loop. Handles selecting (read/write IO), dispatching, and
-     * managing the selection preferences of all existing connections.
-     */
     public void run() {
       try {
         while (!stopped_) {
@@ -556,34 +432,23 @@ public class KoalasThreadedSelectorServer extends KoalasAbstractNonblockingServe
       }
     }
 
-    /**
-     * Select and process IO events appropriately: If there are existing
-     * connections with data waiting to be read, read it, buffering until a
-     * whole frame has been read. If there are any pending responses, buffer
-     * them until their target client is available, and then send the data.
-     */
     private void select() {
       try {
-        // wait for io events.
         selector.select();
 
-        // process the io events we received
         Iterator<SelectionKey> selectedKeys = selector.selectedKeys().iterator();
         while (!stopped_ && selectedKeys.hasNext()) {
           SelectionKey key = selectedKeys.next();
           selectedKeys.remove();
 
-          // skip if not valid
           if (!key.isValid()) {
             cleanupSelectionKey(key);
             continue;
           }
 
           if (key.isReadable()) {
-            // deal with reads
             handleRead(key);
           } else if (key.isWritable()) {
-            // deal with writes
             handleWrite(key);
           } else {
             LOGGER.warn("Unexpected state in select! " + key.interestOps());
@@ -620,20 +485,12 @@ public class KoalasThreadedSelectorServer extends KoalasAbstractNonblockingServe
         accepted.close();
       }
     }
-  } // SelectorThread
+  }
 
-  /**
-   * Creates a SelectorThreadLoadBalancer to be used by the accept thread for
-   * assigning newly accepted connections across the threads.
-   */
   protected SelectorThreadLoadBalancer createSelectorThreadLoadBalancer(Collection<? extends SelectorThread> threads) {
     return new SelectorThreadLoadBalancer(threads);
   }
 
-  /**
-   * A round robin load balancer for choosing selector threads for new
-   * connections.
-   */
   protected class SelectorThreadLoadBalancer {
     private final Collection<? extends SelectorThread> threads;
     private Iterator<? extends SelectorThread> nextThreadIterator;
@@ -647,7 +504,6 @@ public class KoalasThreadedSelectorServer extends KoalasAbstractNonblockingServe
     }
 
     public SelectorThread nextThread() {
-      // Choose a selector thread (round robin)
       if (!nextThreadIterator.hasNext()) {
         nextThreadIterator = threads.iterator();
       }
