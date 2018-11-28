@@ -5,8 +5,6 @@ import org.apache.thrift.TProcessor;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocolFactory;
 import org.apache.thrift.server.TServer;
-import org.apache.thrift.server.TThreadedSelectorServer;
-import org.apache.thrift.transport.TFramedTransport;
 import org.apache.thrift.transport.TNonblockingServerSocket;
 import org.apache.thrift.transport.TTransportException;
 import org.slf4j.Logger;
@@ -16,6 +14,7 @@ import server.IkoalasServer;
 import server.KoalasDefaultThreadFactory;
 import server.config.AbstractKoalsServerPublisher;
 import server.config.ZookServerConfig;
+import transport.TKoalasFramedTransport;
 import utils.KoalasThreadedSelectorWorkerExcutorUtil;
 
 import java.util.concurrent.ExecutorService;
@@ -51,9 +50,9 @@ public class ThriftServer implements IkoalasServer {
              throw new IllegalArgumentException("the tProcessor can't be null ");
          }
         try {
-            tServerTransport = new TNonblockingServerSocket (serverPublisher.port);
-            TThreadedSelectorServer.Args tArgs = new TThreadedSelectorServer.Args(tServerTransport);
-            TFramedTransport.Factory transportFactory = new TFramedTransport.Factory();
+            tServerTransport = new  TNonblockingServerSocket (serverPublisher.port);
+            KoalasThreadedSelectorServer.Args tArgs = new KoalasThreadedSelectorServer.Args(tServerTransport);
+            TKoalasFramedTransport.Factory transportFactory = new TKoalasFramedTransport.Factory (  );
             TProtocolFactory tProtocolFactory = new TBinaryProtocol.Factory();
             tArgs.transportFactory(transportFactory);
             tArgs.protocolFactory(tProtocolFactory);
@@ -63,7 +62,9 @@ public class ThriftServer implements IkoalasServer {
             executorService = KoalasThreadedSelectorWorkerExcutorUtil.getWorkerExcutor (serverPublisher.koalasThreadCount==0?AbstractKoalsServerPublisher.DEFAULT_KOALAS_THREADS:serverPublisher.koalasThreadCount,new KoalasDefaultThreadFactory (serverPublisher.serviceInterface.getName ()));
             tArgs.executorService (executorService);
             tArgs.acceptQueueSizePerThread(AbstractKoalsServerPublisher.DEFAULT_THRIFT_ACCETT_THREAD);
-            tServer = new TThreadedSelectorServer(tArgs);
+            tServer = new KoalasThreadedSelectorServer(tArgs);
+            ((KoalasThreadedSelectorServer) tServer).setPrivateKey (serverPublisher.privateKey);
+            ((KoalasThreadedSelectorServer) tServer).setPublicKey ( serverPublisher.publicKey );
             Runtime.getRuntime().addShutdownHook(new Thread(){
                 @Override
                 public void run(){

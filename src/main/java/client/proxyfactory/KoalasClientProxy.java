@@ -408,17 +408,13 @@ public class KoalasClientProxy implements FactoryBean<Object>, ApplicationContex
                 if (synConstructor == null) {
                     synConstructor = clazz.getDeclaredConstructor ( TProtocol.class );
                 }
-                TTransport transport = null;
-                if("netty".equals(server.toLowerCase())){
-                    transport = new TKoalasFramedTransport ( socket, maxLength_ );
-                    if(this.getPrivateKey ()!=null && this.getPublicKey () != null){
-                        ((TKoalasFramedTransport) transport).setRsa ( (byte) 1 );
-                        ((TKoalasFramedTransport) transport).setPrivateKey ( this.privateKey );
-                        ((TKoalasFramedTransport) transport).setPublicKey ( this.publicKey );
-                    }
-                } else{
-                    transport = new TFramedTransport ( socket, maxLength_ );
+                TTransport transport  = new TKoalasFramedTransport ( socket, maxLength_ );
+                if(this.getPrivateKey ()!=null && this.getPublicKey () != null){
+                    ((TKoalasFramedTransport) transport).setRsa ( (byte) 1 );
+                    ((TKoalasFramedTransport) transport).setPrivateKey ( this.privateKey );
+                    ((TKoalasFramedTransport) transport).setPublicKey ( this.publicKey );
                 }
+
                 TProtocol protocol = new TBinaryProtocol ( transport );
 
                 return synConstructor.newInstance ( protocol );

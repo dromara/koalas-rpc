@@ -84,24 +84,47 @@ public class TKoalasFramedTransport extends TTransport {
 
     public static class Factory extends TTransportFactory {
         private int maxLength_;
+        private boolean user;
+        private byte rsa;
+        private String privateKey;
+        private String publicKey;
 
         public Factory() {
             maxLength_ = TKoalasFramedTransport.DEFAULT_MAX_LENGTH;
         }
-
-        public Factory(int maxLength) {
-            maxLength_ = maxLength;
+        public boolean isUser() {
+            return user;
         }
-
+        public void setUser(boolean user) {
+            this.user = user;
+        }
+        public byte getRsa() {
+            return rsa;
+        }
+        public void setRsa(byte rsa) {
+            this.rsa = rsa;
+        }
+        public String getPrivateKey() {
+            return privateKey;
+        }
+        public void setPrivateKey(String privateKey) {
+            this.privateKey = privateKey;
+        }
+        public String getPublicKey() {
+            return publicKey;
+        }
+        public void setPublicKey(String publicKey) {
+            this.publicKey = publicKey;
+        }
         @Override
         public TTransport getTransport(TTransport base) {
-            return new TKoalasFramedTransport ( base, maxLength_ );
+            TKoalasFramedTransport tKoalasFramedTransport= new TKoalasFramedTransport ( base, maxLength_ );
+            tKoalasFramedTransport.setIfUserProtocol ( user );
+            tKoalasFramedTransport.setRsa ( rsa );
+            tKoalasFramedTransport.setPrivateKey ( privateKey );
+            tKoalasFramedTransport.setPublicKey ( publicKey );
+            return tKoalasFramedTransport;
         }
-
-        public TTransport getTransport(TTransport base, boolean user) {
-            return new TKoalasFramedTransport ( base, maxLength_, user );
-        }
-
     }
 
     public TKoalasFramedTransport(byte version, byte heartbeat, byte rsa, byte zip) {
