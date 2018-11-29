@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+
 /**
  * Copyright (C) 2018
  * All rights reserved
@@ -46,12 +47,19 @@ public class ReleaseResourcesKoalasAsyncCallBack<T> implements AsyncMethodCallba
         } catch (Exception e) {
             if (e instanceof InvocationTargetException && e.getCause () instanceof TApplicationException
                     && ((TApplicationException) e.getCause ()).getType () == TApplicationException.MISSING_RESULT) {
-                if (asyncMethodCallback != null)
+                if (asyncMethodCallback != null) {
                     if (asyncMethodCallback instanceof KoalasAsyncCallBack) {
                         ((KoalasAsyncCallBack) asyncMethodCallback).onCompleteWithoutReflect ( null );
                     } else {
                         asyncMethodCallback.onComplete ( t );
                     }
+                }
+                try {
+                    serverObject.getGenericObjectPool ().returnObject ( socket );
+                    return;
+                } catch (Exception e1) {
+                    logger.error ( "onComplete invalidateObject object error !", e );
+                }
             }
             try {
                 serverObject.getGenericObjectPool ().invalidateObject ( socket );

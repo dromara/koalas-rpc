@@ -13,6 +13,7 @@ import org.apache.thrift.async.AsyncMethodCallback;
 import org.apache.thrift.async.TAsyncClient;
 import org.apache.thrift.transport.TSocket;
 import org.apache.thrift.transport.TTransport;
+import org.apache.thrift.transport.TTransportException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -155,7 +156,7 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
                 }
 
                 if (cause.getCause () != null && cause.getCause () instanceof ConnectException) {
-                    LOG.info ( "the server {}--serverName【{}】 maybe is shutdown ,retry it!", serverObject.getRemoteServer (),koalasClientProxy.getServiceInterface ().getName () );
+                    LOG.error ( "the server {}--serverName【{}】 maybe is shutdown ,retry it!", serverObject.getRemoteServer (),koalasClientProxy.getServiceInterface ().getName () );
                     try {
                         if (socket != null) {
                             genericObjectPool.returnObject ( socket );
@@ -170,7 +171,7 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
                 }
 
                 if (cause.getCause () != null && cause.getCause () instanceof SocketTimeoutException) {
-                    LOG.info ( "read timeout SocketTimeoutException,retry it! {}--serverName【{}】", serverObject.getRemoteServer (),koalasClientProxy.getServiceInterface ().getName () );
+                    LOG.error ( "read timeout SocketTimeoutException,retry it! {}--serverName【{}】", serverObject.getRemoteServer (),koalasClientProxy.getServiceInterface ().getName () );
                     if (socket != null) {
                         try {
                             genericObjectPool.invalidateObject ( socket );
@@ -183,9 +184,26 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
                     if (retryRequest)
                         continue;
                 }
+
+                if(cause instanceof TTransportException){
+                    if(((TTransportException) cause).getType () == TTransportException.END_OF_FILE){
+                        LOG.error ( "TTransportException,END_OF_FILE! {}--serverName【{}】", serverObject.getRemoteServer (),koalasClientProxy.getServiceInterface ().getName () );
+                        if (socket != null) {
+                            try {
+                                genericObjectPool.invalidateObject ( socket );
+                            } catch (Exception e1) {
+                                LOG.error ( "invalidateObject error", e );
+                                return null;
+                            }
+                        }
+                        return null;
+                    }
+                }
+
+
                 if (socket != null && !ifreturn)
                     genericObjectPool.returnObject ( socket );
-                LOG.error ( "invoke server error,server ip -【{}】,port -【{}】--serverName【{}】", serverObject.getRemoteServer ().getIp (), serverObject.getRemoteServer ().getPort () );
+                LOG.error ( "invoke server error,server ip -【{}】,port -【{}】--serverName【{}】", serverObject.getRemoteServer ().getIp (), serverObject.getRemoteServer ().getPort (),koalasClientProxy.getServiceInterface ().getName ()  );
                 throw e;
             }
         }
