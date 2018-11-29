@@ -1,25 +1,28 @@
 package client;
 
-import org.apache.thrift.TException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import thrift.client.impl.TestServiceAsync;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations={"classpath:client/koalas-client.xml"})
 public class ClientRunAsync {
 
-    public static void main(String[] args) throws TException, InterruptedException {
+     @Autowired
+     TestServiceAsync testServiceAsync;
 
-        ApplicationContext ac = new ClassPathXmlApplicationContext ("classpath:client/koalas-client.xml");
-
-        TestServiceAsync testServiceAsync  = (TestServiceAsync) ac.getBean ( "testServiceAsync" );
-
-        for (int i = 0; i <1 ; i++) {
-            try {
-                testServiceAsync.getRemoteRpc ();
-              }catch (Exception e){
-                e.printStackTrace ();
-            }
-        }
-        ((ClassPathXmlApplicationContext) ac).registerShutdownHook ();
+     @Test
+     public void testRunAsync(){
+         for (int i = 0; i <1000 ; i++) {
+             try {
+                 testServiceAsync.getRemoteRpc ();
+             }catch (Exception e){
+                 e.printStackTrace ();
+             }
+         }
      }
+
 }
