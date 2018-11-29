@@ -39,6 +39,12 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 
+/**
+ * Copyright (C) 2018
+ * All rights reserved
+ * User: yulong.zhang
+ * Date:2018年11月23日11:13:33
+ */
 public abstract class KoalasAbstractNonblockingServer extends TServer {
     protected final Logger LOGGER = LoggerFactory.getLogger ( getClass ().getName () );
 

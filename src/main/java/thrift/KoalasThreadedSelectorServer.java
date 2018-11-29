@@ -32,6 +32,12 @@ import java.nio.channels.spi.SelectorProvider;
 import java.util.*;
 import java.util.concurrent.*;
 
+/**
+ * Copyright (C) 2018
+ * All rights reserved
+ * User: yulong.zhang
+ * Date:2018年11月23日11:13:33
+ */
 public class KoalasThreadedSelectorServer extends KoalasAbstractNonblockingServer {
   private static final Logger LOGGER = LoggerFactory.getLogger( KoalasThreadedSelectorServer.class.getName());
 

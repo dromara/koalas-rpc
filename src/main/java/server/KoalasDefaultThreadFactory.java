@@ -4,11 +4,10 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Copyright (C) 2015 Meituan
+ * Copyright (C) 2018
  * All rights reserved
- * User: gaosheng
- * Date: 15-8-17
- * Time: 下午2:57
+ * User: yulong.zhang
+ * Date:2018年11月23日11:13:33
  */
 public class KoalasDefaultThreadFactory implements ThreadFactory {
 
