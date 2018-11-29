@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-4.2.xsd">
+
+
+	<aop:aspectj-autoproxy proxy-target-class="true"/>
+	<!-- 默认扫描的包路径 -->
+	<context:component-scan base-package="thrift.server.impl" use-default-filters="false">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Service" />
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Component" />
+	</context:component-scan>
+
+	<bean class ="server.KoalasServerPublisher" destroy-method="destroy">
+		<property name="serviceInterface" value="thrift.service.WmCreateAccountService"/>
+		<property name="serviceImpl" ref="wmCreateAccountServiceImpl"/>
+		<property name="serverType" value="thrift"/>
+		<!--<property name="privateKey" value="MIICdQIBADANBgkqhkiG9w0BAQEFAASCAl8wggJbAgEAAoGBAKI3uqK5B5ovGyLKOFxFLLaOCPPUlZc77OdCohND47IB44G8cPizCxkozlreFTBoD0HtbAoklxzwF7wlrPCB0hr69jpkmY3gpU2N78MEwQ0FzBd2jK9YMEqoV1u7qum3IbFqZLYC4CYFbxk8pL+lBXjBVDkzuSZBTrDUHPCT9Qo7AgMBAAECgYA619ZWwqG0V1QTmaE6L0mZ6wnqUPn2gyFbfjtGm8DTyIWbgRzFykTDWp8ILTkodwbZ1mLzhvRd5eXmNRB3qc/prcmhz0d11aHEq34GFzpM/F9tr+KhahCCH2+LAgHBx+eWtl/Pibf8iZcWTFFucgRA6BjT4/c6L4dDK+wyBG20EQJBAO+L3IUm9bfuubZ0Zv6P+08ZxzkeyI6S/527JdbXDy+MC5WoZKMo0dY+m7SoxYTxI+rQZNS4UoJNrLwrC7L9fkMCQQCtXCKSUhJ9CPQTwa6w/2nK+t7+rX9F588r+YPUmhf095ozjrxU9qfe/VHOf9yVGqoDXmM3vWzjSf9aeAcCHZCpAkBstu3i5DaaPla8boGbwF6OnKVk0Aq3YhFuVVQr97hlnMpZJm5d+hWZhRqHWB0kY4godmF8hRa1GmltkJ+joRYfAkAtB5SXSygwQCYeB54XrZBOQBGyN2CqyMagVoRuscPtRm9QWxACRbtfCY+5Qq8KL83faCH/dX2WID9qwWiYnRNZAkBLBHGGvUpE0mD69Z5dVJk0BD1nkayPsB6XjRc421oL5nLTAbf8fImNCBGYCmWZH9nDIGRt5OZEWVFgnS2iOplj"/>
+		<property name="publicKey" value="MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDVZRRSAlzEgr3OaMpsyZeHWaYpse+sOrzP3L7l3QLL7rGmtdaDJ1uq+tkGb52++1Tf7T2JyjQ7CspzbR8rr9qr8QML45Plf7D7fqa3RCr+sV1n+P8DhXxQbf/NVMv9PG+GQU9dkuFtFhmxj68LREG2KYO/Y3yyhgKi6lYChr8gCQIDAQAB"/>
+		--><property name="port" value="8001"/>
+		<property name="zkpath" value="127.0.0.1:2181"/>
+	</bean>
+
+</beans>

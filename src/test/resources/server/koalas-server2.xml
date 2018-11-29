@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:util="http://www.springframework.org/schema/util" xmlns:aop="http://www.springframework.org/schema/aop"
+	   xsi:schemaLocation="
+	http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-4.2.xsd
+    http://www.springframework.org/schema/util
+    http://www.springframework.org/schema/util/spring-util-4.2.xsd">
+
+
+	<aop:aspectj-autoproxy proxy-target-class="true"/>
+	<!-- 默认扫描的包路径 -->
+	<context:component-scan base-package="thrift.server.impl" use-default-filters="false">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Service" />
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Component" />
+	</context:component-scan>
+
+	<bean class ="server.KoalasServerPublisher" destroy-method="destroy">
+		<property name="serviceInterface" value="thrift.service.WmCreateAccountService"/>
+		<property name="serviceImpl" ref="wmCreateAccountServiceImpl"/>
+		<property name="port" value="8002"/>
+		<property name="zkpath" value="127.0.0.1:2181"/>
+	</bean>
+
+</beans>
