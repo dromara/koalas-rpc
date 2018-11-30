@@ -1,5 +1,6 @@
 package transport;
 
+import ex.OutMaxLengthException;
 import ex.RSAException;
 import org.apache.thrift.TByteArrayOutputStream;
 import org.apache.thrift.transport.TMemoryInputTransport;
@@ -291,6 +292,10 @@ public class TKoalasFramedTransport extends TTransport {
 
         //Body + header length
         int len = writeBuffer_.len ();
+
+        if(len > maxLength_){
+             throw new OutMaxLengthException ("the length :" + len + "> maxLength_ :" + maxLength_);
+        }
 
         //Body buf length
         int thrift = len;

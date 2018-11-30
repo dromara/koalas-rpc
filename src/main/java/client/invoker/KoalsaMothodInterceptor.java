@@ -4,6 +4,7 @@ import client.async.ReleaseResourcesKoalasAsyncCallBack;
 import client.cluster.Icluster;
 import client.cluster.ServerObject;
 import client.proxyfactory.KoalasClientProxy;
+import ex.OutMaxLengthException;
 import ex.RSAException;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
@@ -149,6 +150,14 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
 
                 if (cause instanceof RSAException) {
                     LOG.error ( "this client privateKey or publicKey is error,please check it! --{}--serverName【{}】", serverObject.getRemoteServer (),koalasClientProxy.getServiceInterface ().getName () );
+                    if (socket != null) {
+                        genericObjectPool.returnObject ( socket );
+                    }
+                    return null;
+                }
+
+                if(cause instanceof OutMaxLengthException){
+                    LOG.error ( (cause ).getMessage (),cause );
                     if (socket != null) {
                         genericObjectPool.returnObject ( socket );
                     }
