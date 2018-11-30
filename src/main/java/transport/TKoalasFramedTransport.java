@@ -334,7 +334,7 @@ public class TKoalasFramedTransport extends TTransport {
                 try {
                     transport_.write ( sign.getBytes ( "UTF-8" ) );
                 } catch (Exception e) {
-                    throw new RSAException ( "rsa error", e );
+                    // can not got in
                 }
             }
         }
