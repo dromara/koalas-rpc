@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xsd:schema xmlns="http://www.koalas.com/schema/ch"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:beans="http://www.springframework.org/schema/beans"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            targetNamespace="http://www.koalas.com/schema/ch"
+            elementFormDefault="qualified"
+            attributeFormDefault="unqualified" >
+
+    <xsd:import namespace="http://www.springframework.org/schema/beans" />
+
+    <xsd:element name="client">
+        <xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="beans:identifiedType">
+                    <xsd:attribute name="serviceInterface" type="xsd:string" use="required"/>
+                    <xsd:attribute name="zkPath" type="xsd:string" />
+                    <xsd:attribute name="serverIpPorts" type="xsd:string"/>
+                    <xsd:attribute name="async" type="xsd:string"/>
+                    <xsd:attribute name="connTimeout" type="xsd:string"/>
+                    <xsd:attribute name="readTimeout" type="xsd:string"/>
+                    <xsd:attribute name="localMockServiceImpl" type="xsd:string"/>
+                    <xsd:attribute name="retryRequest" type="xsd:string"/>
+                    <xsd:attribute name="retryTimes" type="xsd:string"/>
+                    <xsd:attribute name="maxTotal" type="xsd:string"/>
+                    <xsd:attribute name="maxIdle" type="xsd:string"/>
+                    <xsd:attribute name="minIdle" type="xsd:string"/>
+                    <xsd:attribute name="lifo" type="xsd:string"/>
+                    <xsd:attribute name="fairness" type="xsd:string"/>
+                    <xsd:attribute name="maxWaitMillis" type="xsd:string"/>
+                    <xsd:attribute name="timeBetweenEvictionRunsMillis" type="xsd:string"/>
+                    <xsd:attribute name="minEvictableIdleTimeMillis" type="xsd:string"/>
+                    <xsd:attribute name="softMinEvictableIdleTimeMillis" type="xsd:string"/>
+                    <xsd:attribute name="numTestsPerEvictionRun" type="xsd:string"/>
+                    <xsd:attribute name="testOnCreate" type="xsd:string"/>
+                    <xsd:attribute name="testOnBorrow" type="xsd:string"/>
+                    <xsd:attribute name="testOnReturn" type="xsd:string"/>
+                    <xsd:attribute name="testWhileIdle" type="xsd:string"/>
+                    <xsd:attribute name="iLoadBalancer" type="xsd:string"/>
+                    <xsd:attribute name="env" type="xsd:string"/>
+                    <xsd:attribute name="removeAbandonedOnBorrow" type="xsd:string"/>
+                    <xsd:attribute name="removeAbandonedOnMaintenance" type="xsd:string"/>
+                    <xsd:attribute name="removeAbandonedTimeout" type="xsd:string"/>
+                    <xsd:attribute name="maxLength_" type="xsd:string"/>
+                    <xsd:attribute name="cores" type="xsd:string"/>
+                    <xsd:attribute name="asyncSelectorThreadCount" type="xsd:string"/>
+                    <xsd:attribute name="privateKey" type="xsd:string"/>
+                    <xsd:attribute name="publicKey" type="xsd:string"/>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+    </xsd:element>
+
+
+    <xsd:element name="server">
+        <xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="beans:identifiedType">
+                    <xsd:attribute name="serviceInterface" type="xsd:string" use="required"/>
+                    <xsd:attribute name="serviceImpl" type="xsd:string" use="required" />
+                    <xsd:attribute name="port" type="xsd:string" use="required" />
+                    <xsd:attribute name="zkpath" type="xsd:string"/>
+                    <xsd:attribute name="bossThreadCount" type="xsd:string"/>
+                    <xsd:attribute name="workThreadCount" type="xsd:string"/>
+                    <xsd:attribute name="koalasThreadCount" type="xsd:string"/>
+                    <xsd:attribute name="env" type="xsd:string"/>
+                    <xsd:attribute name="weight" type="xsd:string"/>
+                    <xsd:attribute name="serverType" type="xsd:string"/>
+                    <xsd:attribute name="workQueue" type="xsd:string"/>
+                    <xsd:attribute name="privateKey" type="xsd:string"/>
+                    <xsd:attribute name="publicKey" type="xsd:string"/>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+    </xsd:element>
+
+</xsd:schema>

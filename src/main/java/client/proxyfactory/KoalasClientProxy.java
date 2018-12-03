@@ -72,7 +72,7 @@ public class KoalasClientProxy implements FactoryBean<Object>, ApplicationContex
     //读取超时时间
     private int readTimeout=DEFUAL_READTIMEOUT;
     //本地client测试用实现
-    private String locatMockServiceImpl;
+    private String localMockServiceImpl;
     //重试
     private boolean retryRequest = true;
     private int retryTimes = 3;
@@ -249,12 +249,12 @@ public class KoalasClientProxy implements FactoryBean<Object>, ApplicationContex
         this.testWhileIdle = testWhileIdle;
     }
 
-    public String getLocatMockServiceImpl() {
-        return locatMockServiceImpl;
+    public String getLocalMockServiceImpl() {
+        return localMockServiceImpl;
     }
 
-    public void setLocatMockServiceImpl(String locatMockServiceImpl) {
-        this.locatMockServiceImpl = locatMockServiceImpl;
+    public void setLocalMockServiceImpl(String localMockServiceImpl) {
+        this.localMockServiceImpl = localMockServiceImpl;
     }
 
     public int getReadTimeout() {
@@ -522,8 +522,8 @@ public class KoalasClientProxy implements FactoryBean<Object>, ApplicationContex
         }
 
         Class<?> _interface = null;
-        if (locatMockServiceImpl != null && !StringUtils.isEmpty ( locatMockServiceImpl.trim () )) {
-            LocalMockInterceptor localMockInterceptor = new LocalMockInterceptor ( locatMockServiceImpl );
+        if (localMockServiceImpl != null && !StringUtils.isEmpty ( localMockServiceImpl.trim () )) {
+            LocalMockInterceptor localMockInterceptor = new LocalMockInterceptor ( localMockServiceImpl );
             _interface = getIfaceInterface ();
             ProxyFactory pf = new ProxyFactory ( _interface, localMockInterceptor );
             setLoalsServiceProxy ( pf.getProxy () );
