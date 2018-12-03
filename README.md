@@ -247,37 +247,7 @@ wmCreateAccountServiceImpl简单实现类的截图如下
 实现WmCreateAccountService.Iface接口即可。
 
 #### 3：所有参数配置说明
-
-client所有参数如下
-1：serviceInterface，thrift自动生成的接口类全路径名称。必填。
-2：zkPath，zk的服务地址例如 127.0.0.1:2128,127.0.0.1:2129 ，集群服务中间用逗号分隔。
-3：serverIpPorts 直连,和（2）至少设置一个，例如127.0.0.1:2128#10,127.0.0.1:2129#10, #后面数字为权重(这个参数一般在测试时用，生产不推荐)
-4：async，同步或者异步 false同步，true异步 默认false
-5：connTimeout 连接超时 默认3000ms
-6：readTimeout 读超时 默认5000ms
-7：localMockServiceImpl 本地实现测试类
-8：retryRequest 是否采用失败重试，默认ture
-9：retryTimes 重试次数，默认3，当retryRequest为true时生效
-10：maxTotal，maxIdle，minIdle，lifo，fairness，maxWaitMillis，timeBetweenEvictionRunsMillis，minEvictableIdleTimeMillis，softMinEvictableIdleTimeMillis，numTestsPerEvictionRun，testOnCreate，testOnBorrow，testOnReturn，testWhileIdle，removeAbandonedOnBorrow，removeAbandonedOnMaintenance，removeAbandonedTimeout以上参数为Apache pool连接池的参数，是负责维护client到server的Tsocket。可按需设置，详细参数请查看Apache pool参数设置。源码中默认设置较为合理，可以直接使用。
-11：iLoadBalancer 负载策略。默认随机
-12：env 环境，默认dev，生产可以设置为prod。主要做环境隔离使用
-13：maxLength_ TCP发送最大字节数 默认2048*1024 2M
-14：asyncSelectorThreadCount 异步调用时，开启的线程数量，同步调用中此参数无效，默认当前CPU核心数量*2
-15：privateKey：client的私钥，生成方式下面有详细说明
-16：publicKey：server的公钥，生成方式下面有详细说明
-
-server所有参数如下
-1：serviceImpl实现类，必选
-2：serviceInterface 实现接口 必选 thrift自动生成
-3：port服务端口必选
-4：zkpath zk全路径 例如127.0.0.1:2181
-5：bossThreadCount连接线程数量默认CPU核心数量*2
-6：workThreadCount业务线程数量默认5
-7：koalasThreadCount实际执行线程数量 默认256
-8：env 环境默认 dev
-9：weight权重 默认10
-10：serverType 服务端是哪种服务，默认为netty 可选netty,thrift。
-11：workQueue线程工作数量默认0，设置后可以设置当前最大等待线程数量。
+![输入图片说明](https://images.gitee.com/uploads/images/2018/1203/175654_a020880b_536094.png "屏幕截图.png")
 
 #### 4：客户端服务端RSA双向加密
 源码中utils.KoalasRsaUtil的main方法已经为大家写好生成私钥和公钥的代码，执行即可
