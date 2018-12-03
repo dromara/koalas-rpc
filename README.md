@@ -249,8 +249,8 @@ wmCreateAccountServiceImpl简单实现类的截图如下
 #### 3：所有参数配置说明
 
 client所有参数如下
-1：serviceInterface，thrift自动生成的接口类全路径名称。必填
-2：zkPath，zk的服务地址例如 127.0.0.1:2128,127.0.0.1:2129 ，集群服务中间用逗号分隔
+1：serviceInterface，thrift自动生成的接口类全路径名称。必填。
+2：zkPath，zk的服务地址例如 127.0.0.1:2128,127.0.0.1:2129 ，集群服务中间用逗号分隔。
 3：serverIpPorts 直连,和（2）至少设置一个，例如127.0.0.1:2128#10,127.0.0.1:2129#10, #后面数字为权重(这个参数一般在测试时用，生产不推荐)
 4：async，同步或者异步 false同步，true异步 默认false
 5：connTimeout 连接超时 默认3000ms
