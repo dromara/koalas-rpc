@@ -146,6 +146,21 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
                         }
                         return null;
                     }
+
+                    if (((TApplicationException) cause).getType () == TApplicationException.INTERNAL_ERROR) {
+                        LOG.error ( "this server is error please take the error log with server--{}--serverName【{}】", serverObject.getRemoteServer (),koalasClientProxy.getServiceInterface ().getName () );
+                        if (socket != null) {
+                            genericObjectPool.returnObject ( socket );
+                        }
+                        return null;
+                    }
+
+                    if (((TApplicationException) cause).getType () == TApplicationException.MISSING_RESULT) {
+                        if (socket != null) {
+                            genericObjectPool.returnObject ( socket );
+                        }
+                        return null;
+                    }
                 }
 
                 if (cause instanceof RSAException) {

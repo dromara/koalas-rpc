@@ -56,6 +56,7 @@ public class ThriftServer implements IkoalasServer {
             TProtocolFactory tProtocolFactory = new TBinaryProtocol.Factory();
             tArgs.transportFactory(transportFactory);
             tArgs.protocolFactory(tProtocolFactory);
+            tArgs.maxReadBufferBytes=2048000;
             tArgs.processor (tProcessor);
             tArgs.selectorThreads ( serverPublisher.bossThreadCount==0?AbstractKoalsServerPublisher.DEFAULT_EVENT_LOOP_THREADS:serverPublisher.bossThreadCount );
             tArgs.workerThreads ( serverPublisher.workThreadCount==0? AbstractKoalsServerPublisher.DEFAULT_EVENT_LOOP_THREADS*2:serverPublisher.workThreadCount);

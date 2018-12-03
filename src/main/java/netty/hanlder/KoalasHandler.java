@@ -64,7 +64,7 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
         TIOStreamTransport tioStreamTransportInput = new TIOStreamTransport (  inputStream);
         TIOStreamTransport tioStreamTransportOutput = new TIOStreamTransport (  outputStream);
 
-        TKoalasFramedTransport inTransport = new TKoalasFramedTransport( tioStreamTransportInput );
+        TKoalasFramedTransport inTransport = new TKoalasFramedTransport( tioStreamTransportInput,2048000 );
         TKoalasFramedTransport outTransport = new TKoalasFramedTransport ( tioStreamTransportOutput,16384000,ifUserProtocol );
 
         if(this.privateKey != null && this.publicKey!=null){
