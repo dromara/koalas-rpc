@@ -214,6 +214,72 @@ RSA对称加密适合给三方系统进行调用,对称加密会影响传输性�
 # 下版本计划
 服务治理支持，数据统计（错误率，tp90，tp99等），数据大盘统计，自定义标签等
 
+# 自定义标签的支持-更新与20181203
+
+client
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:koalas="http://www.koalas.com/schema/ch"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+	                       http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+                           http://www.koalas.com/schema/ch
+                           http://www.koalas.com/schema/ch.xsd">
+
+	<koalas:client id="wmCreateAccountService1"
+				   serviceInterface="thrift.service.WmCreateAccountService"
+				   zkPath="127.0.0.1:2181"
+				   async="true"
+				   readTimeout="500000"/>
+
+	<koalas:client id="wmCreateAccountService2"
+			       serviceInterface="thrift.service.WmCreateAccountService"
+	               zkPath="127.0.0.1:2181"
+				   async="false"
+				   readTimeout="500000"/>
+</beans>
+```
+
+server
+
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:koalas="http://www.koalas.com/schema/ch"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	   http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+	   http://www.springframework.org/schema/aop
+	   http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
+	   http://www.springframework.org/schema/context
+	   http://www.springframework.org/schema/context/spring-context-4.2.xsd
+	   http://www.koalas.com/schema/ch
+	   http://www.koalas.com/schema/ch.xsd">
+
+
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+    <!-- 默认扫描的包路径 -->
+    <context:component-scan base-package="thrift.server.impl" use-default-filters="false">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Service"/>
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Component"/>
+    </context:component-scan>
+
+    <koalas:server id="WmCreateAccountService1"
+                   serviceInterface="thrift.service.WmCreateAccountService"
+                   serviceImpl="wmCreateAccountServiceImpl"
+                   port="8001"
+                   serverType="thrift"
+                   zkpath="127.0.0.1:2181"/>
+</beans>```
+
+
+
+
+
+
 # 代码下载后如何测试
 作者已经将测试类给大家写好，下载源码后clean install(这个应该都会吧，maven仓库作者用的是阿里云的maven私服)
 首先自己配置个简单的zookeeper服务器，启动zk服务器之后，执行上面的serverrun1或者2，也可以两个都执行,那么就带负载功能了。
