@@ -75,6 +75,32 @@ spring,apache pool,thrift，netty等
 client.proxyfactory.KoalasClientProxy 为基础服务类，copy引入即可。
 其中serviceInterface为thrift生成的服务类需要全局唯一,（关于thrift服务类生成请自行google，网上很多，这里不多阐述），zkPath为zookeeper的地址，集群环境请用逗号分隔 【127.0.0.1:2181,127.0.0.1:2182,127.0.0.1:2183】
 
+自定义标签用法
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:koalas="http://www.koalas.com/schema/ch"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+	                       http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+                           http://www.koalas.com/schema/ch
+                           http://www.koalas.com/schema/ch.xsd">
+
+	<koalas:client id="wmCreateAccountService1"
+				   serviceInterface="thrift.service.WmCreateAccountService"
+				   zkPath="127.0.0.1:2181"
+				   async="true"
+				   readTimeout="500000"/>
+
+	<koalas:client id="wmCreateAccountService2"
+			       serviceInterface="thrift.service.WmCreateAccountService"
+	               zkPath="127.0.0.1:2181"
+				   async="false"
+				   readTimeout="500000"/>
+</beans>
+
+
+
+
 ```
 package thrift.service;
 
@@ -177,6 +203,39 @@ KoalasAsyncCallBack为我为大家写的统一callback方法，支持future接�
 	</bean>
 
 </beans>
+
+自定义标签用法
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:koalas="http://www.koalas.com/schema/ch"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	   http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+	   http://www.springframework.org/schema/aop
+	   http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
+	   http://www.springframework.org/schema/context
+	   http://www.springframework.org/schema/context/spring-context-4.2.xsd
+	   http://www.koalas.com/schema/ch
+	   http://www.koalas.com/schema/ch.xsd">
+
+
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+    <!-- 默认扫描的包路径 -->
+    <context:component-scan base-package="thrift.server.impl" use-default-filters="false">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Service"/>
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Component"/>
+    </context:component-scan>
+
+    <koalas:server id="WmCreateAccountService1"
+                   serviceInterface="thrift.service.WmCreateAccountService"
+                   serviceImpl="wmCreateAccountServiceImpl"
+                   port="8001"
+                   serverType="thrift"
+                   zkpath="127.0.0.1:2181"/>
+</beans>
+
 
 serviceInterface和客户端一样是thrift生成的服务类。
 serviceImpl是服务类实现。
