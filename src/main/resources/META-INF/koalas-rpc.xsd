@@ -16,34 +16,34 @@
                     <xsd:attribute name="serviceInterface" type="xsd:string" use="required"/>
                     <xsd:attribute name="zkPath" type="xsd:string" />
                     <xsd:attribute name="serverIpPorts" type="xsd:string"/>
-                    <xsd:attribute name="async" type="xsd:string"/>
-                    <xsd:attribute name="connTimeout" type="xsd:string"/>
-                    <xsd:attribute name="readTimeout" type="xsd:string"/>
+                    <xsd:attribute name="async" type="xsd:boolean"/>
+                    <xsd:attribute name="connTimeout" type="xsd:int"/>
+                    <xsd:attribute name="readTimeout" type="xsd:int"/>
                     <xsd:attribute name="localMockServiceImpl" type="xsd:string"/>
-                    <xsd:attribute name="retryRequest" type="xsd:string"/>
-                    <xsd:attribute name="retryTimes" type="xsd:string"/>
-                    <xsd:attribute name="maxTotal" type="xsd:string"/>
-                    <xsd:attribute name="maxIdle" type="xsd:string"/>
-                    <xsd:attribute name="minIdle" type="xsd:string"/>
-                    <xsd:attribute name="lifo" type="xsd:string"/>
-                    <xsd:attribute name="fairness" type="xsd:string"/>
-                    <xsd:attribute name="maxWaitMillis" type="xsd:string"/>
-                    <xsd:attribute name="timeBetweenEvictionRunsMillis" type="xsd:string"/>
-                    <xsd:attribute name="minEvictableIdleTimeMillis" type="xsd:string"/>
-                    <xsd:attribute name="softMinEvictableIdleTimeMillis" type="xsd:string"/>
-                    <xsd:attribute name="numTestsPerEvictionRun" type="xsd:string"/>
-                    <xsd:attribute name="testOnCreate" type="xsd:string"/>
-                    <xsd:attribute name="testOnBorrow" type="xsd:string"/>
-                    <xsd:attribute name="testOnReturn" type="xsd:string"/>
-                    <xsd:attribute name="testWhileIdle" type="xsd:string"/>
+                    <xsd:attribute name="retryRequest" type="xsd:boolean"/>
+                    <xsd:attribute name="retryTimes" type="xsd:int"/>
+                    <xsd:attribute name="maxTotal" type="xsd:int"/>
+                    <xsd:attribute name="maxIdle" type="xsd:int"/>
+                    <xsd:attribute name="minIdle" type="xsd:int"/>
+                    <xsd:attribute name="lifo" type="xsd:boolean"/>
+                    <xsd:attribute name="fairness" type="xsd:boolean"/>
+                    <xsd:attribute name="maxWaitMillis" type="xsd:long"/>
+                    <xsd:attribute name="timeBetweenEvictionRunsMillis" type="xsd:long"/>
+                    <xsd:attribute name="minEvictableIdleTimeMillis" type="xsd:long"/>
+                    <xsd:attribute name="softMinEvictableIdleTimeMillis" type="xsd:long"/>
+                    <xsd:attribute name="numTestsPerEvictionRun" type="xsd:int"/>
+                    <xsd:attribute name="testOnCreate" type="xsd:boolean"/>
+                    <xsd:attribute name="testOnBorrow" type="xsd:boolean"/>
+                    <xsd:attribute name="testOnReturn" type="xsd:boolean"/>
+                    <xsd:attribute name="testWhileIdle" type="xsd:boolean"/>
                     <xsd:attribute name="iLoadBalancer" type="xsd:string"/>
                     <xsd:attribute name="env" type="xsd:string"/>
-                    <xsd:attribute name="removeAbandonedOnBorrow" type="xsd:string"/>
-                    <xsd:attribute name="removeAbandonedOnMaintenance" type="xsd:string"/>
-                    <xsd:attribute name="removeAbandonedTimeout" type="xsd:string"/>
+                    <xsd:attribute name="removeAbandonedOnBorrow" type="xsd:boolean"/>
+                    <xsd:attribute name="removeAbandonedOnMaintenance" type="xsd:boolean"/>
+                    <xsd:attribute name="removeAbandonedTimeout" type="xsd:int"/>
                     <xsd:attribute name="maxLength_" type="xsd:string"/>
-                    <xsd:attribute name="cores" type="xsd:string"/>
-                    <xsd:attribute name="asyncSelectorThreadCount" type="xsd:string"/>
+                    <xsd:attribute name="cores" type="xsd:int"/>
+                    <xsd:attribute name="asyncSelectorThreadCount" type="xsd:int"/>
                     <xsd:attribute name="privateKey" type="xsd:string"/>
                     <xsd:attribute name="publicKey" type="xsd:string"/>
                 </xsd:extension>
@@ -58,15 +58,15 @@
                 <xsd:extension base="beans:identifiedType">
                     <xsd:attribute name="serviceInterface" type="xsd:string" use="required"/>
                     <xsd:attribute name="serviceImpl" type="xsd:string" use="required" />
-                    <xsd:attribute name="port" type="xsd:string" use="required" />
+                    <xsd:attribute name="port" type="xsd:int" use="required" />
                     <xsd:attribute name="zkpath" type="xsd:string"/>
-                    <xsd:attribute name="bossThreadCount" type="xsd:string"/>
-                    <xsd:attribute name="workThreadCount" type="xsd:string"/>
-                    <xsd:attribute name="koalasThreadCount" type="xsd:string"/>
+                    <xsd:attribute name="bossThreadCount" type="xsd:int"/>
+                    <xsd:attribute name="workThreadCount" type="xsd:int"/>
+                    <xsd:attribute name="koalasThreadCount" type="xsd:int"/>
                     <xsd:attribute name="env" type="xsd:string"/>
-                    <xsd:attribute name="weight" type="xsd:string"/>
+                    <xsd:attribute name="weight" type="xsd:int"/>
                     <xsd:attribute name="serverType" type="xsd:string"/>
-                    <xsd:attribute name="workQueue" type="xsd:string"/>
+                    <xsd:attribute name="workQueue" type="xsd:int"/>
                     <xsd:attribute name="privateKey" type="xsd:string"/>
                     <xsd:attribute name="publicKey" type="xsd:string"/>
                 </xsd:extension>
