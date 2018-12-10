@@ -43,39 +43,19 @@ public class KoalasThreadedSelectorServer extends KoalasAbstractNonblockingServe
 
   public static class Args extends AbstractNonblockingServerArgs<Args> {
 
-    /** The number of threads for selecting on already-accepted connections */
     public int selectorThreads = 2;
-    /**
-     * The size of the executor service (if none is specified) that will handle
-     * invocations. This may be set to 0, in which case invocations will be
-     * handled directly on the selector threads (as is in TNonblockingServer)
-     */
+
     private int workerThreads = 5;
-    /** Time to wait for server to stop gracefully */
     private int stopTimeoutVal = 60;
     private TimeUnit stopTimeoutUnit = TimeUnit.SECONDS;
-    /** The ExecutorService for handling dispatched requests */
     private ExecutorService executorService = null;
-    /**
-     * The size of the blocking queue per selector thread for passing accepted
-     * connections to the selector thread
-     */
+
     private int acceptQueueSizePerThread = 4;
 
-    /**
-     * Determines the strategy for handling new accepted connections.
-     */
     public static enum AcceptPolicy {
-      /**
-       * Require accepted connection registration to be handled by the executor.
-       * If the worker pool is saturated, further accepts will be closed
-       * immediately. Slightly increases latency due to an extra scheduling.
-       */
+
       FAIR_ACCEPT,
-      /**
-       * Handle the accepts as fast as possible, disregarding the status of the
-       * executor service.
-       */
+
       FAST_ACCEPT
     }
 
