@@ -3,6 +3,7 @@ package client.cluster.impl;
 import client.cluster.ILoadBalancer;
 import client.cluster.RemoteServer;
 import client.cluster.ServerObject;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.pool2.impl.AbandonedConfig;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
@@ -43,7 +44,7 @@ public class DirectClisterImpl extends AbstractBaseIcluster {
 
     @Override
     public RemoteServer getUseRemote() {
-        if (serverList == null) {
+        if (serverList.size ()==0) {
             if (this.hostAndPorts == null) return null;
             String[] array = hostAndPorts.split ( REGEX );
             List<RemoteServer> list = new ArrayList<> ();
@@ -52,7 +53,7 @@ public class DirectClisterImpl extends AbstractBaseIcluster {
                 Integer weight = Integer.valueOf ( temp.split ( "#" )[1].trim () );
                 String host = hostAndIp.split ( ":" )[0].trim ();
                 String port = hostAndIp.split ( ":" )[1].trim ();
-                String server = temp.split ( "#" )[2].trim ();
+                String server = StringUtils.EMPTY;
                 list.add ( new RemoteServer ( host, port, weight, true,server ) );
             }
             serverList =list;
