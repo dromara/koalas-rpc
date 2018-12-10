@@ -20,9 +20,14 @@
 package thrift;
 
 import ex.RSAException;
+import heartbeat.impl.HeartbeatServiceImpl;
+import heartbeat.service.HeartbeatService;
 import org.apache.thrift.TByteArrayOutputStream;
 import org.apache.thrift.TException;
+import org.apache.thrift.TProcessor;
+import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocol;
+import org.apache.thrift.protocol.TProtocolFactory;
 import org.apache.thrift.server.TServer;
 import org.apache.thrift.transport.*;
 import org.slf4j.Logger;
@@ -327,7 +332,16 @@ public abstract class KoalasAbstractNonblockingServer extends TServer {
                 TTransport outTrans = getOutputTransport ();
                 TProtocol inProt = inputProtocolFactory_.getProtocol ( inTrans );
                 TProtocol outProt = outputProtocolFactory_.getProtocol ( outTrans );
-                processorFactory_.getProcessor ( inTrans ).process ( inProt, outProt );
+
+                byte[] body = buffer_.array ();
+                if(body[0]==TKoalasFramedTransport.first && body[1]==TKoalasFramedTransport.second && body[3]==((byte) 2)){
+                    TProcessor tprocessorheartbeat = new HeartbeatService.Processor<> (new HeartbeatServiceImpl () );
+                    ((TKoalasFramedTransport)outTrans).setHeartbeat ( (byte) 2 );
+                    tprocessorheartbeat.process ( inProt,outProt );
+                } else{
+                    processorFactory_.getProcessor ( inTrans ).process ( inProt, outProt );
+                }
+
                 responseReady ();
                 return;
             } catch (TException te) {
@@ -398,7 +412,7 @@ public abstract class KoalasAbstractNonblockingServer extends TServer {
             }
             response_= new TByteArrayOutputStream ();
             TIOStreamTransport tioStreamTransportOutput = new TIOStreamTransport ( response_ );
-            TKoalasFramedTransport outTransport = new TKoalasFramedTransport ( tioStreamTransportOutput, 16384000, ifUserProtocol );
+            TKoalasFramedTransport outTransport = new TKoalasFramedTransport ( tioStreamTransportOutput, 2048000, ifUserProtocol );
 
             if(b[4]==TKoalasFramedTransport.first && b[5]==TKoalasFramedTransport.second){
                 if(b[8] == (byte) 1){

@@ -1,6 +1,8 @@
 package netty.hanlder;
 
 import ex.RSAException;
+import heartbeat.impl.HeartbeatServiceImpl;
+import heartbeat.service.HeartbeatService;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -47,6 +49,7 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, ByteBuf msg) throws Exception {
+
         int i =msg.readableBytes ();
         byte[] b = new byte[i];
         msg.readBytes ( b );
@@ -65,7 +68,7 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
         TIOStreamTransport tioStreamTransportOutput = new TIOStreamTransport (  outputStream);
 
         TKoalasFramedTransport inTransport = new TKoalasFramedTransport( tioStreamTransportInput,2048000 );
-        TKoalasFramedTransport outTransport = new TKoalasFramedTransport ( tioStreamTransportOutput,16384000,ifUserProtocol );
+        TKoalasFramedTransport outTransport = new TKoalasFramedTransport ( tioStreamTransportOutput,2048000,ifUserProtocol );
 
         if(this.privateKey != null && this.publicKey!=null){
             if(b[8] != (byte) 1 || !(b[4]==TKoalasFramedTransport.first && b[5]==TKoalasFramedTransport.second)){
@@ -76,6 +79,26 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
         }
 
         if(b[4]==TKoalasFramedTransport.first && b[5]==TKoalasFramedTransport.second){
+
+            //heartbeat
+            if(b[7] == (byte) 2){
+                TProcessor tprocessorheartbeat = new HeartbeatService.Processor<> (new HeartbeatServiceImpl () );
+                outTransport.setHeartbeat ( (byte) 2 );
+                TProtocolFactory tProtocolFactory =new TBinaryProtocol.Factory();
+                TProtocol in =tProtocolFactory.getProtocol ( inTransport );
+                TProtocol out =tProtocolFactory.getProtocol ( outTransport );
+               try {
+                   tprocessorheartbeat.process ( in,out );
+                   ctx.writeAndFlush ( outputStream );
+                   return;
+               } catch (Exception e){
+                   logger.error ( "heartbeat error e" );
+                   handlerException(b,ctx,e,ErrorType.APPLICATION,privateKey,publicKey);
+                   return;
+               }
+            }
+
+            //rsa support
             if(b[8] == (byte) 1){
                 //in
                 inTransport.setPrivateKey ( this.privateKey );

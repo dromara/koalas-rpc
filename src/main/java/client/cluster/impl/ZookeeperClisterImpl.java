@@ -101,7 +101,7 @@ public class ZookeeperClisterImpl extends AbstractBaseIcluster {
         return serverObject;
     }
 
-    private String createMapKey(RemoteServer remoteServer){
+    public String createMapKey(RemoteServer remoteServer){
         return remoteServer.getIp ().concat ( "-" ).concat (remoteServer.getPort ());
     }
 

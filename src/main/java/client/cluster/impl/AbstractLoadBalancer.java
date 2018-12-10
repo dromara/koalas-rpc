@@ -3,6 +3,7 @@ package client.cluster.impl;
 import client.cluster.ILoadBalancer;
 import client.cluster.RemoteServer;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 /**
@@ -21,21 +22,23 @@ public abstract class AbstractLoadBalancer implements ILoadBalancer {
     }
 
     public RemoteServer select(List<RemoteServer> list){
-        if(list != null && list.size ()==1){
+
+        if(list ==null) return null;
+
+        if(list.size ()==1){
             return list.get ( 0 );
         }
 
-        Iterator<RemoteServer> iterator = list.iterator ();
+        List<RemoteServer> l = new ArrayList<> (  );
 
-        while (iterator.hasNext ()){
-            RemoteServer r = iterator.next ();
-
-            if(!r.isEnable ()){
-                iterator.remove ();
+        for (int i = list.size ()-1; i >=0 ; i--) {
+            RemoteServer r = list.get ( i );
+            if(r.isEnable ()){
+                l.add ( r );
             }
         }
 
-        return doSelect(list);
+        return doSelect(l);
     }
 
     public abstract RemoteServer doSelect(List<RemoteServer> list);

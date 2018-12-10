@@ -16,7 +16,7 @@ public class ClientRunSync {
 
     @Test
     public void testRunSync(){
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 10000000; i++) {
             try {
                 testServiceSync.getRemoteRpc ();
             }catch (Exception e){

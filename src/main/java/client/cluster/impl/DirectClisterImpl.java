@@ -78,17 +78,18 @@ public class DirectClisterImpl extends AbstractBaseIcluster {
     @Override
     public ServerObject getObjectForRemote() {
         RemoteServer remoteServer= this.getUseRemote();
+        if(remoteServer == null) return null;
         if(serverPollMap.containsKey ( createMapKey(remoteServer) )){
             GenericObjectPool<TTransport> pool = serverPollMap.get ( createMapKey(remoteServer) );
             try {
                 return createServerObject(pool,remoteServer);
             } catch (Exception e) {
-                LOG.error ( "borrowObject is wrong,the poll message is:",e );
+                LOG.error ( "borrowObject is fail,the poll message is:",e );
                 return null;
             }
         }
 
-        GenericObjectPool pool = createGenericObjectPool(remoteServer);
+        GenericObjectPool<TTransport> pool = createGenericObjectPool(remoteServer);
         serverPollMap.put (createMapKey(remoteServer) ,pool);
         try {
             return createServerObject(pool,remoteServer);
@@ -98,7 +99,7 @@ public class DirectClisterImpl extends AbstractBaseIcluster {
         }
     }
 
-    private ServerObject createServerObject(GenericObjectPool pool,RemoteServer remoteServer){
+    private ServerObject createServerObject(GenericObjectPool<TTransport> pool,RemoteServer remoteServer){
         ServerObject serverObject = new ServerObject ();
         serverObject.setGenericObjectPool ( pool );
         serverObject.setRemoteServer ( remoteServer );
