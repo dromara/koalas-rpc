@@ -10,6 +10,10 @@ import org.apache.thrift.transport.TTransport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import register.ZookeeperClient;
+
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+
 /**
  * Copyright (C) 2018
  * All rights reserved
@@ -27,6 +31,10 @@ public class ZookeeperClisterImpl extends AbstractBaseIcluster {
     private String serviceName;
     private ZookeeperClient zookeeperClient;
 
+    public ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
+
+    public Lock writeLock = lock.writeLock();
+    public Lock readLock = lock.readLock();
 
     public ZookeeperClisterImpl(String hostAndPorts, ILoadBalancer iLoadBalancer, String serviceName,String env, boolean async, int conTimeOut, int soTimeOut, GenericObjectPoolConfig genericObjectPoolConfig, AbandonedConfig abandonedConfig){
         super(iLoadBalancer,serviceName,async,conTimeOut,soTimeOut,genericObjectPoolConfig,abandonedConfig);
@@ -38,26 +46,36 @@ public class ZookeeperClisterImpl extends AbstractBaseIcluster {
     }
 
     @Override
-    public RemoteServer getUseRemote() {
-        synchronized (zookeeperClient){
-            return iLoadBalancer.select (zookeeperClient.getServerList ());
+    public void destroy() {
+        if(zookeeperClient != null){
+            try {
+                writeLock.lock();
+                LOG.info ( "【{}】shut down",serviceName );
+                if(serverPollMap !=null && serverPollMap.size ()>0){
+                    for(String string:serverPollMap.keySet ()){
+                        GenericObjectPool p =serverPollMap.get ( string );
+                        if(p!=null) destroyGenericObjectPool(p);
+                        serverPollMap.remove (  string);
+                    }
+                }
+                zookeeperClient.destroy ();
+            } finally {
+                writeLock.unlock();
+            }
         }
     }
 
     @Override
-    public void destroy() {
-        LOG.info ( "【{}】shut down",serviceName );
-        if(serverPollMap !=null && serverPollMap.size ()>0){
-            for(String string:serverPollMap.keySet ()){
-                GenericObjectPool p =serverPollMap.get ( string );
-                if(p!=null) destroyGenericObjectPool(p);
-                serverPollMap.remove (  string);
-            }
+    public RemoteServer getUseRemote() {
+
+        RemoteServer remoteServer;
+        try {
+            readLock.lock();
+            remoteServer = iLoadBalancer.select (zookeeperClient.getServerList ());
+        } finally {
+            readLock.unlock();
         }
-        if(zookeeperClient != null)
-            synchronized (zookeeperClient){
-                zookeeperClient.destroy ();
-            }
+        return remoteServer;
     }
 
     @Override

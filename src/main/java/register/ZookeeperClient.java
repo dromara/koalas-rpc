@@ -98,8 +98,8 @@ public class ZookeeperClient {
                 }
             }
             if (!connected) {
-                LOG.error ( "zk connected fail! :" + env + "-" + serviceName );
-                throw new IllegalArgumentException ( "zk connected fail!" );
+                LOG.error ( "zk client connected fail! :" + env + "-" + serviceName );
+                throw new IllegalArgumentException ( "zk client connected fail!" );
             }
         } catch (InterruptedException e) {
             LOG.error ( e.getMessage (), e );
@@ -250,75 +250,88 @@ public class ZookeeperClient {
         }
     }
 
-    private synchronized void updateServer(RemoteServer remoteServer) {
-        if (serverList != null)
-            for (int i = 0; i < serverList.size (); i++) {
-                RemoteServer tempServer_ = serverList.get ( i );
-                if (tempServer_.getIp ().equals ( remoteServer.getIp () ) && tempServer_.getPort ().equals ( remoteServer.getPort () )) {
-                    serverList.set ( i, remoteServer );
-                    tempServer_ = null; //help gc
-                }
-            }
+    private  void updateServer(RemoteServer remoteServer) {
+       try {
+           zookeeperClister.writeLock.lock();
+           if (serverList != null)
+               for (int i = 0; i < serverList.size (); i++) {
+                   RemoteServer tempServer_ = serverList.get ( i );
+                   if (tempServer_.getIp ().equals ( remoteServer.getIp () ) && tempServer_.getPort ().equals ( remoteServer.getPort () )) {
+                       serverList.set ( i, remoteServer );
+                       tempServer_ = null; //help gc
+                   }
+               }
+       } finally {
+           zookeeperClister.writeLock.unlock();
+       }
     }
 
-    private synchronized void updateServerList(List<String> childpaths, String parentPath) {
-        if (serverList.size () != 0) {
-            serverList.clear ();
-        }
-        if (serverHeartbeatMap.size () != 0) {
-            serverHeartbeatMap.clear ();
-        }
-        if (zookeeperClister.serverPollMap != null && zookeeperClister.serverPollMap.size () > 0) {
-            for (String string : zookeeperClister.serverPollMap.keySet ()) {
-                GenericObjectPool p = zookeeperClister.serverPollMap.get ( string );
-                if (p != null) p.close ();
-                zookeeperClister.serverPollMap.remove ( string );
+    private  void updateServerList(List<String> childpaths, String parentPath) {
+
+        try {
+            zookeeperClister.writeLock.lock();
+
+            if (serverList.size () != 0) {
+                serverList.clear ();
             }
-        }
-
-        for (String _childPath : childpaths) {
-            //   /env/com.test.service/192.168.1.10:6666
-            String currPath = parentPath.concat ( "/" ).concat ( _childPath );
-            //
-            try {
-                byte[] bytes = zookeeper.getData ( currPath, null, new Stat () );
-                try {
-                    String data = new String ( bytes, "UTF-8" );
-                    JSONObject json = JSONObject.parseObject ( data );
-
-                    //远程ip
-                    String ip = _childPath.split ( ":" )[0];
-                    //服务端口
-                    String port = _childPath.split ( ":" )[1];
-                    //权重
-                    String weight = json.getString ( "weight" );
-                    //是否可用
-                    String enable = json.getString ( "enable" );
-                    //注冊类型
-                    String server = json.getString ( "server" );
-                    RemoteServer remoteServer = new RemoteServer ( ip, port, Integer.valueOf ( weight ), "1".equals ( enable ), server );
-                    serverList.add ( remoteServer );
-
-                    //Heartbeat
-                    TSocket t = new TSocket ( remoteServer.getIp (), Integer.parseInt ( remoteServer.getPort () ), TIMEOUT );
-                    TTransport transport = new TKoalasFramedTransport ( t );
-                    ((TKoalasFramedTransport) transport).setHeartbeat ( HEARTBEAT );
-                    TProtocol protocol = new TBinaryProtocol ( transport );
-                    HeartbeatService.Client client = new HeartbeatService.Client ( protocol );
-                    transport.open ();
-                    serverHeartbeatMap.put ( zookeeperClister.createMapKey ( remoteServer ), client );
-
-                } catch (UnsupportedEncodingException e) {
-                    LOG.error ( e.getMessage () + " UTF-8 is not allow!", e );
-                } catch (TTransportException e) {
-                    LOG.error ( e.getMessage (), e );
+            if (serverHeartbeatMap.size () != 0) {
+                serverHeartbeatMap.clear ();
+            }
+            if (zookeeperClister.serverPollMap != null && zookeeperClister.serverPollMap.size () > 0) {
+                for (String string : zookeeperClister.serverPollMap.keySet ()) {
+                    GenericObjectPool p = zookeeperClister.serverPollMap.get ( string );
+                    if (p != null) p.close ();
+                    zookeeperClister.serverPollMap.remove ( string );
                 }
-            } catch (KeeperException e) {
-                LOG.error ( e.getMessage () + "currPath is not exists!", e );
-            } catch (InterruptedException e) {
-                LOG.error ( e.getMessage () + "the current thread is Interrupted", e );
             }
+
+            for (String _childPath : childpaths) {
+                //   /env/com.test.service/192.168.1.10:6666
+                String currPath = parentPath.concat ( "/" ).concat ( _childPath );
+                //
+                try {
+                    byte[] bytes = zookeeper.getData ( currPath, null, new Stat () );
+                    try {
+                        String data = new String ( bytes, "UTF-8" );
+                        JSONObject json = JSONObject.parseObject ( data );
+
+                        //远程ip
+                        String ip = _childPath.split ( ":" )[0];
+                        //服务端口
+                        String port = _childPath.split ( ":" )[1];
+                        //权重
+                        String weight = json.getString ( "weight" );
+                        //是否可用
+                        String enable = json.getString ( "enable" );
+                        //注冊类型
+                        String server = json.getString ( "server" );
+                        RemoteServer remoteServer = new RemoteServer ( ip, port, Integer.valueOf ( weight ), "1".equals ( enable ), server );
+                        serverList.add ( remoteServer );
+
+                        //Heartbeat
+                        TSocket t = new TSocket ( remoteServer.getIp (), Integer.parseInt ( remoteServer.getPort () ), TIMEOUT );
+                        TTransport transport = new TKoalasFramedTransport ( t );
+                        ((TKoalasFramedTransport) transport).setHeartbeat ( HEARTBEAT );
+                        TProtocol protocol = new TBinaryProtocol ( transport );
+                        HeartbeatService.Client client = new HeartbeatService.Client ( protocol );
+                        transport.open ();
+                        serverHeartbeatMap.put ( zookeeperClister.createMapKey ( remoteServer ), client );
+
+                    } catch (UnsupportedEncodingException e) {
+                        LOG.error ( e.getMessage () + " UTF-8 is not allow!", e );
+                    } catch (TTransportException e) {
+                        LOG.error ( e.getMessage (), e );
+                    }
+                } catch (KeeperException e) {
+                    LOG.error ( e.getMessage () + "currPath is not exists!", e );
+                } catch (InterruptedException e) {
+                    LOG.error ( e.getMessage () + "the current thread is Interrupted", e );
+                }
+            }
+        } finally {
+            zookeeperClister.writeLock.unlock();
         }
+
     }
 
 
@@ -345,14 +358,19 @@ public class ZookeeperClient {
             }
         }
 
-        private synchronized void reConnected() {
-            ZookeeperClient.this.destroy ();
-            firstInitChildren = true;
-            serverList = new CopyOnWriteArrayList<> ();
-            //心跳服务列表
-            serverHeartbeatMap = new ConcurrentHashMap<> ();
-            executor = Executors.newScheduledThreadPool ( 1 );
-            ZookeeperClient.this.initZooKeeper ();
+        private  void reConnected() {
+            try {
+                zookeeperClister.writeLock.lock();
+                ZookeeperClient.this.destroy ();
+                firstInitChildren = true;
+                serverList = new CopyOnWriteArrayList<> ();
+                //心跳服务列表
+                serverHeartbeatMap = new ConcurrentHashMap<> ();
+                executor = Executors.newScheduledThreadPool ( 1 );
+                ZookeeperClient.this.initZooKeeper ();
+            } finally {
+                zookeeperClister.writeLock.unlock();
+            }
         }
     }
 
@@ -380,7 +398,8 @@ public class ZookeeperClient {
 
         @Override
         public void run() {
-            synchronized (ZookeeperClient.this) {
+            try {
+                zookeeperClister.writeLock.lock();
                 if (serverHeartbeatMap != null && serverHeartbeatMap.size () > 0) {
                     Iterator<String> key = serverHeartbeatMap.keySet ().iterator ();
                     in:
@@ -437,6 +456,9 @@ public class ZookeeperClient {
                         }
                     }
                 }
+
+            } finally {
+                zookeeperClister.writeLock.unlock();
             }
         }
     }
