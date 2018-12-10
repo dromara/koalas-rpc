@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.ConnectException;
+import java.net.SocketException;
 import java.net.SocketTimeoutException;
 
 /**
@@ -222,8 +223,14 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
                         }
                         return null;
                     }
+                    if(cause.getCause ()!=null && cause.getCause () instanceof SocketException){
+                        if(genericObjectPool.isClosed ()){
+                            LOG.warn ( "serverObject {} is close!,retry it",serverObject );
+                            if (retryRequest)
+                                continue;
+                        }
+                    }
                 }
-
 
                 if (socket != null && !ifreturn)
                     genericObjectPool.returnObject ( socket );
