@@ -44,8 +44,8 @@ public class ZookeeperClient {
     private ZooKeeper zookeeper = null;
     private ZookeeperClisterImpl zookeeperClister;
     //private Map<String, Watcher> serviceWatcher = new ConcurrentHashMap<> ();
-
-    private boolean firstInitChildren = true;
+    private CountDownLatch firstInitChildren = new CountDownLatch(1);
+    //private boolean firstInitChildren = true;
 
     //当前服务列表
     private List<RemoteServer> serverList = new CopyOnWriteArrayList<> ();
@@ -158,7 +158,7 @@ public class ZookeeperClient {
         } catch (InterruptedException e) {
             LOG.error ( e.getMessage (), e );
         } finally {
-            firstInitChildren = false;
+            firstInitChildren.countDown ();
         }
     }
 
@@ -189,9 +189,7 @@ public class ZookeeperClient {
                         ZookeeperClient.this.updateServerList ( childpaths, parentPath );
                         LOG.info ( "the serviceList: {} ! ", childpaths );
                         //wait the init childChanged
-                        while (firstInitChildren) {
-                            Thread.sleep ( 10 );
-                        }
+                        firstInitChildren.await ();
 
                         for (String _childpaths : childpaths) {
                             String fullpath = parentPath.concat ( "/" ).concat ( _childpaths );
@@ -213,9 +211,7 @@ public class ZookeeperClient {
 
                     try {
                         //wait the init childDataChanged
-                        while (firstInitChildren) {
-                            Thread.sleep ( 10 );
-                        }
+                        firstInitChildren.await ();
                         String data = new String ( ZookeeperClient.this.zookeeper.getData ( fullPath, this, new Stat () ), UTF_8 );
                         JSONObject json = JSONObject.parseObject ( data );
 
@@ -362,7 +358,7 @@ public class ZookeeperClient {
             try {
                 zookeeperClister.writeLock.lock();
                 ZookeeperClient.this.destroy ();
-                firstInitChildren = true;
+                firstInitChildren = new CountDownLatch ( 1 );
                 serverList = new CopyOnWriteArrayList<> ();
                 //心跳服务列表
                 serverHeartbeatMap = new ConcurrentHashMap<> ();
