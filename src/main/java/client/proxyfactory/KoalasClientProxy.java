@@ -14,8 +14,6 @@ import org.apache.thrift.async.TAsyncClientManager;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.protocol.TProtocolFactory;
-import org.apache.thrift.transport.TFramedTransport;
-import org.apache.thrift.transport.TNonblockingSocket;
 import org.apache.thrift.transport.TNonblockingTransport;
 import org.apache.thrift.transport.TTransport;
 import org.slf4j.Logger;
@@ -377,7 +375,7 @@ public class KoalasClientProxy implements FactoryBean<Object>, ApplicationContex
     }
 
     @Override
-    public Object getObject() throws Exception {
+    public Object getObject(){
         if (getLoalsServiceProxy () == null) throw new RuntimeException ( "the Proxy can't be null" );
         return getLoalsServiceProxy ();
     }
@@ -510,7 +508,7 @@ public class KoalasClientProxy implements FactoryBean<Object>, ApplicationContex
     }
 
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet(){
 
 
         if(serviceInterface==null){

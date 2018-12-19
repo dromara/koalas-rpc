@@ -13,10 +13,9 @@
 	   http://www.koalas.com/schema/ch
 	   http://www.koalas.com/schema/ch.xsd">
 
-
     <aop:aspectj-autoproxy proxy-target-class="true"/>
     <!-- 默认扫描的包路径 -->
-    <context:component-scan base-package="thrift.server.impl" use-default-filters="false">
+    <context:component-scan base-package="thrift.xml.server" use-default-filters="false">
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Service"/>
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Component"/>
     </context:component-scan>

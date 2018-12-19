@@ -1,14 +1,14 @@
-package client;
+package xml.client;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import thrift.client.impl.TestServiceSync;
+import thrift.xml.client.impl.TestServiceSync;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath:client/koalas-client.xml"})
+@ContextConfiguration(locations={"classpath:xml/client/koalas-client.xml"})
 public class ClientRunSync {
 
     @Autowired

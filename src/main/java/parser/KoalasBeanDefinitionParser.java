@@ -12,11 +12,15 @@ import org.springframework.beans.factory.xml.ParserContext;
 import org.w3c.dom.Element;
 import server.KoalasServerPublisher;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class KoalasBeanDefinitionParser implements BeanDefinitionParser {
 
     private static final Logger logger = LoggerFactory.getLogger ( KoalasBeanDefinitionParser.class );
 
     private Class<?> clazz;
+
+    private AtomicInteger atomicInteger = new AtomicInteger (  );
 
      KoalasBeanDefinitionParser(Class<?> clazz) {
         this.clazz = clazz;
@@ -37,7 +41,7 @@ public class KoalasBeanDefinitionParser implements BeanDefinitionParser {
             parserContext.getRegistry().registerBeanDefinition(id, beanDefinition);
             //beanDefinition.getPropertyValues().addPropertyValue("id", id);
         } else{
-            throw new IllegalStateException("id can't be null!");
+            parserContext.getRegistry().registerBeanDefinition(clazz.getName () + atomicInteger.getAndIncrement (), beanDefinition);
         }
 
         if (clazz == KoalasClientProxy.class) {
@@ -237,6 +241,11 @@ public class KoalasBeanDefinitionParser implements BeanDefinitionParser {
             String publicKey = element.getAttribute ( "publicKey" );
             if(!StringUtils.isEmpty ( publicKey )){
                 beanDefinition.getPropertyValues ().addPropertyValue ( "publicKey",publicKey);
+            }
+        } else if(clazz==KoalasAnnotationBean.class){
+            String KoalasPackage = element.getAttribute ( "package" );
+            if(!StringUtils.isEmpty ( KoalasPackage )){
+                beanDefinition.getPropertyValues ().addPropertyValue ( "annotationPackage",KoalasPackage);
             }
         }
 

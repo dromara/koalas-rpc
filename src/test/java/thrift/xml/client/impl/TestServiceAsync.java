@@ -1,4 +1,4 @@
-package thrift.client.impl;
+package thrift.xml.client.impl;
 
 import client.async.KoalasAsyncCallBack;
 import org.apache.thrift.TException;

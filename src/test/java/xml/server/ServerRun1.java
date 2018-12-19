@@ -1,4 +1,4 @@
-package server;
+package xml.server;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -6,7 +6,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath:server/koalas-server1.xml"})
+@ContextConfiguration(locations={"classpath:xml/server/koalas-server1.xml"})
 public class ServerRun1 {
 
     @Test

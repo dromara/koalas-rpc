@@ -23,7 +23,7 @@ public class KoalasServerPublisher extends AbstractKoalsServerPublisher implemen
     public static final String THRIFT = "thrift";
 
     @Override
-    public Object getObject() throws Exception {
+    public Object getObject(){
         return this;
     }
 
