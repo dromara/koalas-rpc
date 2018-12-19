@@ -10,7 +10,7 @@ import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @KoalasServer ( port = 8801,zkpath="127.0.0.1:2181")
-public class WmCreateAccountServiceImpl implements WmCreateAccountService.Iface {
+public class WmCreateAccountServiceNettyImpl implements WmCreateAccountService.Iface {
     private AtomicInteger atomicInteger = new AtomicInteger ( 0 );
     @Override
     public WmCreateAccountRespone getRPC(WmCreateAccountRequest wmCreateAccountRequest) throws TException {
