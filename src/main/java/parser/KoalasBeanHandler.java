@@ -4,6 +4,12 @@ import client.proxyfactory.KoalasClientProxy;
 import org.springframework.beans.factory.xml.NamespaceHandlerSupport;
 import server.KoalasServerPublisher;
 
+/**
+ * Copyright (C) 2018
+ * All rights reserved
+ * User: yulong.zhang
+ * Date:2018年12月20日11:23:01
+ */
 public class KoalasBeanHandler extends NamespaceHandlerSupport {
 
     public static final String CLIENT = "client";

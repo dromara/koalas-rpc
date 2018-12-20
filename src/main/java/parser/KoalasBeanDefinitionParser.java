@@ -14,6 +14,12 @@ import server.KoalasServerPublisher;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * Copyright (C) 2018
+ * All rights reserved
+ * User: yulong.zhang
+ * Date:2018年12月20日11:23:01
+ */
 public class KoalasBeanDefinitionParser implements BeanDefinitionParser {
 
     private static final Logger logger = LoggerFactory.getLogger ( KoalasBeanDefinitionParser.class );

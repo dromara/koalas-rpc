@@ -28,8 +28,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * 心跳请求
- * 
+ * Copyright (C) 2018
+ * All rights reserved
+ * User: 2018年12月20日11:22:31
+ * Date:2018年09月18日17:44:58
  */
 public class HeartBeat implements org.apache.thrift.TBase<HeartBeat, HeartBeat._Fields>, java.io.Serializable, Cloneable {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("HeartBeat");

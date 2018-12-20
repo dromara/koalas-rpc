@@ -26,6 +26,12 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
 
+/**
+ * Copyright (C) 2018
+ * All rights reserved
+ * User: yulong.zhang
+ * Date:2018年12月20日11:23:01
+ */
 public class KoalasAnnotationBean implements DisposableBean, BeanFactoryPostProcessor, BeanPostProcessor, BeanFactoryAware, Ordered {
 
     public static final String COMMA_SPLIT_PATTERN = "\\s*[,]+\\s*";

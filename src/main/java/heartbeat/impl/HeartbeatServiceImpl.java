@@ -10,6 +10,12 @@ import utils.IPUtil;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * Copyright (C) 2018
+ * All rights reserved
+ * User: yulong.zhang
+ * Date:2018年12月20日11:22:19
+ */
 public class HeartbeatServiceImpl implements HeartbeatService.Iface {
     private final static Logger logger = LoggerFactory.getLogger ( HeartbeatServiceImpl.class );
 
