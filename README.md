@@ -55,27 +55,7 @@ spring,apache pool,thrift，netty等
 #### 1：客户端使用方式
 
 以下是最精简配置
-#### 同步
-<beans xmlns="http://www.springframework.org/schema/beans"
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xsi:schemaLocation="http://www.springframework.org/schema/beans
-	http://www.springframework.org/schema/beans/spring-beans-4.2.xsd">
 
-	<bean id="wmCreateAccountService" class="client.proxyfactory.KoalasClientProxy" destroy-method="destroy">
-		<property name="serviceInterface" value="thrift.service.WmCreateAccountService"/>
-		<property name="zkPath" value="127.0.0.1:2181"/>
-	</bean>
-
-     <bean id="xxxx" class="client.proxyfactory.KoalasClientProxy" destroy-method="destroy">
-		<property name="serviceInterface" value="thrift.xxxx.WmCreateAccountService"/>
-		<property name="zkPath" value="127.0.0.1:2181"/>
-	</bean>
-</beans>
-
-client.proxyfactory.KoalasClientProxy 为基础服务类，copy引入即可。
-其中serviceInterface为thrift生成的服务类需要全局唯一,（关于thrift服务类生成请自行google，网上很多，这里不多阐述），zkPath为zookeeper的地址，集群环境请用逗号分隔 【127.0.0.1:2181,127.0.0.1:2182,127.0.0.1:2183】
-
-自定义标签用法
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -91,17 +71,11 @@ client.proxyfactory.KoalasClientProxy 为基础服务类，copy引入即可。
 				   async="true"
 				   readTimeout="500000"/>
 
-	<koalas:client id="wmCreateAccountService2"
-			       serviceInterface="thrift.service.WmCreateAccountService"
-	               zkPath="127.0.0.1:2181"
-				   async="false"
-				   readTimeout="500000"/>
 </beans>
 
-
-
-
 ```
+zkPath为zookeeper的地址，集群环境请用逗号分隔 【127.0.0.1:2181,127.0.0.1:2182,127.0.0.1:2183】
+
 package thrift.service;
 
 import org.apache.thrift.TException;
