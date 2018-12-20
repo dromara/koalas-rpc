@@ -276,8 +276,7 @@ RSA对称加密适合给三方系统进行调用,对称加密会影响传输性�
 作者已经将测试类给大家写好，下载源码后clean install(这个应该都会吧，maven仓库作者用的是阿里云的maven私服)
 首先自己配置个简单的zookeeper服务器，启动zk服务器之后，执行上面的serverrun1或者2，也可以两个都执行,那么就带负载功能了。
 然后随便执行clientRunAsync或者是sync，其中一个是同步调用，另外一个是异步调用，作者在里面已经写好了方法直接就可以执行了。
-![输入图片说明](https://images.gitee.com/uploads/images/2018/1129/161257_e94a5f7a_536094.png "屏幕截图.png")
-
+![输入图片说明](https://images.gitee.com/uploads/images/2018/1220/104433_cfa23d61_536094.png "屏幕截图.png")
 
 #### 联系作者 :
 高级java QQ群：492926917
