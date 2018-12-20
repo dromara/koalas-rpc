@@ -54,6 +54,7 @@ spring,apache pool,thrift，netty等
 
 #### 1：客户端使用方式
 
+#### xml
 以下是最精简配置 zkPath为zookeeper的地址，集群环境请用逗号分隔 【127.0.0.1:2181,127.0.0.1:2182,127.0.0.1:2183】
 
 <?xml version="1.0" encoding="UTF-8"?>
@@ -161,6 +162,78 @@ public class TestService2 {
 
 KoalasAsyncCallBack为我为大家写的统一callback方法，支持future接口，并且支持future.get ()同步获取和future.get(long timeout, TimeUnit unit)超时获取两种方式，推荐大家使用。或者你可以自定义你自己的AsyncMethodCallback，具体实现方法参照Thrift官网。
 值得说明的是 KoalasAsyncCallBack泛型类型一共有两个参数，第一个参数是方法返回类型，第二个是thrift自动生成xxxxxx_call，和原生callback接口一致
+
+
+#### 注解
+
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:koalas="http://www.koalas.com/schema/ch"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+	                       http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+                           http://www.koalas.com/schema/ch
+                           http://www.koalas.com/schema/ch.xsd">
+
+	<koalas:annotation package="thrift.annotation.client.impl"/>
+</beans>
+```
+
+同步
+```
+@Service("testServiceSync")
+public class TestServiceSync {
+
+    @KoalasClient(zkPath = "127.0.0.1:2181",readTimeout = 5000*1000)
+    WmCreateAccountService.Iface wmCreateAccountService;
+
+    public void getRemoteRpc() throws TException {
+        WmCreateAccountRequest request= new WmCreateAccountRequest (  );
+        //request.setSource ( 10 );
+        request.setAccountType ( 1 );
+        request.setPartnerId ( 1 );
+        request.setPartnerType ( 1 );
+        request.setPartnerName ( "你好啊-我是注解实现的" );
+        request.setPoiFlag ( 1 );
+        WmCreateAccountRespone respone = wmCreateAccountService.getRPC (  request);
+        System.out.println (respone);
+     }
+
+}
+```
+异步
+
+
+```
+@Service("testServiceAsync")
+public class TestServiceAsync {
+    @KoalasClient(zkPath = "127.0.0.1:2181",readTimeout = 5000*1000)
+    WmCreateAccountService.AsyncIface wmCreateAccountService;
+    public void getRemoteRpc() throws TException{
+        KoalasAsyncCallBack<WmCreateAccountRespone, WmCreateAccountService.AsyncClient.getRPC_call> koalasAsyncCallBack = new KoalasAsyncCallBack<> ();
+        WmCreateAccountRequest request= new WmCreateAccountRequest (  );
+        //request.setSource ( 10 );
+        request.setAccountType ( 1 );
+        request.setPartnerId ( 1 );
+        request.setPartnerType ( 1 );
+        request.setPartnerName ( "你好啊-我是注解实现的" );
+        request.setPoiFlag ( 1 );
+        wmCreateAccountService.getRPC ( request ,koalasAsyncCallBack);
+        Future<WmCreateAccountRespone> future= koalasAsyncCallBack.getFuture ();
+        try {
+            System.out.println (future.get ());
+        } catch (InterruptedException e) {
+            e.printStackTrace ();
+        } catch (ExecutionException e) {
+            e.printStackTrace ();
+        }
+    }
+
+}
+```
+
+
 
 #### 2：服务端使用方式
 
