@@ -237,7 +237,7 @@ public class TestServiceAsync {
 
 #### 2：服务端使用方式
 
-
+#### xml
 ```
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
@@ -276,6 +276,57 @@ zkpath注册的zookeeper的地址。
 wmCreateAccountServiceImpl简单实现类的截图如下
 ![输入图片说明](https://images.gitee.com/uploads/images/2018/1010/173130_78d04258_536094.png "屏幕截图.png")
 实现WmCreateAccountService.Iface接口即可。
+
+#### 注解
+
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:koalas="http://www.koalas.com/schema/ch"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	   http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+	   http://www.koalas.com/schema/ch
+	   http://www.koalas.com/schema/ch.xsd">
+    <koalas:annotation package="thrift.annotation.server.impl"/>
+</beans>
+```
+其中package为扫描的路径多个路径用,分隔。为空时默认为spring的扫描路径
+
+
+```
+package thrift.annotation.server.impl;
+
+import annotation.KoalasServer;
+import org.apache.thrift.TException;
+import thrift.domain.WmCreateAccountRequest;
+import thrift.domain.WmCreateAccountRespone;
+import thrift.service.WmCreateAccountService;
+
+import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
+
+@KoalasServer ( port = 8801,zkpath="127.0.0.1:2181")
+public class WmCreateAccountServiceNettyImpl implements WmCreateAccountService.Iface {
+    private AtomicInteger atomicInteger = new AtomicInteger ( 0 );
+    @Override
+    public WmCreateAccountRespone getRPC(WmCreateAccountRequest wmCreateAccountRequest) throws TException {
+        WmCreateAccountRespone wmCreateAccountRespone = new WmCreateAccountRespone ();
+        wmCreateAccountRespone.setCode ( 1 );
+        wmCreateAccountRespone.setMessage ( "你好啊" );
+        if(new Random (  ).nextInt ( 5 )>100){
+            try {
+                Thread.sleep ( 5000 );
+            } catch (InterruptedException e) {
+                e.printStackTrace ();
+            }
+        }
+        System.out.println ( "getRPC  start ...." + wmCreateAccountRequest + "------" + atomicInteger.incrementAndGet () );
+
+        return wmCreateAccountRespone;
+    }
+}
+```
 
 #### 3：所有参数配置说明
 ![输入图片说明](https://images.gitee.com/uploads/images/2018/1203/175654_a020880b_536094.png "屏幕截图.png")
