@@ -164,25 +164,22 @@ KoalasAsyncCallBack为我为大家写的统一callback方法，支持future接�
 
 #### 2：服务端使用方式
 
+
+```
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:koalas="http://www.koalas.com/schema/ch"
-       xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 	   http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
-	   http://www.springframework.org/schema/aop
-	   http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
 	   http://www.springframework.org/schema/context
 	   http://www.springframework.org/schema/context/spring-context-4.2.xsd
 	   http://www.koalas.com/schema/ch
 	   http://www.koalas.com/schema/ch.xsd">
 
-
-    <aop:aspectj-autoproxy proxy-target-class="true"/>
     <!-- 默认扫描的包路径 -->
-    <context:component-scan base-package="thrift.server.impl" use-default-filters="false">
+    <context:component-scan base-package="thrift.xml.server" use-default-filters="false">
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Service"/>
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Component"/>
     </context:component-scan>
@@ -191,8 +188,11 @@ KoalasAsyncCallBack为我为大家写的统一callback方法，支持future接�
                    serviceInterface="thrift.service.WmCreateAccountService"
                    serviceImpl="wmCreateAccountServiceImpl"
                    port="8001"
+                   serverType="thrift"
                    zkpath="127.0.0.1:2181"/>
 </beans>
+```
+
 
 
 serviceInterface和客户端一样是thrift生成的服务类。
