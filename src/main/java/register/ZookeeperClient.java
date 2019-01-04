@@ -185,11 +185,12 @@ public class ZookeeperClient {
                     String parentPath = event.getPath ();
                     LOG.info ( "the service {} is changed ! ", serviceName );
                     try {
+                        //wait the init childChanged
+                        firstInitChildren.await ();
+
                         List<String> childpaths = ZookeeperClient.this.zookeeper.getChildren ( parentPath, this );
                         ZookeeperClient.this.updateServerList ( childpaths, parentPath );
                         LOG.info ( "the serviceList: {} ! ", childpaths );
-                        //wait the init childChanged
-                        firstInitChildren.await ();
 
                         for (String _childpaths : childpaths) {
                             String fullpath = parentPath.concat ( "/" ).concat ( _childpaths );
