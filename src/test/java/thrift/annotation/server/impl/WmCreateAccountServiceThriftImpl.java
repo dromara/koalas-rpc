@@ -28,4 +28,64 @@ public class WmCreateAccountServiceThriftImpl implements WmCreateAccountService.
 
         return wmCreateAccountRespone;
     }
+
+    @Override
+    public WmCreateAccountRespone koaloasTest1(WmCreateAccountRequest wmCreateAccountRequest) throws TException {
+        return null;
+    }
+
+    @Override
+    public WmCreateAccountRespone koaloasTest2(WmCreateAccountRequest wmCreateAccountRequest) throws TException {
+        return null;
+    }
+
+    @Override
+    public WmCreateAccountRespone koaloasTest3(WmCreateAccountRequest wmCreateAccountRequest) throws TException {
+        return null;
+    }
+
+    @Override
+    public WmCreateAccountRespone koaloasTest4(WmCreateAccountRequest wmCreateAccountRequest) throws TException {
+        return null;
+    }
+
+    @Override
+    public WmCreateAccountRespone koaloasTest5(WmCreateAccountRequest wmCreateAccountRequest) throws TException {
+        return null;
+    }
+
+    @Override
+    public WmCreateAccountRespone koaloasTest6(WmCreateAccountRequest wmCreateAccountRequest) throws TException {
+        return null;
+    }
+
+    @Override
+    public WmCreateAccountRespone koaloasTest7(WmCreateAccountRequest wmCreateAccountRequest) throws TException {
+        return null;
+    }
+
+    @Override
+    public WmCreateAccountRespone koaloasTest8(WmCreateAccountRequest wmCreateAccountRequest) throws TException {
+        return null;
+    }
+
+    @Override
+    public WmCreateAccountRespone koaloasTest9(WmCreateAccountRequest wmCreateAccountRequest) throws TException {
+        return null;
+    }
+
+    @Override
+    public WmCreateAccountRespone koaloasTest10(WmCreateAccountRequest wmCreateAccountRequest) throws TException {
+        return null;
+    }
+
+    @Override
+    public WmCreateAccountRespone koaloasTest11(WmCreateAccountRequest wmCreateAccountRequest) throws TException {
+        return null;
+    }
+
+    @Override
+    public WmCreateAccountRespone koaloasTest12(WmCreateAccountRequest wmCreateAccountRequest) throws TException {
+        return null;
+    }
 }

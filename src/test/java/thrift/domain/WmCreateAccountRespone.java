@@ -6,13 +6,26 @@
  */
 package thrift.domain;
 
-import org.apache.thrift.protocol.TTupleProtocol;
 import org.apache.thrift.scheme.IScheme;
 import org.apache.thrift.scheme.SchemeFactory;
 import org.apache.thrift.scheme.StandardScheme;
-import org.apache.thrift.scheme.TupleScheme;
 
-import java.util.*;
+import org.apache.thrift.scheme.TupleScheme;
+import org.apache.thrift.protocol.TTupleProtocol;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.EnumMap;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.EnumSet;
+import java.util.Collections;
+import java.util.BitSet;
+import java.nio.ByteBuffer;
+import java.util.Arrays;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 测试类
@@ -30,24 +43,12 @@ public class WmCreateAccountRespone implements org.apache.thrift.TBase<WmCreateA
     schemes.put(TupleScheme.class, new WmCreateAccountResponeTupleSchemeFactory());
   }
 
-  /**
-   * 操作结果
-   */
   public int code; // required
-  /**
-   * 返回信息
-   */
   public String message; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    /**
-     * 操作结果
-     */
     CODE((short)1, "code"),
-    /**
-     * 返回信息
-     */
     MESSAGE((short)2, "message");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
@@ -112,9 +113,9 @@ public class WmCreateAccountRespone implements org.apache.thrift.TBase<WmCreateA
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put( _Fields.CODE, new org.apache.thrift.meta_data.FieldMetaData("code", org.apache.thrift.TFieldRequirementType.DEFAULT,
+    tmpMap.put(_Fields.CODE, new org.apache.thrift.meta_data.FieldMetaData("code", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
-    tmpMap.put( _Fields.MESSAGE, new org.apache.thrift.meta_data.FieldMetaData("message", org.apache.thrift.TFieldRequirementType.DEFAULT,
+    tmpMap.put(_Fields.MESSAGE, new org.apache.thrift.meta_data.FieldMetaData("message", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(WmCreateAccountRespone.class, metaDataMap);
@@ -156,16 +157,10 @@ public class WmCreateAccountRespone implements org.apache.thrift.TBase<WmCreateA
     this.message = null;
   }
 
-  /**
-   * 操作结果
-   */
   public int getCode() {
     return this.code;
   }
 
-  /**
-   * 操作结果
-   */
   public WmCreateAccountRespone setCode(int code) {
     this.code = code;
     setCodeIsSet(true);
@@ -185,16 +180,10 @@ public class WmCreateAccountRespone implements org.apache.thrift.TBase<WmCreateA
     __isset_bit_vector.set(__CODE_ISSET_ID, value);
   }
 
-  /**
-   * 返回信息
-   */
   public String getMessage() {
     return this.message;
   }
 
-  /**
-   * 返回信息
-   */
   public WmCreateAccountRespone setMessage(String message) {
     this.message = message;
     return this;
