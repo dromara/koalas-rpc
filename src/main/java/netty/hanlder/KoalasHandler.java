@@ -8,9 +8,7 @@ import heartbeat.service.HeartbeatService;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import monitor.KoalasCatCtx;
-import monitor.KoalasContext;
-import monitor.KoalasLocalThreadCtx;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.thrift.TApplicationException;
 import org.apache.thrift.TException;
 import org.apache.thrift.TProcessor;
@@ -18,7 +16,6 @@ import org.apache.thrift.protocol.*;
 import org.apache.thrift.transport.TIOStreamTransport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import protocol.KoalasTBinaryProtocol;
 import server.domain.ErrorType;
 import transport.TKoalasFramedTransport;
 import utils.KoalasRsaUtil;
@@ -59,29 +56,18 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, ByteBuf msg) throws Exception {
 
-        try {
             int i =msg.readableBytes ();
             byte[] b = new byte[i];
             msg.readBytes ( b );
 
-            KoalasContext koalasContext=null;
-            TMessage tMessage=null;
+            TMessage tMessage;
             boolean ifUserProtocol;
             if(b[4]==TKoalasFramedTransport.first && b[5]==TKoalasFramedTransport.second){
                 ifUserProtocol = true;
-                koalasInner koalasInner = getKoalasInner ( b);
-                koalasContext = koalasInner.getKoalasContext ();
-                tMessage = koalasInner.gettMessage ();
-                KoalasCatCtx koalasCatCtx = new KoalasCatCtx ();
-                koalasCatCtx.setKoalasContext ( koalasContext );
-
-                KoalasLocalThreadCtx.set (koalasCatCtx);
+                tMessage = getKoalasTmessage ( b);
             }else{
                 ifUserProtocol = false;
                 tMessage =getTMessage ( b );
-                koalasContext = new KoalasContext (  );
-                KoalasCatCtx koalasCatCtx = new KoalasCatCtx ();
-                koalasCatCtx.setKoalasContext ( koalasContext );
             }
 
             ByteArrayInputStream inputStream = new ByteArrayInputStream ( b );
@@ -133,25 +119,18 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
                     outTransport.setPublicKey ( this.publicKey );
                 }
             }
-            TProtocolFactory tProtocolFactory;
-            if(ifUserProtocol){
-                tProtocolFactory =new KoalasTBinaryProtocol.Factory (  );
-            }else {
-                tProtocolFactory =new TBinaryProtocol.Factory();
-            }
+            TProtocolFactory  tProtocolFactory =new TBinaryProtocol.Factory();
+
             TProtocol in =tProtocolFactory.getProtocol ( inTransport );
             TProtocol out =tProtocolFactory.getProtocol ( outTransport );
             try {
-                executorService.execute ( new NettyRunable (  ctx,in,out,outputStream,tprocessor,b,privateKey,publicKey,koalasContext,className,tMessage.name));
+                executorService.execute ( new NettyRunable (  ctx,in,out,outputStream,tprocessor,b,privateKey,publicKey,className,tMessage.name));
             } catch (RejectedExecutionException e){
                 logger.error ( e.getMessage ()+ErrorType.THREAD,e );
                 handlerException(b,ctx,e,ErrorType.THREAD,privateKey,publicKey);
             }
-        } finally {
-            KoalasLocalThreadCtx.remove ();
         }
 
-    }
 
     public static class NettyRunable implements  Runnable{
 
@@ -163,11 +142,10 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
         private byte[] b;
         private String privateKey;
         private String publicKey;
-        private KoalasContext koalasContext;
         private String className;
         private String methodName;
 
-        public NettyRunable(ChannelHandlerContext ctx, TProtocol in, TProtocol out, ByteArrayOutputStream outputStream, TProcessor tprocessor, byte[] b, String privateKey, String publicKey, KoalasContext koalasContext, String className, String methodname) {
+        public NettyRunable(ChannelHandlerContext ctx, TProtocol in, TProtocol out, ByteArrayOutputStream outputStream, TProcessor tprocessor, byte[] b, String privateKey, String publicKey, String className, String methodName) {
             this.ctx = ctx;
             this.in = in;
             this.out = out;
@@ -176,32 +154,29 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
             this.b = b;
             this.privateKey = privateKey;
             this.publicKey = publicKey;
-            this.koalasContext = koalasContext;
             this.className = className;
-            this.methodName = methodname;
+            this.methodName = methodName;
         }
+
 
         @Override
         public void run() {
-            Transaction transaction = Cat.newTransaction("Service", className.concat ( "." ).concat ( methodName ));
-            KoalasCatCtx koalasCatCtx = new KoalasCatCtx();
-            koalasCatCtx.setKoalasContext ( koalasContext );
-            if(koalasContext.getCatParentMessageId ()!= null){
-                Cat.logRemoteCallServer ( koalasCatCtx );
-            }
-            Cat.logRemoteCallClient ( koalasCatCtx );
-            KoalasLocalThreadCtx.set ( koalasCatCtx );
+            Transaction transaction=null;
+            if(StringUtils.isNotEmpty ( methodName ))
+                 transaction = Cat.newTransaction("Service", className.concat ( "." ).concat ( methodName ));
             try {
                 tprocessor.process ( in,out );
                 ctx.writeAndFlush (outputStream);
-                transaction.setStatus ( Transaction.SUCCESS );
+                if(transaction!=null)
+                    transaction.setStatus ( Transaction.SUCCESS );
             } catch (Exception e) {
-                transaction.setStatus ( e );
+                if(transaction!=null)
+                    transaction.setStatus ( e );
                 logger.error ( e.getMessage () + ErrorType.APPLICATION,e );
                 handlerException(this.b,ctx,e,ErrorType.APPLICATION,privateKey,publicKey);
             }finally {
-                transaction.complete ();
-                KoalasLocalThreadCtx.remove ();
+                if(transaction!=null)
+                    transaction.complete ();
             }
         }
 
@@ -229,13 +204,7 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
         TKoalasFramedTransport inTransport = new TKoalasFramedTransport( tioStreamTransportInput );
         TKoalasFramedTransport outTransport = new TKoalasFramedTransport ( tioStreamTransportOutput,16384000,ifUserProtocol );
 
-        TProtocolFactory tProtocolFactory;
-        if(ifUserProtocol){
-              tProtocolFactory =new KoalasTBinaryProtocol.Factory (  );
-
-        }else{
-              tProtocolFactory =new TBinaryProtocol.Factory();
-        }
+        TProtocolFactory tProtocolFactory =new TBinaryProtocol.Factory();
 
         TProtocol in =tProtocolFactory.getProtocol ( inTransport );
         TProtocol out =tProtocolFactory.getProtocol ( outTransport );
@@ -327,7 +296,7 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
         System.arraycopy (  b,4,buff,0,buff.length);
         ByteArrayInputStream inputStream = new ByteArrayInputStream ( buff );
         TIOStreamTransport tioStreamTransportInput = new TIOStreamTransport (  inputStream);
-        TProtocol tBinaryProtocol = new KoalasTBinaryProtocol( tioStreamTransportInput );
+        TProtocol tBinaryProtocol = new TBinaryProtocol( tioStreamTransportInput );
         TMessage tMessage=null;
         try {
              tMessage= tBinaryProtocol.readMessageBegin ();
@@ -338,8 +307,8 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
         return new TMessage();
     }
 
-    private koalasInner getKoalasInner(byte[] b){
-        koalasInner koalasInner = new koalasInner (  );
+    private TMessage getKoalasTmessage(byte[] b){
+
         byte[] buff = new byte[b.length-4];
         System.arraycopy (  b,4,buff,0,buff.length);
 
@@ -363,8 +332,7 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
             try {
                 sign = new String ( signByte, "UTF-8" );
             } catch (Exception e) {
-                koalasInner.setKoalasContext ( new KoalasContext() );
-                return koalasInner;
+                return new TMessage (  );
             }
 
             byte[] rsaBody = new byte[size -10-signLen];
@@ -372,61 +340,22 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
 
             try {
                 if(!KoalasRsaUtil.verify ( rsaBody,publicKey,sign )){
-                    koalasInner.setKoalasContext ( new KoalasContext() );
-                    return koalasInner;
+                    return new TMessage (  );
                 }
                 request = KoalasRsaUtil.decryptByPrivateKey (rsaBody,privateKey);
             } catch (Exception e) {
-                koalasInner.setKoalasContext ( new KoalasContext() );
-                return koalasInner;
+                return new TMessage (  );
             }
         }
-
-        KoalasContext koalasContext = new KoalasContext();
+        TMessage tMessage;
         ByteArrayInputStream inputStream = new ByteArrayInputStream ( request );
         TIOStreamTransport tioStreamTransportInput = new TIOStreamTransport (  inputStream);
         try {
-            TProtocol tBinaryProtocol = new KoalasTBinaryProtocol( tioStreamTransportInput );
-            TMessage tMessage= tBinaryProtocol.readMessageBegin ();
-            koalasContext = ((KoalasTBinaryProtocol) tBinaryProtocol).koalasContext;
-            koalasInner.settMessage ( tMessage );
-            koalasInner.setKoalasContext ( koalasContext );
+            TProtocol tBinaryProtocol = new TBinaryProtocol( tioStreamTransportInput );
+            tMessage= tBinaryProtocol.readMessageBegin ();
         } catch (TException e) {
-            koalasInner.setKoalasContext ( new KoalasContext() );
-            return koalasInner;
+             return new TMessage (  );
         }
-
-        return koalasInner;
+        return tMessage;
     }
-
-    private class koalasInner{
-        private TMessage tMessage;
-        private KoalasContext koalasContext;
-
-        public koalasInner() {
-        }
-
-        public TMessage gettMessage() {
-            return tMessage;
-        }
-
-        public void settMessage(TMessage tMessage) {
-            this.tMessage = tMessage;
-        }
-
-        public KoalasContext getKoalasContext() {
-            return koalasContext;
-        }
-
-        public void setKoalasContext(KoalasContext koalasContext) {
-            this.koalasContext = koalasContext;
-        }
-
-        public koalasInner(TMessage tMessage, KoalasContext koalasContext) {
-
-            this.tMessage = tMessage;
-            this.koalasContext = koalasContext;
-        }
-    }
-
 }

@@ -24,7 +24,6 @@ import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import protocol.KoalasTBinaryProtocol;
 import transport.TKoalasFramedTransport;
 
 import java.io.IOException;
@@ -414,7 +413,7 @@ public class KoalasClientProxy implements FactoryBean<Object>, ApplicationContex
                     ((TKoalasFramedTransport) transport).setPublicKey ( this.publicKey );
                 }
 
-                TProtocol protocol = new KoalasTBinaryProtocol( transport );
+                TProtocol protocol = new TBinaryProtocol ( transport );
 
                 return synConstructor.newInstance ( protocol );
 
