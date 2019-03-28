@@ -16,9 +16,15 @@ public class ClientRunAsync {
 
      @Test
      public void testRunAsync(){
-         for (int i = 0; i <1000 ; i++) {
+         for (int i = 0; i <500 ; i++) {
              try {
                  testServiceAsync.getRemoteRpc ();
+                 testServiceAsync.koaloasTest1 ();
+                 testServiceAsync.koaloasTest2 ();
+                 testServiceAsync.koaloasTest3 ();
+                 testServiceAsync.koaloasTest4 ();
+                 testServiceAsync.koaloasTest5 ();
+                 testServiceAsync.koaloasTest6 ();
              }catch (Exception e){
                  e.printStackTrace ();
              }
