@@ -121,8 +121,8 @@ struct WmCreateAccountRespone {
 
 ```
 
-编译器需要大家去下班对应的版本 windows和linux下不同的编译器，下载地址http://thrift.apache.org/download，下载0.8.0版本即可，
-0.8.0版本是很老的版本了，但是相对稳定，后续会把thirft版本升级。
+编译器需要大家去下班对应的版本 windows和linux下不同的编译器，下载地址http://thrift.apache.org/download
+下载0.8.0版本即可,0.8.0版本是很老的版本了，但是相对稳定，后续会把thirft版本升级。
 
 编译上面三个文件
 thrift -gen java WmCreateAccountService.thrift,
