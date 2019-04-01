@@ -125,8 +125,8 @@ struct WmCreateAccountRespone {
 0.8.0版本是很老的版本了，但是相对稳定，后续会把thirft版本升级。
 
 编译上面三个文件
-thrift -gen java WmCreateAccountService.thrift
-thrift -gen java WmCreateAccountRequest.thrift
+thrift -gen java WmCreateAccountService.thrift,
+thrift -gen java WmCreateAccountRequest.thrift,
 thrift -gen java WmCreateAccountRespone.thrift
 
 Ok作为开发者而言，所有的准备工作都结束了。下面就开始进入实际开发~
