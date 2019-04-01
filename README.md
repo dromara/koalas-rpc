@@ -55,7 +55,7 @@ CAT接入参考：https://github.com/dianping/cat
             </exclusions>
         </dependency>
 
-#### 1：客户端使用方式
+
 
 首先需要编写自己的thrift idl文件了，这里多说一句，在群里的小伙伴曾经说过idl文件编写不熟悉，有可能出错
 这里顺带说一嘴，thrift的ldl文件和写java的请求体和service几乎没有任何区别，熟能生巧，上手之后非常简单
@@ -121,6 +121,7 @@ struct WmCreateAccountRespone {
 
 ```
 
+#### 1：客户端使用方式
 
 #### xml
 以下是最精简配置 zkPath为zookeeper的地址，集群环境请用逗号分隔 【127.0.0.1:2181,127.0.0.1:2182,127.0.0.1:2183】
