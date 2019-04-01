@@ -60,8 +60,67 @@ CAT接入参考：https://github.com/dianping/cat
 首先需要编写自己的thrift idl文件了，这里多说一句，在群里的小伙伴曾经说过idl文件编写不熟悉，有可能出错
 这里顺带说一嘴，thrift的ldl文件和写java的请求体和service几乎没有任何区别，熟能生巧，上手之后非常简单
 这里推荐几篇thrift的文章，有兴趣可以看一看
-https://blog.csdn.net/lk10207160511/article/details/50450541
+https://blog.csdn.net/lk10207160511/article/details/50450541，
 https://blog.csdn.net/hrn1216/article/details/51306395
+下面截图为测试的thrift文件
+
+```
+namespace java thrift.service
+
+include 'WmCreateAccountRequest.thrift'
+include 'WmCreateAccountRespone.thrift'
+
+service WmCreateAccountService {
+      WmCreateAccountRespone.WmCreateAccountRespone getRPC(1:WmCreateAccountRequest.WmCreateAccountRequest wmCreateAccountRequest);
+      WmCreateAccountRespone.WmCreateAccountRespone koaloasTest1(1:WmCreateAccountRequest.WmCreateAccountRequest wmCreateAccountRequest);
+      WmCreateAccountRespone.WmCreateAccountRespone koaloasTest2(1:WmCreateAccountRequest.WmCreateAccountRequest wmCreateAccountRequest);
+      WmCreateAccountRespone.WmCreateAccountRespone koaloasTest3(1:WmCreateAccountRequest.WmCreateAccountRequest wmCreateAccountRequest);
+      WmCreateAccountRespone.WmCreateAccountRespone koaloasTest4(1:WmCreateAccountRequest.WmCreateAccountRequest wmCreateAccountRequest);
+      WmCreateAccountRespone.WmCreateAccountRespone koaloasTest5(1:WmCreateAccountRequest.WmCreateAccountRequest wmCreateAccountRequest);
+      WmCreateAccountRespone.WmCreateAccountRespone koaloasTest6(1:WmCreateAccountRequest.WmCreateAccountRequest wmCreateAccountRequest);
+      WmCreateAccountRespone.WmCreateAccountRespone koaloasTest7(1:WmCreateAccountRequest.WmCreateAccountRequest wmCreateAccountRequest);
+      WmCreateAccountRespone.WmCreateAccountRespone koaloasTest8(1:WmCreateAccountRequest.WmCreateAccountRequest wmCreateAccountRequest);
+      WmCreateAccountRespone.WmCreateAccountRespone koaloasTest9(1:WmCreateAccountRequest.WmCreateAccountRequest wmCreateAccountRequest);
+      WmCreateAccountRespone.WmCreateAccountRespone koaloasTest10(1:WmCreateAccountRequest.WmCreateAccountRequest wmCreateAccountRequest);
+      WmCreateAccountRespone.WmCreateAccountRespone koaloasTest11(1:WmCreateAccountRequest.WmCreateAccountRequest wmCreateAccountRequest);
+      WmCreateAccountRespone.WmCreateAccountRespone koaloasTest12(1:WmCreateAccountRequest.WmCreateAccountRequest wmCreateAccountRequest);
+}
+```
+
+```
+namespace java thrift.domain
+/**
+* 测试类
+**/
+struct WmCreateAccountRequest {
+
+    1:i32 source,
+
+    2:i32 accountType,
+
+    3:i64 partnerId,
+
+    4:i32 partnerType,
+
+    5:string partnerName,
+
+    6:i32 poiFlag,
+}
+
+```
+
+```
+namespace java thrift.domain
+/**
+* 测试类
+**/
+struct WmCreateAccountRespone {
+    1:i32 code,
+    2:string message,
+}
+
+```
+
 
 #### xml
 以下是最精简配置 zkPath为zookeeper的地址，集群环境请用逗号分隔 【127.0.0.1:2181,127.0.0.1:2182,127.0.0.1:2183】
