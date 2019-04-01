@@ -447,6 +447,9 @@ xml方式使用者直接运行上面的1和2即可，先开启服务端再开启
 
 CAT服务按需配置，不需要数据大盘不需要配置，不会影响RPC功能，CAT接入参考：https://github.com/dianping/cat
 
+#### 开源协议 :
+Apache License Version 2.0 see http://www.apache.org/licenses/LICENSE-2.0.html
+
 #### 联系作者 :
 高级java QQ群：825199617
 博客地址:https://www.cnblogs.com/zyl2016/
