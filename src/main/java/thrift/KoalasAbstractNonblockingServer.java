@@ -19,13 +19,17 @@
 
 package thrift;
 
+import com.dianping.cat.Cat;
+import com.dianping.cat.message.Transaction;
 import ex.RSAException;
 import heartbeat.impl.HeartbeatServiceImpl;
 import heartbeat.service.HeartbeatService;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.thrift.TByteArrayOutputStream;
 import org.apache.thrift.TException;
 import org.apache.thrift.TProcessor;
 import org.apache.thrift.protocol.TBinaryProtocol;
+import org.apache.thrift.protocol.TMessage;
 import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.protocol.TProtocolFactory;
 import org.apache.thrift.server.TServer;
@@ -33,6 +37,7 @@ import org.apache.thrift.transport.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import transport.TKoalasFramedTransport;
+import utils.KoalasRsaUtil;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -193,13 +198,16 @@ public abstract class KoalasAbstractNonblockingServer extends TServer {
 
         private String privateKey;
         private String publicKey;
+        private String serviceName;
+        private String methodName;
 
         public FrameBuffer(final TNonblockingTransport trans,
                            final SelectionKey selectionKey,
-                           final AbstractSelectThread selectThread,String privateKey,String publicKey) {
+                           final AbstractSelectThread selectThread,String privateKey,String publicKey,String serviceName) {
             this(trans,selectionKey,selectThread);
             this.privateKey= privateKey;
             this.publicKey = publicKey;
+            this.serviceName =serviceName;
         }
 
         public FrameBuffer(final TNonblockingTransport trans,
@@ -339,7 +347,21 @@ public abstract class KoalasAbstractNonblockingServer extends TServer {
                     ((TKoalasFramedTransport)outTrans).setHeartbeat ( (byte) 2 );
                     tprocessorheartbeat.process ( inProt,outProt );
                 } else{
-                    processorFactory_.getProcessor ( inTrans ).process ( inProt, outProt );
+                    Transaction transaction=null;
+                    try {
+                        if(StringUtils.isNotEmpty ( methodName ))
+                            transaction = Cat.newTransaction("Service", serviceName.concat ( "." ).concat ( methodName ));
+                        processorFactory_.getProcessor ( inTrans ).process ( inProt, outProt );
+                        if(transaction!=null)
+                            transaction.setStatus ( Transaction.SUCCESS );
+                    } catch (Exception e){
+                        if(transaction!=null)
+                            transaction.setStatus ( e );
+                        throw  e;
+                    } finally {
+                        if(transaction!=null)
+                            transaction.complete ();
+                    }
                 }
 
                 responseReady ();
@@ -363,7 +385,14 @@ public abstract class KoalasAbstractNonblockingServer extends TServer {
 
             System.arraycopy ( len, 0, b, 0, 4 );
             System.arraycopy ( body, 0, b, 4, body.length );
+            TMessage tMessage;
+            if(b[4]==TKoalasFramedTransport.first && b[5]==TKoalasFramedTransport.second){
+                tMessage = getKoalasTmessage ( b);
+            } else{
+                tMessage =getTMessage ( b );
+            }
 
+            methodName = tMessage.name;
 
             if(this.privateKey != null && this.publicKey!=null){
                 if(b[8] != (byte) 1 || !(b[4]==TKoalasFramedTransport.first && b[5]==TKoalasFramedTransport.second)){
@@ -384,6 +413,75 @@ public abstract class KoalasAbstractNonblockingServer extends TServer {
             }
 
             return inTransport;
+        }
+
+        private TMessage getTMessage(byte[] b){
+
+            byte[] buff = new byte[b.length-4];
+            System.arraycopy (  b,4,buff,0,buff.length);
+            ByteArrayInputStream inputStream = new ByteArrayInputStream ( buff );
+            TIOStreamTransport tioStreamTransportInput = new TIOStreamTransport (  inputStream);
+            TProtocol tBinaryProtocol = new TBinaryProtocol( tioStreamTransportInput );
+            TMessage tMessage=null;
+            try {
+                tMessage= tBinaryProtocol.readMessageBegin ();
+                return tMessage;
+            } catch (TException e) {
+            }
+
+            return new TMessage();
+        }
+
+        private TMessage getKoalasTmessage(byte[] b){
+
+            byte[] buff = new byte[b.length-4];
+            System.arraycopy (  b,4,buff,0,buff.length);
+
+            int size = buff.length;
+            byte[] request = new byte[size - 6];
+            byte[] header = new byte[6];
+            System.arraycopy ( buff, 6, request, 0, size - 6 );
+            System.arraycopy ( buff, 0, header, 0, 6 );
+
+            //RSA
+            if (header[4] == (byte) 1) {
+
+                byte[] signLenByte = new byte[4];
+                System.arraycopy ( buff, 6, signLenByte, 0, 4 );
+
+                int signLen = TKoalasFramedTransport.decodeFrameSize ( signLenByte );
+                byte[] signByte = new byte[signLen];
+                System.arraycopy ( buff, 10, signByte, 0, signLen );
+
+                String sign = "";
+                try {
+                    sign = new String ( signByte, "UTF-8" );
+                } catch (Exception e) {
+                    return new TMessage (  );
+                }
+
+                byte[] rsaBody = new byte[size -10-signLen];
+                System.arraycopy ( buff, 10+signLen, rsaBody, 0, size -10-signLen );
+
+                try {
+                    if(!KoalasRsaUtil.verify ( rsaBody,publicKey,sign )){
+                        return new TMessage (  );
+                    }
+                    request = KoalasRsaUtil.decryptByPrivateKey (rsaBody,privateKey);
+                } catch (Exception e) {
+                    return new TMessage (  );
+                }
+            }
+            TMessage tMessage;
+            ByteArrayInputStream inputStream = new ByteArrayInputStream ( request );
+            TIOStreamTransport tioStreamTransportInput = new TIOStreamTransport (  inputStream);
+            try {
+                TProtocol tBinaryProtocol = new TBinaryProtocol( tioStreamTransportInput );
+                tMessage= tBinaryProtocol.readMessageBegin ();
+            } catch (TException e) {
+                return new TMessage (  );
+            }
+            return tMessage;
         }
 
         public void encodeFrameSize(int frameSize, byte[] buf) {

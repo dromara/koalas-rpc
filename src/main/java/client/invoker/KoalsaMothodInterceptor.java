@@ -60,6 +60,7 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
                 return method.invoke ( this, args );
             } catch (IllegalAccessException e) {
                 LOG.error ( e.getMessage (), e );
+                return null;
             }
         }
         if ("toString".equals ( methodName ) && parameterTypes.length == 0) {
@@ -76,7 +77,7 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
         int currTryTimes = 0;
         while (currTryTimes++ < retryTimes) {
             ServerObject serverObject = icluster.getObjectForRemote ();
-            if (serverObject == null) return null;
+            if (serverObject == null) throw new IllegalStateException("no server list to use :" + koalasClientProxy.getServiceInterface ().getName ());
             GenericObjectPool<TTransport> genericObjectPool = serverObject.getGenericObjectPool ();
             try {
                 long before = System.currentTimeMillis ();
@@ -87,7 +88,7 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
                 if (socket != null)
                     genericObjectPool.returnObject ( socket );
                 LOG.error ( e.getMessage (), e );
-                return null;
+                throw new IllegalStateException("borrowObject error :" + koalasClientProxy.getServiceInterface ().getName ());
             }
 
             Object obj = koalasClientProxy.getInterfaceClientInstance ( socket, serverObject.getRemoteServer ().getServer () );
@@ -137,7 +138,7 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
                         if (socket != null) {
                             genericObjectPool.returnObject ( socket );
                         }
-                        return null;
+                        throw new IllegalStateException("rsa error with service" + serverObject.getRemoteServer ().toString ()+koalasClientProxy.getServiceInterface ().getName () );
                     }
 
                     if (((TApplicationException) cause).getType () == 6699) {
@@ -145,7 +146,7 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
                         if (socket != null) {
                             genericObjectPool.returnObject ( socket );
                         }
-                        return null;
+                        throw new IllegalStateException("this client is not rsa support,please get the privateKey and publickey with server" + serverObject.getRemoteServer ().toString ()+koalasClientProxy.getServiceInterface ().getName ());
                     }
 
                     if (((TApplicationException) cause).getType () == TApplicationException.INTERNAL_ERROR) {
@@ -153,7 +154,7 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
                         if (socket != null) {
                             genericObjectPool.returnObject ( socket );
                         }
-                        return null;
+                        throw new IllegalStateException("this server is error please take the error log with server" + serverObject.getRemoteServer ()+koalasClientProxy.getServiceInterface ().getName ());
                     }
 
                     if (((TApplicationException) cause).getType () == TApplicationException.MISSING_RESULT) {
@@ -169,7 +170,7 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
                     if (socket != null) {
                         genericObjectPool.returnObject ( socket );
                     }
-                    return null;
+                    throw new IllegalStateException("this client privateKey or publicKey is error,please check it!" + serverObject.getRemoteServer ()+ koalasClientProxy.getServiceInterface ().getName ());
                 }
 
                 if(cause instanceof OutMaxLengthException){
@@ -177,7 +178,7 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
                     if (socket != null) {
                         genericObjectPool.returnObject ( socket );
                     }
-                    return null;
+                    throw new IllegalStateException("to big content!" + serverObject.getRemoteServer ()+ koalasClientProxy.getServiceInterface ().getName ());
                 }
 
                 if (cause.getCause () != null && cause.getCause () instanceof ConnectException) {
@@ -203,7 +204,7 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
                             ifreturn = true;
                         } catch (Exception e1) {
                             LOG.error ( "invalidateObject error ,", e );
-                            return null;
+                            throw new IllegalStateException("SocketTimeout and invalidateObject error" + serverObject.getRemoteServer () + koalasClientProxy.getServiceInterface ().getName ());
                         }
                     }
                     if (retryRequest)
@@ -218,10 +219,10 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
                                 genericObjectPool.invalidateObject ( socket );
                             } catch (Exception e1) {
                                 LOG.error ( "invalidateObject error", e );
-                                return null;
+                                throw new IllegalStateException("TTransportException and invalidateObject error" + serverObject.getRemoteServer () + koalasClientProxy.getServiceInterface ().getName ());
                             }
                         }
-                        return null;
+                        throw new IllegalStateException("the remote server error!" + serverObject.getRemoteServer () + koalasClientProxy.getServiceInterface ().getName ());
                     }
                     if(cause.getCause ()!=null && cause.getCause () instanceof SocketException){
                         if(genericObjectPool.isClosed ()){
@@ -238,7 +239,7 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
                 throw e;
             }
         }
-        return null;
+        throw new IllegalStateException("error!retry time out of:" + retryTimes + "!!! " + koalasClientProxy.getServiceInterface ().getName () );
     }
 
 }

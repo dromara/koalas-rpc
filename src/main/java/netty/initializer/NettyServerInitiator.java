@@ -22,19 +22,21 @@ public class NettyServerInitiator extends ChannelInitializer<SocketChannel> {
 
     private String privateKey;
     private String publicKey;
+    private String className;
 
-    public NettyServerInitiator(TProcessor tProcessor, ExecutorService executorService, String privateKey, String publicKey) {
+    public NettyServerInitiator(TProcessor tProcessor, ExecutorService executorService, String privateKey, String publicKey, String className) {
         this.tProcessor = tProcessor;
         this.executorService = executorService;
         this.privateKey = privateKey;
         this.publicKey = publicKey;
+        this.className = className;
     }
 
     @Override
     protected void initChannel(SocketChannel ch) {
         ch.pipeline ().addLast ( "decoder",new KoalasDecoder () );
         ch.pipeline ().addLast ( "encoder",new KoalasEncoder ());
-        ch.pipeline ().addLast ( "handler",new KoalasHandler (tProcessor,executorService,privateKey,publicKey) );
+        ch.pipeline ().addLast ( "handler",new KoalasHandler (tProcessor,executorService,privateKey,publicKey,className) );
     }
 
 }

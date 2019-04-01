@@ -6,8 +6,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath:xml/server/koalas-server1.xml"})
-public class ServerRun1 {
+@ContextConfiguration(locations={"classpath:xml/server/koalas-server-thrift.xml"})
+public class ServerRunThrift {
 
     @Test
     public void testServerRun() throws InterruptedException {

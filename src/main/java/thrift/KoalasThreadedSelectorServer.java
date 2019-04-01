@@ -153,6 +153,15 @@ public class KoalasThreadedSelectorServer extends KoalasAbstractNonblockingServe
 
   private String privateKey;
   private String publicKey;
+  private String serviceName;
+
+  public String getServiceName() {
+    return serviceName;
+  }
+
+  public void setServiceName(String serviceName) {
+    this.serviceName = serviceName;
+  }
 
   public String getPrivateKey() {
     return privateKey;
@@ -461,7 +470,7 @@ public class KoalasThreadedSelectorServer extends KoalasAbstractNonblockingServe
       try {
         clientKey = accepted.registerSelector(selector, SelectionKey.OP_READ);
 
-        FrameBuffer frameBuffer = new FrameBuffer(accepted, clientKey, SelectorThread.this,privateKey,publicKey);
+        FrameBuffer frameBuffer = new FrameBuffer(accepted, clientKey, SelectorThread.this,privateKey,publicKey,serviceName);
         clientKey.attach(frameBuffer);
       } catch (IOException e) {
         LOGGER.warn("Failed to register accepted connection to selector!", e);

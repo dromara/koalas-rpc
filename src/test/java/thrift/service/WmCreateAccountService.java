@@ -6,36 +6,86 @@
  */
 package thrift.service;
 
-import org.apache.thrift.protocol.TTupleProtocol;
 import org.apache.thrift.scheme.IScheme;
 import org.apache.thrift.scheme.SchemeFactory;
 import org.apache.thrift.scheme.StandardScheme;
+
 import org.apache.thrift.scheme.TupleScheme;
+import org.apache.thrift.protocol.TTupleProtocol;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.EnumMap;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.EnumSet;
+import java.util.Collections;
+import java.util.BitSet;
+import java.nio.ByteBuffer;
+import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import thrift.domain.WmCreateAccountRequest;
-import thrift.domain.WmCreateAccountRespone;
-
-import java.util.*;
 
 public class WmCreateAccountService {
 
   public interface Iface {
 
-    /**
-     * 测试RPC
-     * @version 1.0.0
-     * 
-     * 
-     * @param wmCreateAccountRequest
-     */
-    public WmCreateAccountRespone getRPC(WmCreateAccountRequest wmCreateAccountRequest) throws org.apache.thrift.TException;
+    public thrift.domain.WmCreateAccountRespone getRPC(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest) throws org.apache.thrift.TException;
+
+    public thrift.domain.WmCreateAccountRespone koaloasTest1(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest) throws org.apache.thrift.TException;
+
+    public thrift.domain.WmCreateAccountRespone koaloasTest2(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest) throws org.apache.thrift.TException;
+
+    public thrift.domain.WmCreateAccountRespone koaloasTest3(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest) throws org.apache.thrift.TException;
+
+    public thrift.domain.WmCreateAccountRespone koaloasTest4(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest) throws org.apache.thrift.TException;
+
+    public thrift.domain.WmCreateAccountRespone koaloasTest5(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest) throws org.apache.thrift.TException;
+
+    public thrift.domain.WmCreateAccountRespone koaloasTest6(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest) throws org.apache.thrift.TException;
+
+    public thrift.domain.WmCreateAccountRespone koaloasTest7(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest) throws org.apache.thrift.TException;
+
+    public thrift.domain.WmCreateAccountRespone koaloasTest8(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest) throws org.apache.thrift.TException;
+
+    public thrift.domain.WmCreateAccountRespone koaloasTest9(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest) throws org.apache.thrift.TException;
+
+    public thrift.domain.WmCreateAccountRespone koaloasTest10(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest) throws org.apache.thrift.TException;
+
+    public thrift.domain.WmCreateAccountRespone koaloasTest11(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest) throws org.apache.thrift.TException;
+
+    public thrift.domain.WmCreateAccountRespone koaloasTest12(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest) throws org.apache.thrift.TException;
 
   }
 
   public interface AsyncIface {
 
-    public void getRPC(WmCreateAccountRequest wmCreateAccountRequest, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getRPC_call> resultHandler) throws org.apache.thrift.TException;
+    public void getRPC(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getRPC_call> resultHandler) throws org.apache.thrift.TException;
+
+    public void koaloasTest1(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.koaloasTest1_call> resultHandler) throws org.apache.thrift.TException;
+
+    public void koaloasTest2(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.koaloasTest2_call> resultHandler) throws org.apache.thrift.TException;
+
+    public void koaloasTest3(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.koaloasTest3_call> resultHandler) throws org.apache.thrift.TException;
+
+    public void koaloasTest4(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.koaloasTest4_call> resultHandler) throws org.apache.thrift.TException;
+
+    public void koaloasTest5(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.koaloasTest5_call> resultHandler) throws org.apache.thrift.TException;
+
+    public void koaloasTest6(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.koaloasTest6_call> resultHandler) throws org.apache.thrift.TException;
+
+    public void koaloasTest7(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.koaloasTest7_call> resultHandler) throws org.apache.thrift.TException;
+
+    public void koaloasTest8(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.koaloasTest8_call> resultHandler) throws org.apache.thrift.TException;
+
+    public void koaloasTest9(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.koaloasTest9_call> resultHandler) throws org.apache.thrift.TException;
+
+    public void koaloasTest10(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.koaloasTest10_call> resultHandler) throws org.apache.thrift.TException;
+
+    public void koaloasTest11(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.koaloasTest11_call> resultHandler) throws org.apache.thrift.TException;
+
+    public void koaloasTest12(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.koaloasTest12_call> resultHandler) throws org.apache.thrift.TException;
 
   }
 
@@ -59,20 +109,20 @@ public class WmCreateAccountService {
       super(iprot, oprot);
     }
 
-    public WmCreateAccountRespone getRPC(WmCreateAccountRequest wmCreateAccountRequest) throws org.apache.thrift.TException
+    public thrift.domain.WmCreateAccountRespone getRPC(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest) throws org.apache.thrift.TException
     {
       send_getRPC(wmCreateAccountRequest);
       return recv_getRPC();
     }
 
-    public void send_getRPC(WmCreateAccountRequest wmCreateAccountRequest) throws org.apache.thrift.TException
+    public void send_getRPC(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest) throws org.apache.thrift.TException
     {
       getRPC_args args = new getRPC_args();
       args.setWmCreateAccountRequest(wmCreateAccountRequest);
       sendBase("getRPC", args);
     }
 
-    public WmCreateAccountRespone recv_getRPC() throws org.apache.thrift.TException
+    public thrift.domain.WmCreateAccountRespone recv_getRPC() throws org.apache.thrift.TException
     {
       getRPC_result result = new getRPC_result();
       receiveBase(result, "getRPC");
@@ -80,6 +130,282 @@ public class WmCreateAccountService {
         return result.success;
       }
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getRPC failed: unknown result");
+    }
+
+    public thrift.domain.WmCreateAccountRespone koaloasTest1(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest) throws org.apache.thrift.TException
+    {
+      send_koaloasTest1(wmCreateAccountRequest);
+      return recv_koaloasTest1();
+    }
+
+    public void send_koaloasTest1(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest) throws org.apache.thrift.TException
+    {
+      koaloasTest1_args args = new koaloasTest1_args();
+      args.setWmCreateAccountRequest(wmCreateAccountRequest);
+      sendBase("koaloasTest1", args);
+    }
+
+    public thrift.domain.WmCreateAccountRespone recv_koaloasTest1() throws org.apache.thrift.TException
+    {
+      koaloasTest1_result result = new koaloasTest1_result();
+      receiveBase(result, "koaloasTest1");
+      if (result.isSetSuccess()) {
+        return result.success;
+      }
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "koaloasTest1 failed: unknown result");
+    }
+
+    public thrift.domain.WmCreateAccountRespone koaloasTest2(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest) throws org.apache.thrift.TException
+    {
+      send_koaloasTest2(wmCreateAccountRequest);
+      return recv_koaloasTest2();
+    }
+
+    public void send_koaloasTest2(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest) throws org.apache.thrift.TException
+    {
+      koaloasTest2_args args = new koaloasTest2_args();
+      args.setWmCreateAccountRequest(wmCreateAccountRequest);
+      sendBase("koaloasTest2", args);
+    }
+
+    public thrift.domain.WmCreateAccountRespone recv_koaloasTest2() throws org.apache.thrift.TException
+    {
+      koaloasTest2_result result = new koaloasTest2_result();
+      receiveBase(result, "koaloasTest2");
+      if (result.isSetSuccess()) {
+        return result.success;
+      }
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "koaloasTest2 failed: unknown result");
+    }
+
+    public thrift.domain.WmCreateAccountRespone koaloasTest3(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest) throws org.apache.thrift.TException
+    {
+      send_koaloasTest3(wmCreateAccountRequest);
+      return recv_koaloasTest3();
+    }
+
+    public void send_koaloasTest3(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest) throws org.apache.thrift.TException
+    {
+      koaloasTest3_args args = new koaloasTest3_args();
+      args.setWmCreateAccountRequest(wmCreateAccountRequest);
+      sendBase("koaloasTest3", args);
+    }
+
+    public thrift.domain.WmCreateAccountRespone recv_koaloasTest3() throws org.apache.thrift.TException
+    {
+      koaloasTest3_result result = new koaloasTest3_result();
+      receiveBase(result, "koaloasTest3");
+      if (result.isSetSuccess()) {
+        return result.success;
+      }
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "koaloasTest3 failed: unknown result");
+    }
+
+    public thrift.domain.WmCreateAccountRespone koaloasTest4(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest) throws org.apache.thrift.TException
+    {
+      send_koaloasTest4(wmCreateAccountRequest);
+      return recv_koaloasTest4();
+    }
+
+    public void send_koaloasTest4(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest) throws org.apache.thrift.TException
+    {
+      koaloasTest4_args args = new koaloasTest4_args();
+      args.setWmCreateAccountRequest(wmCreateAccountRequest);
+      sendBase("koaloasTest4", args);
+    }
+
+    public thrift.domain.WmCreateAccountRespone recv_koaloasTest4() throws org.apache.thrift.TException
+    {
+      koaloasTest4_result result = new koaloasTest4_result();
+      receiveBase(result, "koaloasTest4");
+      if (result.isSetSuccess()) {
+        return result.success;
+      }
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "koaloasTest4 failed: unknown result");
+    }
+
+    public thrift.domain.WmCreateAccountRespone koaloasTest5(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest) throws org.apache.thrift.TException
+    {
+      send_koaloasTest5(wmCreateAccountRequest);
+      return recv_koaloasTest5();
+    }
+
+    public void send_koaloasTest5(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest) throws org.apache.thrift.TException
+    {
+      koaloasTest5_args args = new koaloasTest5_args();
+      args.setWmCreateAccountRequest(wmCreateAccountRequest);
+      sendBase("koaloasTest5", args);
+    }
+
+    public thrift.domain.WmCreateAccountRespone recv_koaloasTest5() throws org.apache.thrift.TException
+    {
+      koaloasTest5_result result = new koaloasTest5_result();
+      receiveBase(result, "koaloasTest5");
+      if (result.isSetSuccess()) {
+        return result.success;
+      }
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "koaloasTest5 failed: unknown result");
+    }
+
+    public thrift.domain.WmCreateAccountRespone koaloasTest6(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest) throws org.apache.thrift.TException
+    {
+      send_koaloasTest6(wmCreateAccountRequest);
+      return recv_koaloasTest6();
+    }
+
+    public void send_koaloasTest6(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest) throws org.apache.thrift.TException
+    {
+      koaloasTest6_args args = new koaloasTest6_args();
+      args.setWmCreateAccountRequest(wmCreateAccountRequest);
+      sendBase("koaloasTest6", args);
+    }
+
+    public thrift.domain.WmCreateAccountRespone recv_koaloasTest6() throws org.apache.thrift.TException
+    {
+      koaloasTest6_result result = new koaloasTest6_result();
+      receiveBase(result, "koaloasTest6");
+      if (result.isSetSuccess()) {
+        return result.success;
+      }
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "koaloasTest6 failed: unknown result");
+    }
+
+    public thrift.domain.WmCreateAccountRespone koaloasTest7(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest) throws org.apache.thrift.TException
+    {
+      send_koaloasTest7(wmCreateAccountRequest);
+      return recv_koaloasTest7();
+    }
+
+    public void send_koaloasTest7(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest) throws org.apache.thrift.TException
+    {
+      koaloasTest7_args args = new koaloasTest7_args();
+      args.setWmCreateAccountRequest(wmCreateAccountRequest);
+      sendBase("koaloasTest7", args);
+    }
+
+    public thrift.domain.WmCreateAccountRespone recv_koaloasTest7() throws org.apache.thrift.TException
+    {
+      koaloasTest7_result result = new koaloasTest7_result();
+      receiveBase(result, "koaloasTest7");
+      if (result.isSetSuccess()) {
+        return result.success;
+      }
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "koaloasTest7 failed: unknown result");
+    }
+
+    public thrift.domain.WmCreateAccountRespone koaloasTest8(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest) throws org.apache.thrift.TException
+    {
+      send_koaloasTest8(wmCreateAccountRequest);
+      return recv_koaloasTest8();
+    }
+
+    public void send_koaloasTest8(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest) throws org.apache.thrift.TException
+    {
+      koaloasTest8_args args = new koaloasTest8_args();
+      args.setWmCreateAccountRequest(wmCreateAccountRequest);
+      sendBase("koaloasTest8", args);
+    }
+
+    public thrift.domain.WmCreateAccountRespone recv_koaloasTest8() throws org.apache.thrift.TException
+    {
+      koaloasTest8_result result = new koaloasTest8_result();
+      receiveBase(result, "koaloasTest8");
+      if (result.isSetSuccess()) {
+        return result.success;
+      }
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "koaloasTest8 failed: unknown result");
+    }
+
+    public thrift.domain.WmCreateAccountRespone koaloasTest9(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest) throws org.apache.thrift.TException
+    {
+      send_koaloasTest9(wmCreateAccountRequest);
+      return recv_koaloasTest9();
+    }
+
+    public void send_koaloasTest9(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest) throws org.apache.thrift.TException
+    {
+      koaloasTest9_args args = new koaloasTest9_args();
+      args.setWmCreateAccountRequest(wmCreateAccountRequest);
+      sendBase("koaloasTest9", args);
+    }
+
+    public thrift.domain.WmCreateAccountRespone recv_koaloasTest9() throws org.apache.thrift.TException
+    {
+      koaloasTest9_result result = new koaloasTest9_result();
+      receiveBase(result, "koaloasTest9");
+      if (result.isSetSuccess()) {
+        return result.success;
+      }
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "koaloasTest9 failed: unknown result");
+    }
+
+    public thrift.domain.WmCreateAccountRespone koaloasTest10(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest) throws org.apache.thrift.TException
+    {
+      send_koaloasTest10(wmCreateAccountRequest);
+      return recv_koaloasTest10();
+    }
+
+    public void send_koaloasTest10(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest) throws org.apache.thrift.TException
+    {
+      koaloasTest10_args args = new koaloasTest10_args();
+      args.setWmCreateAccountRequest(wmCreateAccountRequest);
+      sendBase("koaloasTest10", args);
+    }
+
+    public thrift.domain.WmCreateAccountRespone recv_koaloasTest10() throws org.apache.thrift.TException
+    {
+      koaloasTest10_result result = new koaloasTest10_result();
+      receiveBase(result, "koaloasTest10");
+      if (result.isSetSuccess()) {
+        return result.success;
+      }
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "koaloasTest10 failed: unknown result");
+    }
+
+    public thrift.domain.WmCreateAccountRespone koaloasTest11(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest) throws org.apache.thrift.TException
+    {
+      send_koaloasTest11(wmCreateAccountRequest);
+      return recv_koaloasTest11();
+    }
+
+    public void send_koaloasTest11(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest) throws org.apache.thrift.TException
+    {
+      koaloasTest11_args args = new koaloasTest11_args();
+      args.setWmCreateAccountRequest(wmCreateAccountRequest);
+      sendBase("koaloasTest11", args);
+    }
+
+    public thrift.domain.WmCreateAccountRespone recv_koaloasTest11() throws org.apache.thrift.TException
+    {
+      koaloasTest11_result result = new koaloasTest11_result();
+      receiveBase(result, "koaloasTest11");
+      if (result.isSetSuccess()) {
+        return result.success;
+      }
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "koaloasTest11 failed: unknown result");
+    }
+
+    public thrift.domain.WmCreateAccountRespone koaloasTest12(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest) throws org.apache.thrift.TException
+    {
+      send_koaloasTest12(wmCreateAccountRequest);
+      return recv_koaloasTest12();
+    }
+
+    public void send_koaloasTest12(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest) throws org.apache.thrift.TException
+    {
+      koaloasTest12_args args = new koaloasTest12_args();
+      args.setWmCreateAccountRequest(wmCreateAccountRequest);
+      sendBase("koaloasTest12", args);
+    }
+
+    public thrift.domain.WmCreateAccountRespone recv_koaloasTest12() throws org.apache.thrift.TException
+    {
+      koaloasTest12_result result = new koaloasTest12_result();
+      receiveBase(result, "koaloasTest12");
+      if (result.isSetSuccess()) {
+        return result.success;
+      }
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "koaloasTest12 failed: unknown result");
     }
 
   }
@@ -100,7 +426,7 @@ public class WmCreateAccountService {
       super(protocolFactory, clientManager, transport);
     }
 
-    public void getRPC(WmCreateAccountRequest wmCreateAccountRequest, org.apache.thrift.async.AsyncMethodCallback<getRPC_call> resultHandler) throws org.apache.thrift.TException {
+    public void getRPC(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest, org.apache.thrift.async.AsyncMethodCallback<getRPC_call> resultHandler) throws org.apache.thrift.TException {
       checkReady();
       getRPC_call method_call = new getRPC_call(wmCreateAccountRequest, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
@@ -108,8 +434,8 @@ public class WmCreateAccountService {
     }
 
     public static class getRPC_call extends org.apache.thrift.async.TAsyncMethodCall {
-      private WmCreateAccountRequest wmCreateAccountRequest;
-      public getRPC_call(WmCreateAccountRequest wmCreateAccountRequest, org.apache.thrift.async.AsyncMethodCallback<getRPC_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+      private thrift.domain.WmCreateAccountRequest wmCreateAccountRequest;
+      public getRPC_call(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest, org.apache.thrift.async.AsyncMethodCallback<getRPC_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
         this.wmCreateAccountRequest = wmCreateAccountRequest;
       }
@@ -122,13 +448,397 @@ public class WmCreateAccountService {
         prot.writeMessageEnd();
       }
 
-      public WmCreateAccountRespone getResult() throws org.apache.thrift.TException {
+      public thrift.domain.WmCreateAccountRespone getResult() throws org.apache.thrift.TException {
         if (getState() != State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
         org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
         org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
         return (new Client(prot)).recv_getRPC();
+      }
+    }
+
+    public void koaloasTest1(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest, org.apache.thrift.async.AsyncMethodCallback<koaloasTest1_call> resultHandler) throws org.apache.thrift.TException {
+      checkReady();
+      koaloasTest1_call method_call = new koaloasTest1_call(wmCreateAccountRequest, resultHandler, this, ___protocolFactory, ___transport);
+      this.___currentMethod = method_call;
+      ___manager.call(method_call);
+    }
+
+    public static class koaloasTest1_call extends org.apache.thrift.async.TAsyncMethodCall {
+      private thrift.domain.WmCreateAccountRequest wmCreateAccountRequest;
+      public koaloasTest1_call(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest, org.apache.thrift.async.AsyncMethodCallback<koaloasTest1_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+        super(client, protocolFactory, transport, resultHandler, false);
+        this.wmCreateAccountRequest = wmCreateAccountRequest;
+      }
+
+      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("koaloasTest1", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        koaloasTest1_args args = new koaloasTest1_args();
+        args.setWmCreateAccountRequest(wmCreateAccountRequest);
+        args.write(prot);
+        prot.writeMessageEnd();
+      }
+
+      public thrift.domain.WmCreateAccountRespone getResult() throws org.apache.thrift.TException {
+        if (getState() != State.RESPONSE_READ) {
+          throw new IllegalStateException("Method call not finished!");
+        }
+        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
+        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
+        return (new Client(prot)).recv_koaloasTest1();
+      }
+    }
+
+    public void koaloasTest2(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest, org.apache.thrift.async.AsyncMethodCallback<koaloasTest2_call> resultHandler) throws org.apache.thrift.TException {
+      checkReady();
+      koaloasTest2_call method_call = new koaloasTest2_call(wmCreateAccountRequest, resultHandler, this, ___protocolFactory, ___transport);
+      this.___currentMethod = method_call;
+      ___manager.call(method_call);
+    }
+
+    public static class koaloasTest2_call extends org.apache.thrift.async.TAsyncMethodCall {
+      private thrift.domain.WmCreateAccountRequest wmCreateAccountRequest;
+      public koaloasTest2_call(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest, org.apache.thrift.async.AsyncMethodCallback<koaloasTest2_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+        super(client, protocolFactory, transport, resultHandler, false);
+        this.wmCreateAccountRequest = wmCreateAccountRequest;
+      }
+
+      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("koaloasTest2", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        koaloasTest2_args args = new koaloasTest2_args();
+        args.setWmCreateAccountRequest(wmCreateAccountRequest);
+        args.write(prot);
+        prot.writeMessageEnd();
+      }
+
+      public thrift.domain.WmCreateAccountRespone getResult() throws org.apache.thrift.TException {
+        if (getState() != State.RESPONSE_READ) {
+          throw new IllegalStateException("Method call not finished!");
+        }
+        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
+        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
+        return (new Client(prot)).recv_koaloasTest2();
+      }
+    }
+
+    public void koaloasTest3(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest, org.apache.thrift.async.AsyncMethodCallback<koaloasTest3_call> resultHandler) throws org.apache.thrift.TException {
+      checkReady();
+      koaloasTest3_call method_call = new koaloasTest3_call(wmCreateAccountRequest, resultHandler, this, ___protocolFactory, ___transport);
+      this.___currentMethod = method_call;
+      ___manager.call(method_call);
+    }
+
+    public static class koaloasTest3_call extends org.apache.thrift.async.TAsyncMethodCall {
+      private thrift.domain.WmCreateAccountRequest wmCreateAccountRequest;
+      public koaloasTest3_call(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest, org.apache.thrift.async.AsyncMethodCallback<koaloasTest3_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+        super(client, protocolFactory, transport, resultHandler, false);
+        this.wmCreateAccountRequest = wmCreateAccountRequest;
+      }
+
+      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("koaloasTest3", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        koaloasTest3_args args = new koaloasTest3_args();
+        args.setWmCreateAccountRequest(wmCreateAccountRequest);
+        args.write(prot);
+        prot.writeMessageEnd();
+      }
+
+      public thrift.domain.WmCreateAccountRespone getResult() throws org.apache.thrift.TException {
+        if (getState() != State.RESPONSE_READ) {
+          throw new IllegalStateException("Method call not finished!");
+        }
+        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
+        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
+        return (new Client(prot)).recv_koaloasTest3();
+      }
+    }
+
+    public void koaloasTest4(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest, org.apache.thrift.async.AsyncMethodCallback<koaloasTest4_call> resultHandler) throws org.apache.thrift.TException {
+      checkReady();
+      koaloasTest4_call method_call = new koaloasTest4_call(wmCreateAccountRequest, resultHandler, this, ___protocolFactory, ___transport);
+      this.___currentMethod = method_call;
+      ___manager.call(method_call);
+    }
+
+    public static class koaloasTest4_call extends org.apache.thrift.async.TAsyncMethodCall {
+      private thrift.domain.WmCreateAccountRequest wmCreateAccountRequest;
+      public koaloasTest4_call(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest, org.apache.thrift.async.AsyncMethodCallback<koaloasTest4_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+        super(client, protocolFactory, transport, resultHandler, false);
+        this.wmCreateAccountRequest = wmCreateAccountRequest;
+      }
+
+      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("koaloasTest4", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        koaloasTest4_args args = new koaloasTest4_args();
+        args.setWmCreateAccountRequest(wmCreateAccountRequest);
+        args.write(prot);
+        prot.writeMessageEnd();
+      }
+
+      public thrift.domain.WmCreateAccountRespone getResult() throws org.apache.thrift.TException {
+        if (getState() != State.RESPONSE_READ) {
+          throw new IllegalStateException("Method call not finished!");
+        }
+        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
+        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
+        return (new Client(prot)).recv_koaloasTest4();
+      }
+    }
+
+    public void koaloasTest5(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest, org.apache.thrift.async.AsyncMethodCallback<koaloasTest5_call> resultHandler) throws org.apache.thrift.TException {
+      checkReady();
+      koaloasTest5_call method_call = new koaloasTest5_call(wmCreateAccountRequest, resultHandler, this, ___protocolFactory, ___transport);
+      this.___currentMethod = method_call;
+      ___manager.call(method_call);
+    }
+
+    public static class koaloasTest5_call extends org.apache.thrift.async.TAsyncMethodCall {
+      private thrift.domain.WmCreateAccountRequest wmCreateAccountRequest;
+      public koaloasTest5_call(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest, org.apache.thrift.async.AsyncMethodCallback<koaloasTest5_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+        super(client, protocolFactory, transport, resultHandler, false);
+        this.wmCreateAccountRequest = wmCreateAccountRequest;
+      }
+
+      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("koaloasTest5", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        koaloasTest5_args args = new koaloasTest5_args();
+        args.setWmCreateAccountRequest(wmCreateAccountRequest);
+        args.write(prot);
+        prot.writeMessageEnd();
+      }
+
+      public thrift.domain.WmCreateAccountRespone getResult() throws org.apache.thrift.TException {
+        if (getState() != State.RESPONSE_READ) {
+          throw new IllegalStateException("Method call not finished!");
+        }
+        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
+        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
+        return (new Client(prot)).recv_koaloasTest5();
+      }
+    }
+
+    public void koaloasTest6(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest, org.apache.thrift.async.AsyncMethodCallback<koaloasTest6_call> resultHandler) throws org.apache.thrift.TException {
+      checkReady();
+      koaloasTest6_call method_call = new koaloasTest6_call(wmCreateAccountRequest, resultHandler, this, ___protocolFactory, ___transport);
+      this.___currentMethod = method_call;
+      ___manager.call(method_call);
+    }
+
+    public static class koaloasTest6_call extends org.apache.thrift.async.TAsyncMethodCall {
+      private thrift.domain.WmCreateAccountRequest wmCreateAccountRequest;
+      public koaloasTest6_call(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest, org.apache.thrift.async.AsyncMethodCallback<koaloasTest6_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+        super(client, protocolFactory, transport, resultHandler, false);
+        this.wmCreateAccountRequest = wmCreateAccountRequest;
+      }
+
+      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("koaloasTest6", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        koaloasTest6_args args = new koaloasTest6_args();
+        args.setWmCreateAccountRequest(wmCreateAccountRequest);
+        args.write(prot);
+        prot.writeMessageEnd();
+      }
+
+      public thrift.domain.WmCreateAccountRespone getResult() throws org.apache.thrift.TException {
+        if (getState() != State.RESPONSE_READ) {
+          throw new IllegalStateException("Method call not finished!");
+        }
+        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
+        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
+        return (new Client(prot)).recv_koaloasTest6();
+      }
+    }
+
+    public void koaloasTest7(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest, org.apache.thrift.async.AsyncMethodCallback<koaloasTest7_call> resultHandler) throws org.apache.thrift.TException {
+      checkReady();
+      koaloasTest7_call method_call = new koaloasTest7_call(wmCreateAccountRequest, resultHandler, this, ___protocolFactory, ___transport);
+      this.___currentMethod = method_call;
+      ___manager.call(method_call);
+    }
+
+    public static class koaloasTest7_call extends org.apache.thrift.async.TAsyncMethodCall {
+      private thrift.domain.WmCreateAccountRequest wmCreateAccountRequest;
+      public koaloasTest7_call(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest, org.apache.thrift.async.AsyncMethodCallback<koaloasTest7_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+        super(client, protocolFactory, transport, resultHandler, false);
+        this.wmCreateAccountRequest = wmCreateAccountRequest;
+      }
+
+      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("koaloasTest7", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        koaloasTest7_args args = new koaloasTest7_args();
+        args.setWmCreateAccountRequest(wmCreateAccountRequest);
+        args.write(prot);
+        prot.writeMessageEnd();
+      }
+
+      public thrift.domain.WmCreateAccountRespone getResult() throws org.apache.thrift.TException {
+        if (getState() != State.RESPONSE_READ) {
+          throw new IllegalStateException("Method call not finished!");
+        }
+        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
+        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
+        return (new Client(prot)).recv_koaloasTest7();
+      }
+    }
+
+    public void koaloasTest8(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest, org.apache.thrift.async.AsyncMethodCallback<koaloasTest8_call> resultHandler) throws org.apache.thrift.TException {
+      checkReady();
+      koaloasTest8_call method_call = new koaloasTest8_call(wmCreateAccountRequest, resultHandler, this, ___protocolFactory, ___transport);
+      this.___currentMethod = method_call;
+      ___manager.call(method_call);
+    }
+
+    public static class koaloasTest8_call extends org.apache.thrift.async.TAsyncMethodCall {
+      private thrift.domain.WmCreateAccountRequest wmCreateAccountRequest;
+      public koaloasTest8_call(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest, org.apache.thrift.async.AsyncMethodCallback<koaloasTest8_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+        super(client, protocolFactory, transport, resultHandler, false);
+        this.wmCreateAccountRequest = wmCreateAccountRequest;
+      }
+
+      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("koaloasTest8", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        koaloasTest8_args args = new koaloasTest8_args();
+        args.setWmCreateAccountRequest(wmCreateAccountRequest);
+        args.write(prot);
+        prot.writeMessageEnd();
+      }
+
+      public thrift.domain.WmCreateAccountRespone getResult() throws org.apache.thrift.TException {
+        if (getState() != State.RESPONSE_READ) {
+          throw new IllegalStateException("Method call not finished!");
+        }
+        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
+        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
+        return (new Client(prot)).recv_koaloasTest8();
+      }
+    }
+
+    public void koaloasTest9(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest, org.apache.thrift.async.AsyncMethodCallback<koaloasTest9_call> resultHandler) throws org.apache.thrift.TException {
+      checkReady();
+      koaloasTest9_call method_call = new koaloasTest9_call(wmCreateAccountRequest, resultHandler, this, ___protocolFactory, ___transport);
+      this.___currentMethod = method_call;
+      ___manager.call(method_call);
+    }
+
+    public static class koaloasTest9_call extends org.apache.thrift.async.TAsyncMethodCall {
+      private thrift.domain.WmCreateAccountRequest wmCreateAccountRequest;
+      public koaloasTest9_call(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest, org.apache.thrift.async.AsyncMethodCallback<koaloasTest9_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+        super(client, protocolFactory, transport, resultHandler, false);
+        this.wmCreateAccountRequest = wmCreateAccountRequest;
+      }
+
+      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("koaloasTest9", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        koaloasTest9_args args = new koaloasTest9_args();
+        args.setWmCreateAccountRequest(wmCreateAccountRequest);
+        args.write(prot);
+        prot.writeMessageEnd();
+      }
+
+      public thrift.domain.WmCreateAccountRespone getResult() throws org.apache.thrift.TException {
+        if (getState() != State.RESPONSE_READ) {
+          throw new IllegalStateException("Method call not finished!");
+        }
+        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
+        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
+        return (new Client(prot)).recv_koaloasTest9();
+      }
+    }
+
+    public void koaloasTest10(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest, org.apache.thrift.async.AsyncMethodCallback<koaloasTest10_call> resultHandler) throws org.apache.thrift.TException {
+      checkReady();
+      koaloasTest10_call method_call = new koaloasTest10_call(wmCreateAccountRequest, resultHandler, this, ___protocolFactory, ___transport);
+      this.___currentMethod = method_call;
+      ___manager.call(method_call);
+    }
+
+    public static class koaloasTest10_call extends org.apache.thrift.async.TAsyncMethodCall {
+      private thrift.domain.WmCreateAccountRequest wmCreateAccountRequest;
+      public koaloasTest10_call(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest, org.apache.thrift.async.AsyncMethodCallback<koaloasTest10_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+        super(client, protocolFactory, transport, resultHandler, false);
+        this.wmCreateAccountRequest = wmCreateAccountRequest;
+      }
+
+      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("koaloasTest10", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        koaloasTest10_args args = new koaloasTest10_args();
+        args.setWmCreateAccountRequest(wmCreateAccountRequest);
+        args.write(prot);
+        prot.writeMessageEnd();
+      }
+
+      public thrift.domain.WmCreateAccountRespone getResult() throws org.apache.thrift.TException {
+        if (getState() != State.RESPONSE_READ) {
+          throw new IllegalStateException("Method call not finished!");
+        }
+        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
+        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
+        return (new Client(prot)).recv_koaloasTest10();
+      }
+    }
+
+    public void koaloasTest11(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest, org.apache.thrift.async.AsyncMethodCallback<koaloasTest11_call> resultHandler) throws org.apache.thrift.TException {
+      checkReady();
+      koaloasTest11_call method_call = new koaloasTest11_call(wmCreateAccountRequest, resultHandler, this, ___protocolFactory, ___transport);
+      this.___currentMethod = method_call;
+      ___manager.call(method_call);
+    }
+
+    public static class koaloasTest11_call extends org.apache.thrift.async.TAsyncMethodCall {
+      private thrift.domain.WmCreateAccountRequest wmCreateAccountRequest;
+      public koaloasTest11_call(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest, org.apache.thrift.async.AsyncMethodCallback<koaloasTest11_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+        super(client, protocolFactory, transport, resultHandler, false);
+        this.wmCreateAccountRequest = wmCreateAccountRequest;
+      }
+
+      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("koaloasTest11", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        koaloasTest11_args args = new koaloasTest11_args();
+        args.setWmCreateAccountRequest(wmCreateAccountRequest);
+        args.write(prot);
+        prot.writeMessageEnd();
+      }
+
+      public thrift.domain.WmCreateAccountRespone getResult() throws org.apache.thrift.TException {
+        if (getState() != State.RESPONSE_READ) {
+          throw new IllegalStateException("Method call not finished!");
+        }
+        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
+        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
+        return (new Client(prot)).recv_koaloasTest11();
+      }
+    }
+
+    public void koaloasTest12(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest, org.apache.thrift.async.AsyncMethodCallback<koaloasTest12_call> resultHandler) throws org.apache.thrift.TException {
+      checkReady();
+      koaloasTest12_call method_call = new koaloasTest12_call(wmCreateAccountRequest, resultHandler, this, ___protocolFactory, ___transport);
+      this.___currentMethod = method_call;
+      ___manager.call(method_call);
+    }
+
+    public static class koaloasTest12_call extends org.apache.thrift.async.TAsyncMethodCall {
+      private thrift.domain.WmCreateAccountRequest wmCreateAccountRequest;
+      public koaloasTest12_call(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest, org.apache.thrift.async.AsyncMethodCallback<koaloasTest12_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+        super(client, protocolFactory, transport, resultHandler, false);
+        this.wmCreateAccountRequest = wmCreateAccountRequest;
+      }
+
+      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("koaloasTest12", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        koaloasTest12_args args = new koaloasTest12_args();
+        args.setWmCreateAccountRequest(wmCreateAccountRequest);
+        args.write(prot);
+        prot.writeMessageEnd();
+      }
+
+      public thrift.domain.WmCreateAccountRespone getResult() throws org.apache.thrift.TException {
+        if (getState() != State.RESPONSE_READ) {
+          throw new IllegalStateException("Method call not finished!");
+        }
+        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
+        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
+        return (new Client(prot)).recv_koaloasTest12();
       }
     }
 
@@ -146,6 +856,18 @@ public class WmCreateAccountService {
 
     private static <I extends Iface> Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> getProcessMap(Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> processMap) {
       processMap.put("getRPC", new getRPC());
+      processMap.put("koaloasTest1", new koaloasTest1());
+      processMap.put("koaloasTest2", new koaloasTest2());
+      processMap.put("koaloasTest3", new koaloasTest3());
+      processMap.put("koaloasTest4", new koaloasTest4());
+      processMap.put("koaloasTest5", new koaloasTest5());
+      processMap.put("koaloasTest6", new koaloasTest6());
+      processMap.put("koaloasTest7", new koaloasTest7());
+      processMap.put("koaloasTest8", new koaloasTest8());
+      processMap.put("koaloasTest9", new koaloasTest9());
+      processMap.put("koaloasTest10", new koaloasTest10());
+      processMap.put("koaloasTest11", new koaloasTest11());
+      processMap.put("koaloasTest12", new koaloasTest12());
       return processMap;
     }
 
@@ -165,6 +887,198 @@ public class WmCreateAccountService {
       }
     }
 
+    private static class koaloasTest1<I extends Iface> extends org.apache.thrift.ProcessFunction<I, koaloasTest1_args> {
+      public koaloasTest1() {
+        super("koaloasTest1");
+      }
+
+      protected koaloasTest1_args getEmptyArgsInstance() {
+        return new koaloasTest1_args();
+      }
+
+      protected koaloasTest1_result getResult(I iface, koaloasTest1_args args) throws org.apache.thrift.TException {
+        koaloasTest1_result result = new koaloasTest1_result();
+        result.success = iface.koaloasTest1(args.wmCreateAccountRequest);
+        return result;
+      }
+    }
+
+    private static class koaloasTest2<I extends Iface> extends org.apache.thrift.ProcessFunction<I, koaloasTest2_args> {
+      public koaloasTest2() {
+        super("koaloasTest2");
+      }
+
+      protected koaloasTest2_args getEmptyArgsInstance() {
+        return new koaloasTest2_args();
+      }
+
+      protected koaloasTest2_result getResult(I iface, koaloasTest2_args args) throws org.apache.thrift.TException {
+        koaloasTest2_result result = new koaloasTest2_result();
+        result.success = iface.koaloasTest2(args.wmCreateAccountRequest);
+        return result;
+      }
+    }
+
+    private static class koaloasTest3<I extends Iface> extends org.apache.thrift.ProcessFunction<I, koaloasTest3_args> {
+      public koaloasTest3() {
+        super("koaloasTest3");
+      }
+
+      protected koaloasTest3_args getEmptyArgsInstance() {
+        return new koaloasTest3_args();
+      }
+
+      protected koaloasTest3_result getResult(I iface, koaloasTest3_args args) throws org.apache.thrift.TException {
+        koaloasTest3_result result = new koaloasTest3_result();
+        result.success = iface.koaloasTest3(args.wmCreateAccountRequest);
+        return result;
+      }
+    }
+
+    private static class koaloasTest4<I extends Iface> extends org.apache.thrift.ProcessFunction<I, koaloasTest4_args> {
+      public koaloasTest4() {
+        super("koaloasTest4");
+      }
+
+      protected koaloasTest4_args getEmptyArgsInstance() {
+        return new koaloasTest4_args();
+      }
+
+      protected koaloasTest4_result getResult(I iface, koaloasTest4_args args) throws org.apache.thrift.TException {
+        koaloasTest4_result result = new koaloasTest4_result();
+        result.success = iface.koaloasTest4(args.wmCreateAccountRequest);
+        return result;
+      }
+    }
+
+    private static class koaloasTest5<I extends Iface> extends org.apache.thrift.ProcessFunction<I, koaloasTest5_args> {
+      public koaloasTest5() {
+        super("koaloasTest5");
+      }
+
+      protected koaloasTest5_args getEmptyArgsInstance() {
+        return new koaloasTest5_args();
+      }
+
+      protected koaloasTest5_result getResult(I iface, koaloasTest5_args args) throws org.apache.thrift.TException {
+        koaloasTest5_result result = new koaloasTest5_result();
+        result.success = iface.koaloasTest5(args.wmCreateAccountRequest);
+        return result;
+      }
+    }
+
+    private static class koaloasTest6<I extends Iface> extends org.apache.thrift.ProcessFunction<I, koaloasTest6_args> {
+      public koaloasTest6() {
+        super("koaloasTest6");
+      }
+
+      protected koaloasTest6_args getEmptyArgsInstance() {
+        return new koaloasTest6_args();
+      }
+
+      protected koaloasTest6_result getResult(I iface, koaloasTest6_args args) throws org.apache.thrift.TException {
+        koaloasTest6_result result = new koaloasTest6_result();
+        result.success = iface.koaloasTest6(args.wmCreateAccountRequest);
+        return result;
+      }
+    }
+
+    private static class koaloasTest7<I extends Iface> extends org.apache.thrift.ProcessFunction<I, koaloasTest7_args> {
+      public koaloasTest7() {
+        super("koaloasTest7");
+      }
+
+      protected koaloasTest7_args getEmptyArgsInstance() {
+        return new koaloasTest7_args();
+      }
+
+      protected koaloasTest7_result getResult(I iface, koaloasTest7_args args) throws org.apache.thrift.TException {
+        koaloasTest7_result result = new koaloasTest7_result();
+        result.success = iface.koaloasTest7(args.wmCreateAccountRequest);
+        return result;
+      }
+    }
+
+    private static class koaloasTest8<I extends Iface> extends org.apache.thrift.ProcessFunction<I, koaloasTest8_args> {
+      public koaloasTest8() {
+        super("koaloasTest8");
+      }
+
+      protected koaloasTest8_args getEmptyArgsInstance() {
+        return new koaloasTest8_args();
+      }
+
+      protected koaloasTest8_result getResult(I iface, koaloasTest8_args args) throws org.apache.thrift.TException {
+        koaloasTest8_result result = new koaloasTest8_result();
+        result.success = iface.koaloasTest8(args.wmCreateAccountRequest);
+        return result;
+      }
+    }
+
+    private static class koaloasTest9<I extends Iface> extends org.apache.thrift.ProcessFunction<I, koaloasTest9_args> {
+      public koaloasTest9() {
+        super("koaloasTest9");
+      }
+
+      protected koaloasTest9_args getEmptyArgsInstance() {
+        return new koaloasTest9_args();
+      }
+
+      protected koaloasTest9_result getResult(I iface, koaloasTest9_args args) throws org.apache.thrift.TException {
+        koaloasTest9_result result = new koaloasTest9_result();
+        result.success = iface.koaloasTest9(args.wmCreateAccountRequest);
+        return result;
+      }
+    }
+
+    private static class koaloasTest10<I extends Iface> extends org.apache.thrift.ProcessFunction<I, koaloasTest10_args> {
+      public koaloasTest10() {
+        super("koaloasTest10");
+      }
+
+      protected koaloasTest10_args getEmptyArgsInstance() {
+        return new koaloasTest10_args();
+      }
+
+      protected koaloasTest10_result getResult(I iface, koaloasTest10_args args) throws org.apache.thrift.TException {
+        koaloasTest10_result result = new koaloasTest10_result();
+        result.success = iface.koaloasTest10(args.wmCreateAccountRequest);
+        return result;
+      }
+    }
+
+    private static class koaloasTest11<I extends Iface> extends org.apache.thrift.ProcessFunction<I, koaloasTest11_args> {
+      public koaloasTest11() {
+        super("koaloasTest11");
+      }
+
+      protected koaloasTest11_args getEmptyArgsInstance() {
+        return new koaloasTest11_args();
+      }
+
+      protected koaloasTest11_result getResult(I iface, koaloasTest11_args args) throws org.apache.thrift.TException {
+        koaloasTest11_result result = new koaloasTest11_result();
+        result.success = iface.koaloasTest11(args.wmCreateAccountRequest);
+        return result;
+      }
+    }
+
+    private static class koaloasTest12<I extends Iface> extends org.apache.thrift.ProcessFunction<I, koaloasTest12_args> {
+      public koaloasTest12() {
+        super("koaloasTest12");
+      }
+
+      protected koaloasTest12_args getEmptyArgsInstance() {
+        return new koaloasTest12_args();
+      }
+
+      protected koaloasTest12_result getResult(I iface, koaloasTest12_args args) throws org.apache.thrift.TException {
+        koaloasTest12_result result = new koaloasTest12_result();
+        result.success = iface.koaloasTest12(args.wmCreateAccountRequest);
+        return result;
+      }
+    }
+
   }
 
   public static class getRPC_args implements org.apache.thrift.TBase<getRPC_args, getRPC_args._Fields>, java.io.Serializable, Cloneable   {
@@ -178,7 +1092,7 @@ public class WmCreateAccountService {
       schemes.put(TupleScheme.class, new getRPC_argsTupleSchemeFactory());
     }
 
-    public WmCreateAccountRequest wmCreateAccountRequest; // required
+    public thrift.domain.WmCreateAccountRequest wmCreateAccountRequest; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -242,8 +1156,8 @@ public class WmCreateAccountService {
     public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-      tmpMap.put( _Fields.WM_CREATE_ACCOUNT_REQUEST, new org.apache.thrift.meta_data.FieldMetaData("wmCreateAccountRequest", org.apache.thrift.TFieldRequirementType.DEFAULT,
-          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, WmCreateAccountRequest.class)));
+      tmpMap.put(_Fields.WM_CREATE_ACCOUNT_REQUEST, new org.apache.thrift.meta_data.FieldMetaData("wmCreateAccountRequest", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, thrift.domain.WmCreateAccountRequest.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getRPC_args.class, metaDataMap);
     }
@@ -252,7 +1166,7 @@ public class WmCreateAccountService {
     }
 
     public getRPC_args(
-      WmCreateAccountRequest wmCreateAccountRequest)
+      thrift.domain.WmCreateAccountRequest wmCreateAccountRequest)
     {
       this();
       this.wmCreateAccountRequest = wmCreateAccountRequest;
@@ -263,7 +1177,7 @@ public class WmCreateAccountService {
      */
     public getRPC_args(getRPC_args other) {
       if (other.isSetWmCreateAccountRequest()) {
-        this.wmCreateAccountRequest = new WmCreateAccountRequest(other.wmCreateAccountRequest);
+        this.wmCreateAccountRequest = new thrift.domain.WmCreateAccountRequest(other.wmCreateAccountRequest);
       }
     }
 
@@ -276,11 +1190,11 @@ public class WmCreateAccountService {
       this.wmCreateAccountRequest = null;
     }
 
-    public WmCreateAccountRequest getWmCreateAccountRequest() {
+    public thrift.domain.WmCreateAccountRequest getWmCreateAccountRequest() {
       return this.wmCreateAccountRequest;
     }
 
-    public getRPC_args setWmCreateAccountRequest(WmCreateAccountRequest wmCreateAccountRequest) {
+    public getRPC_args setWmCreateAccountRequest(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest) {
       this.wmCreateAccountRequest = wmCreateAccountRequest;
       return this;
     }
@@ -306,7 +1220,7 @@ public class WmCreateAccountService {
         if (value == null) {
           unsetWmCreateAccountRequest();
         } else {
-          setWmCreateAccountRequest((WmCreateAccountRequest)value);
+          setWmCreateAccountRequest((thrift.domain.WmCreateAccountRequest)value);
         }
         break;
 
@@ -454,7 +1368,7 @@ public class WmCreateAccountService {
           switch (schemeField.id) {
             case 1: // WM_CREATE_ACCOUNT_REQUEST
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.wmCreateAccountRequest = new WmCreateAccountRequest();
+                struct.wmCreateAccountRequest = new thrift.domain.WmCreateAccountRequest();
                 struct.wmCreateAccountRequest.read(iprot);
                 struct.setWmCreateAccountRequestIsSet(true);
               } else { 
@@ -513,7 +1427,7 @@ public class WmCreateAccountService {
         TTupleProtocol iprot = (TTupleProtocol) prot;
         BitSet incoming = iprot.readBitSet(1);
         if (incoming.get(0)) {
-          struct.wmCreateAccountRequest = new WmCreateAccountRequest();
+          struct.wmCreateAccountRequest = new thrift.domain.WmCreateAccountRequest();
           struct.wmCreateAccountRequest.read(iprot);
           struct.setWmCreateAccountRequestIsSet(true);
         }
@@ -533,7 +1447,7 @@ public class WmCreateAccountService {
       schemes.put(TupleScheme.class, new getRPC_resultTupleSchemeFactory());
     }
 
-    public WmCreateAccountRespone success; // required
+    public thrift.domain.WmCreateAccountRespone success; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -597,8 +1511,8 @@ public class WmCreateAccountService {
     public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-      tmpMap.put( _Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT,
-          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, WmCreateAccountRespone.class)));
+      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, thrift.domain.WmCreateAccountRespone.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getRPC_result.class, metaDataMap);
     }
@@ -607,7 +1521,7 @@ public class WmCreateAccountService {
     }
 
     public getRPC_result(
-      WmCreateAccountRespone success)
+      thrift.domain.WmCreateAccountRespone success)
     {
       this();
       this.success = success;
@@ -618,7 +1532,7 @@ public class WmCreateAccountService {
      */
     public getRPC_result(getRPC_result other) {
       if (other.isSetSuccess()) {
-        this.success = new WmCreateAccountRespone(other.success);
+        this.success = new thrift.domain.WmCreateAccountRespone(other.success);
       }
     }
 
@@ -631,11 +1545,11 @@ public class WmCreateAccountService {
       this.success = null;
     }
 
-    public WmCreateAccountRespone getSuccess() {
+    public thrift.domain.WmCreateAccountRespone getSuccess() {
       return this.success;
     }
 
-    public getRPC_result setSuccess(WmCreateAccountRespone success) {
+    public getRPC_result setSuccess(thrift.domain.WmCreateAccountRespone success) {
       this.success = success;
       return this;
     }
@@ -661,7 +1575,7 @@ public class WmCreateAccountService {
         if (value == null) {
           unsetSuccess();
         } else {
-          setSuccess((WmCreateAccountRespone)value);
+          setSuccess((thrift.domain.WmCreateAccountRespone)value);
         }
         break;
 
@@ -809,7 +1723,7 @@ public class WmCreateAccountService {
           switch (schemeField.id) {
             case 0: // SUCCESS
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.success = new WmCreateAccountRespone();
+                struct.success = new thrift.domain.WmCreateAccountRespone();
                 struct.success.read(iprot);
                 struct.setSuccessIsSet(true);
               } else { 
@@ -868,7 +1782,8527 @@ public class WmCreateAccountService {
         TTupleProtocol iprot = (TTupleProtocol) prot;
         BitSet incoming = iprot.readBitSet(1);
         if (incoming.get(0)) {
-          struct.success = new WmCreateAccountRespone();
+          struct.success = new thrift.domain.WmCreateAccountRespone();
+          struct.success.read(iprot);
+          struct.setSuccessIsSet(true);
+        }
+      }
+    }
+
+  }
+
+  public static class koaloasTest1_args implements org.apache.thrift.TBase<koaloasTest1_args, koaloasTest1_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("koaloasTest1_args");
+
+    private static final org.apache.thrift.protocol.TField WM_CREATE_ACCOUNT_REQUEST_FIELD_DESC = new org.apache.thrift.protocol.TField("wmCreateAccountRequest", org.apache.thrift.protocol.TType.STRUCT, (short)1);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new koaloasTest1_argsStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new koaloasTest1_argsTupleSchemeFactory());
+    }
+
+    public thrift.domain.WmCreateAccountRequest wmCreateAccountRequest; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      WM_CREATE_ACCOUNT_REQUEST((short)1, "wmCreateAccountRequest");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 1: // WM_CREATE_ACCOUNT_REQUEST
+            return WM_CREATE_ACCOUNT_REQUEST;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.WM_CREATE_ACCOUNT_REQUEST, new org.apache.thrift.meta_data.FieldMetaData("wmCreateAccountRequest", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, thrift.domain.WmCreateAccountRequest.class)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(koaloasTest1_args.class, metaDataMap);
+    }
+
+    public koaloasTest1_args() {
+    }
+
+    public koaloasTest1_args(
+      thrift.domain.WmCreateAccountRequest wmCreateAccountRequest)
+    {
+      this();
+      this.wmCreateAccountRequest = wmCreateAccountRequest;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public koaloasTest1_args(koaloasTest1_args other) {
+      if (other.isSetWmCreateAccountRequest()) {
+        this.wmCreateAccountRequest = new thrift.domain.WmCreateAccountRequest(other.wmCreateAccountRequest);
+      }
+    }
+
+    public koaloasTest1_args deepCopy() {
+      return new koaloasTest1_args(this);
+    }
+
+    @Override
+    public void clear() {
+      this.wmCreateAccountRequest = null;
+    }
+
+    public thrift.domain.WmCreateAccountRequest getWmCreateAccountRequest() {
+      return this.wmCreateAccountRequest;
+    }
+
+    public koaloasTest1_args setWmCreateAccountRequest(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest) {
+      this.wmCreateAccountRequest = wmCreateAccountRequest;
+      return this;
+    }
+
+    public void unsetWmCreateAccountRequest() {
+      this.wmCreateAccountRequest = null;
+    }
+
+    /** Returns true if field wmCreateAccountRequest is set (has been assigned a value) and false otherwise */
+    public boolean isSetWmCreateAccountRequest() {
+      return this.wmCreateAccountRequest != null;
+    }
+
+    public void setWmCreateAccountRequestIsSet(boolean value) {
+      if (!value) {
+        this.wmCreateAccountRequest = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case WM_CREATE_ACCOUNT_REQUEST:
+        if (value == null) {
+          unsetWmCreateAccountRequest();
+        } else {
+          setWmCreateAccountRequest((thrift.domain.WmCreateAccountRequest)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case WM_CREATE_ACCOUNT_REQUEST:
+        return getWmCreateAccountRequest();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case WM_CREATE_ACCOUNT_REQUEST:
+        return isSetWmCreateAccountRequest();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof koaloasTest1_args)
+        return this.equals((koaloasTest1_args)that);
+      return false;
+    }
+
+    public boolean equals(koaloasTest1_args that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_wmCreateAccountRequest = true && this.isSetWmCreateAccountRequest();
+      boolean that_present_wmCreateAccountRequest = true && that.isSetWmCreateAccountRequest();
+      if (this_present_wmCreateAccountRequest || that_present_wmCreateAccountRequest) {
+        if (!(this_present_wmCreateAccountRequest && that_present_wmCreateAccountRequest))
+          return false;
+        if (!this.wmCreateAccountRequest.equals(that.wmCreateAccountRequest))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    public int compareTo(koaloasTest1_args other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      koaloasTest1_args typedOther = (koaloasTest1_args)other;
+
+      lastComparison = Boolean.valueOf(isSetWmCreateAccountRequest()).compareTo(typedOther.isSetWmCreateAccountRequest());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetWmCreateAccountRequest()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.wmCreateAccountRequest, typedOther.wmCreateAccountRequest);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("koaloasTest1_args(");
+      boolean first = true;
+
+      sb.append("wmCreateAccountRequest:");
+      if (this.wmCreateAccountRequest == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.wmCreateAccountRequest);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class koaloasTest1_argsStandardSchemeFactory implements SchemeFactory {
+      public koaloasTest1_argsStandardScheme getScheme() {
+        return new koaloasTest1_argsStandardScheme();
+      }
+    }
+
+    private static class koaloasTest1_argsStandardScheme extends StandardScheme<koaloasTest1_args> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, koaloasTest1_args struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 1: // WM_CREATE_ACCOUNT_REQUEST
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.wmCreateAccountRequest = new thrift.domain.WmCreateAccountRequest();
+                struct.wmCreateAccountRequest.read(iprot);
+                struct.setWmCreateAccountRequestIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, koaloasTest1_args struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.wmCreateAccountRequest != null) {
+          oprot.writeFieldBegin(WM_CREATE_ACCOUNT_REQUEST_FIELD_DESC);
+          struct.wmCreateAccountRequest.write(oprot);
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class koaloasTest1_argsTupleSchemeFactory implements SchemeFactory {
+      public koaloasTest1_argsTupleScheme getScheme() {
+        return new koaloasTest1_argsTupleScheme();
+      }
+    }
+
+    private static class koaloasTest1_argsTupleScheme extends TupleScheme<koaloasTest1_args> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, koaloasTest1_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetWmCreateAccountRequest()) {
+          optionals.set(0);
+        }
+        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetWmCreateAccountRequest()) {
+          struct.wmCreateAccountRequest.write(oprot);
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, koaloasTest1_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(1);
+        if (incoming.get(0)) {
+          struct.wmCreateAccountRequest = new thrift.domain.WmCreateAccountRequest();
+          struct.wmCreateAccountRequest.read(iprot);
+          struct.setWmCreateAccountRequestIsSet(true);
+        }
+      }
+    }
+
+  }
+
+  public static class koaloasTest1_result implements org.apache.thrift.TBase<koaloasTest1_result, koaloasTest1_result._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("koaloasTest1_result");
+
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new koaloasTest1_resultStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new koaloasTest1_resultTupleSchemeFactory());
+    }
+
+    public thrift.domain.WmCreateAccountRespone success; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      SUCCESS((short)0, "success");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 0: // SUCCESS
+            return SUCCESS;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, thrift.domain.WmCreateAccountRespone.class)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(koaloasTest1_result.class, metaDataMap);
+    }
+
+    public koaloasTest1_result() {
+    }
+
+    public koaloasTest1_result(
+      thrift.domain.WmCreateAccountRespone success)
+    {
+      this();
+      this.success = success;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public koaloasTest1_result(koaloasTest1_result other) {
+      if (other.isSetSuccess()) {
+        this.success = new thrift.domain.WmCreateAccountRespone(other.success);
+      }
+    }
+
+    public koaloasTest1_result deepCopy() {
+      return new koaloasTest1_result(this);
+    }
+
+    @Override
+    public void clear() {
+      this.success = null;
+    }
+
+    public thrift.domain.WmCreateAccountRespone getSuccess() {
+      return this.success;
+    }
+
+    public koaloasTest1_result setSuccess(thrift.domain.WmCreateAccountRespone success) {
+      this.success = success;
+      return this;
+    }
+
+    public void unsetSuccess() {
+      this.success = null;
+    }
+
+    /** Returns true if field success is set (has been assigned a value) and false otherwise */
+    public boolean isSetSuccess() {
+      return this.success != null;
+    }
+
+    public void setSuccessIsSet(boolean value) {
+      if (!value) {
+        this.success = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case SUCCESS:
+        if (value == null) {
+          unsetSuccess();
+        } else {
+          setSuccess((thrift.domain.WmCreateAccountRespone)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case SUCCESS:
+        return getSuccess();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case SUCCESS:
+        return isSetSuccess();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof koaloasTest1_result)
+        return this.equals((koaloasTest1_result)that);
+      return false;
+    }
+
+    public boolean equals(koaloasTest1_result that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_success = true && this.isSetSuccess();
+      boolean that_present_success = true && that.isSetSuccess();
+      if (this_present_success || that_present_success) {
+        if (!(this_present_success && that_present_success))
+          return false;
+        if (!this.success.equals(that.success))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    public int compareTo(koaloasTest1_result other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      koaloasTest1_result typedOther = (koaloasTest1_result)other;
+
+      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetSuccess()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, typedOther.success);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+      }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("koaloasTest1_result(");
+      boolean first = true;
+
+      sb.append("success:");
+      if (this.success == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.success);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class koaloasTest1_resultStandardSchemeFactory implements SchemeFactory {
+      public koaloasTest1_resultStandardScheme getScheme() {
+        return new koaloasTest1_resultStandardScheme();
+      }
+    }
+
+    private static class koaloasTest1_resultStandardScheme extends StandardScheme<koaloasTest1_result> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, koaloasTest1_result struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 0: // SUCCESS
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.success = new thrift.domain.WmCreateAccountRespone();
+                struct.success.read(iprot);
+                struct.setSuccessIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, koaloasTest1_result struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.success != null) {
+          oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
+          struct.success.write(oprot);
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class koaloasTest1_resultTupleSchemeFactory implements SchemeFactory {
+      public koaloasTest1_resultTupleScheme getScheme() {
+        return new koaloasTest1_resultTupleScheme();
+      }
+    }
+
+    private static class koaloasTest1_resultTupleScheme extends TupleScheme<koaloasTest1_result> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, koaloasTest1_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetSuccess()) {
+          optionals.set(0);
+        }
+        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetSuccess()) {
+          struct.success.write(oprot);
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, koaloasTest1_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(1);
+        if (incoming.get(0)) {
+          struct.success = new thrift.domain.WmCreateAccountRespone();
+          struct.success.read(iprot);
+          struct.setSuccessIsSet(true);
+        }
+      }
+    }
+
+  }
+
+  public static class koaloasTest2_args implements org.apache.thrift.TBase<koaloasTest2_args, koaloasTest2_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("koaloasTest2_args");
+
+    private static final org.apache.thrift.protocol.TField WM_CREATE_ACCOUNT_REQUEST_FIELD_DESC = new org.apache.thrift.protocol.TField("wmCreateAccountRequest", org.apache.thrift.protocol.TType.STRUCT, (short)1);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new koaloasTest2_argsStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new koaloasTest2_argsTupleSchemeFactory());
+    }
+
+    public thrift.domain.WmCreateAccountRequest wmCreateAccountRequest; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      WM_CREATE_ACCOUNT_REQUEST((short)1, "wmCreateAccountRequest");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 1: // WM_CREATE_ACCOUNT_REQUEST
+            return WM_CREATE_ACCOUNT_REQUEST;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.WM_CREATE_ACCOUNT_REQUEST, new org.apache.thrift.meta_data.FieldMetaData("wmCreateAccountRequest", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, thrift.domain.WmCreateAccountRequest.class)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(koaloasTest2_args.class, metaDataMap);
+    }
+
+    public koaloasTest2_args() {
+    }
+
+    public koaloasTest2_args(
+      thrift.domain.WmCreateAccountRequest wmCreateAccountRequest)
+    {
+      this();
+      this.wmCreateAccountRequest = wmCreateAccountRequest;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public koaloasTest2_args(koaloasTest2_args other) {
+      if (other.isSetWmCreateAccountRequest()) {
+        this.wmCreateAccountRequest = new thrift.domain.WmCreateAccountRequest(other.wmCreateAccountRequest);
+      }
+    }
+
+    public koaloasTest2_args deepCopy() {
+      return new koaloasTest2_args(this);
+    }
+
+    @Override
+    public void clear() {
+      this.wmCreateAccountRequest = null;
+    }
+
+    public thrift.domain.WmCreateAccountRequest getWmCreateAccountRequest() {
+      return this.wmCreateAccountRequest;
+    }
+
+    public koaloasTest2_args setWmCreateAccountRequest(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest) {
+      this.wmCreateAccountRequest = wmCreateAccountRequest;
+      return this;
+    }
+
+    public void unsetWmCreateAccountRequest() {
+      this.wmCreateAccountRequest = null;
+    }
+
+    /** Returns true if field wmCreateAccountRequest is set (has been assigned a value) and false otherwise */
+    public boolean isSetWmCreateAccountRequest() {
+      return this.wmCreateAccountRequest != null;
+    }
+
+    public void setWmCreateAccountRequestIsSet(boolean value) {
+      if (!value) {
+        this.wmCreateAccountRequest = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case WM_CREATE_ACCOUNT_REQUEST:
+        if (value == null) {
+          unsetWmCreateAccountRequest();
+        } else {
+          setWmCreateAccountRequest((thrift.domain.WmCreateAccountRequest)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case WM_CREATE_ACCOUNT_REQUEST:
+        return getWmCreateAccountRequest();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case WM_CREATE_ACCOUNT_REQUEST:
+        return isSetWmCreateAccountRequest();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof koaloasTest2_args)
+        return this.equals((koaloasTest2_args)that);
+      return false;
+    }
+
+    public boolean equals(koaloasTest2_args that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_wmCreateAccountRequest = true && this.isSetWmCreateAccountRequest();
+      boolean that_present_wmCreateAccountRequest = true && that.isSetWmCreateAccountRequest();
+      if (this_present_wmCreateAccountRequest || that_present_wmCreateAccountRequest) {
+        if (!(this_present_wmCreateAccountRequest && that_present_wmCreateAccountRequest))
+          return false;
+        if (!this.wmCreateAccountRequest.equals(that.wmCreateAccountRequest))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    public int compareTo(koaloasTest2_args other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      koaloasTest2_args typedOther = (koaloasTest2_args)other;
+
+      lastComparison = Boolean.valueOf(isSetWmCreateAccountRequest()).compareTo(typedOther.isSetWmCreateAccountRequest());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetWmCreateAccountRequest()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.wmCreateAccountRequest, typedOther.wmCreateAccountRequest);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("koaloasTest2_args(");
+      boolean first = true;
+
+      sb.append("wmCreateAccountRequest:");
+      if (this.wmCreateAccountRequest == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.wmCreateAccountRequest);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class koaloasTest2_argsStandardSchemeFactory implements SchemeFactory {
+      public koaloasTest2_argsStandardScheme getScheme() {
+        return new koaloasTest2_argsStandardScheme();
+      }
+    }
+
+    private static class koaloasTest2_argsStandardScheme extends StandardScheme<koaloasTest2_args> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, koaloasTest2_args struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 1: // WM_CREATE_ACCOUNT_REQUEST
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.wmCreateAccountRequest = new thrift.domain.WmCreateAccountRequest();
+                struct.wmCreateAccountRequest.read(iprot);
+                struct.setWmCreateAccountRequestIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, koaloasTest2_args struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.wmCreateAccountRequest != null) {
+          oprot.writeFieldBegin(WM_CREATE_ACCOUNT_REQUEST_FIELD_DESC);
+          struct.wmCreateAccountRequest.write(oprot);
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class koaloasTest2_argsTupleSchemeFactory implements SchemeFactory {
+      public koaloasTest2_argsTupleScheme getScheme() {
+        return new koaloasTest2_argsTupleScheme();
+      }
+    }
+
+    private static class koaloasTest2_argsTupleScheme extends TupleScheme<koaloasTest2_args> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, koaloasTest2_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetWmCreateAccountRequest()) {
+          optionals.set(0);
+        }
+        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetWmCreateAccountRequest()) {
+          struct.wmCreateAccountRequest.write(oprot);
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, koaloasTest2_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(1);
+        if (incoming.get(0)) {
+          struct.wmCreateAccountRequest = new thrift.domain.WmCreateAccountRequest();
+          struct.wmCreateAccountRequest.read(iprot);
+          struct.setWmCreateAccountRequestIsSet(true);
+        }
+      }
+    }
+
+  }
+
+  public static class koaloasTest2_result implements org.apache.thrift.TBase<koaloasTest2_result, koaloasTest2_result._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("koaloasTest2_result");
+
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new koaloasTest2_resultStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new koaloasTest2_resultTupleSchemeFactory());
+    }
+
+    public thrift.domain.WmCreateAccountRespone success; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      SUCCESS((short)0, "success");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 0: // SUCCESS
+            return SUCCESS;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, thrift.domain.WmCreateAccountRespone.class)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(koaloasTest2_result.class, metaDataMap);
+    }
+
+    public koaloasTest2_result() {
+    }
+
+    public koaloasTest2_result(
+      thrift.domain.WmCreateAccountRespone success)
+    {
+      this();
+      this.success = success;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public koaloasTest2_result(koaloasTest2_result other) {
+      if (other.isSetSuccess()) {
+        this.success = new thrift.domain.WmCreateAccountRespone(other.success);
+      }
+    }
+
+    public koaloasTest2_result deepCopy() {
+      return new koaloasTest2_result(this);
+    }
+
+    @Override
+    public void clear() {
+      this.success = null;
+    }
+
+    public thrift.domain.WmCreateAccountRespone getSuccess() {
+      return this.success;
+    }
+
+    public koaloasTest2_result setSuccess(thrift.domain.WmCreateAccountRespone success) {
+      this.success = success;
+      return this;
+    }
+
+    public void unsetSuccess() {
+      this.success = null;
+    }
+
+    /** Returns true if field success is set (has been assigned a value) and false otherwise */
+    public boolean isSetSuccess() {
+      return this.success != null;
+    }
+
+    public void setSuccessIsSet(boolean value) {
+      if (!value) {
+        this.success = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case SUCCESS:
+        if (value == null) {
+          unsetSuccess();
+        } else {
+          setSuccess((thrift.domain.WmCreateAccountRespone)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case SUCCESS:
+        return getSuccess();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case SUCCESS:
+        return isSetSuccess();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof koaloasTest2_result)
+        return this.equals((koaloasTest2_result)that);
+      return false;
+    }
+
+    public boolean equals(koaloasTest2_result that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_success = true && this.isSetSuccess();
+      boolean that_present_success = true && that.isSetSuccess();
+      if (this_present_success || that_present_success) {
+        if (!(this_present_success && that_present_success))
+          return false;
+        if (!this.success.equals(that.success))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    public int compareTo(koaloasTest2_result other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      koaloasTest2_result typedOther = (koaloasTest2_result)other;
+
+      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetSuccess()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, typedOther.success);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+      }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("koaloasTest2_result(");
+      boolean first = true;
+
+      sb.append("success:");
+      if (this.success == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.success);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class koaloasTest2_resultStandardSchemeFactory implements SchemeFactory {
+      public koaloasTest2_resultStandardScheme getScheme() {
+        return new koaloasTest2_resultStandardScheme();
+      }
+    }
+
+    private static class koaloasTest2_resultStandardScheme extends StandardScheme<koaloasTest2_result> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, koaloasTest2_result struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 0: // SUCCESS
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.success = new thrift.domain.WmCreateAccountRespone();
+                struct.success.read(iprot);
+                struct.setSuccessIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, koaloasTest2_result struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.success != null) {
+          oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
+          struct.success.write(oprot);
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class koaloasTest2_resultTupleSchemeFactory implements SchemeFactory {
+      public koaloasTest2_resultTupleScheme getScheme() {
+        return new koaloasTest2_resultTupleScheme();
+      }
+    }
+
+    private static class koaloasTest2_resultTupleScheme extends TupleScheme<koaloasTest2_result> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, koaloasTest2_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetSuccess()) {
+          optionals.set(0);
+        }
+        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetSuccess()) {
+          struct.success.write(oprot);
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, koaloasTest2_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(1);
+        if (incoming.get(0)) {
+          struct.success = new thrift.domain.WmCreateAccountRespone();
+          struct.success.read(iprot);
+          struct.setSuccessIsSet(true);
+        }
+      }
+    }
+
+  }
+
+  public static class koaloasTest3_args implements org.apache.thrift.TBase<koaloasTest3_args, koaloasTest3_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("koaloasTest3_args");
+
+    private static final org.apache.thrift.protocol.TField WM_CREATE_ACCOUNT_REQUEST_FIELD_DESC = new org.apache.thrift.protocol.TField("wmCreateAccountRequest", org.apache.thrift.protocol.TType.STRUCT, (short)1);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new koaloasTest3_argsStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new koaloasTest3_argsTupleSchemeFactory());
+    }
+
+    public thrift.domain.WmCreateAccountRequest wmCreateAccountRequest; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      WM_CREATE_ACCOUNT_REQUEST((short)1, "wmCreateAccountRequest");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 1: // WM_CREATE_ACCOUNT_REQUEST
+            return WM_CREATE_ACCOUNT_REQUEST;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.WM_CREATE_ACCOUNT_REQUEST, new org.apache.thrift.meta_data.FieldMetaData("wmCreateAccountRequest", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, thrift.domain.WmCreateAccountRequest.class)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(koaloasTest3_args.class, metaDataMap);
+    }
+
+    public koaloasTest3_args() {
+    }
+
+    public koaloasTest3_args(
+      thrift.domain.WmCreateAccountRequest wmCreateAccountRequest)
+    {
+      this();
+      this.wmCreateAccountRequest = wmCreateAccountRequest;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public koaloasTest3_args(koaloasTest3_args other) {
+      if (other.isSetWmCreateAccountRequest()) {
+        this.wmCreateAccountRequest = new thrift.domain.WmCreateAccountRequest(other.wmCreateAccountRequest);
+      }
+    }
+
+    public koaloasTest3_args deepCopy() {
+      return new koaloasTest3_args(this);
+    }
+
+    @Override
+    public void clear() {
+      this.wmCreateAccountRequest = null;
+    }
+
+    public thrift.domain.WmCreateAccountRequest getWmCreateAccountRequest() {
+      return this.wmCreateAccountRequest;
+    }
+
+    public koaloasTest3_args setWmCreateAccountRequest(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest) {
+      this.wmCreateAccountRequest = wmCreateAccountRequest;
+      return this;
+    }
+
+    public void unsetWmCreateAccountRequest() {
+      this.wmCreateAccountRequest = null;
+    }
+
+    /** Returns true if field wmCreateAccountRequest is set (has been assigned a value) and false otherwise */
+    public boolean isSetWmCreateAccountRequest() {
+      return this.wmCreateAccountRequest != null;
+    }
+
+    public void setWmCreateAccountRequestIsSet(boolean value) {
+      if (!value) {
+        this.wmCreateAccountRequest = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case WM_CREATE_ACCOUNT_REQUEST:
+        if (value == null) {
+          unsetWmCreateAccountRequest();
+        } else {
+          setWmCreateAccountRequest((thrift.domain.WmCreateAccountRequest)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case WM_CREATE_ACCOUNT_REQUEST:
+        return getWmCreateAccountRequest();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case WM_CREATE_ACCOUNT_REQUEST:
+        return isSetWmCreateAccountRequest();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof koaloasTest3_args)
+        return this.equals((koaloasTest3_args)that);
+      return false;
+    }
+
+    public boolean equals(koaloasTest3_args that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_wmCreateAccountRequest = true && this.isSetWmCreateAccountRequest();
+      boolean that_present_wmCreateAccountRequest = true && that.isSetWmCreateAccountRequest();
+      if (this_present_wmCreateAccountRequest || that_present_wmCreateAccountRequest) {
+        if (!(this_present_wmCreateAccountRequest && that_present_wmCreateAccountRequest))
+          return false;
+        if (!this.wmCreateAccountRequest.equals(that.wmCreateAccountRequest))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    public int compareTo(koaloasTest3_args other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      koaloasTest3_args typedOther = (koaloasTest3_args)other;
+
+      lastComparison = Boolean.valueOf(isSetWmCreateAccountRequest()).compareTo(typedOther.isSetWmCreateAccountRequest());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetWmCreateAccountRequest()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.wmCreateAccountRequest, typedOther.wmCreateAccountRequest);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("koaloasTest3_args(");
+      boolean first = true;
+
+      sb.append("wmCreateAccountRequest:");
+      if (this.wmCreateAccountRequest == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.wmCreateAccountRequest);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class koaloasTest3_argsStandardSchemeFactory implements SchemeFactory {
+      public koaloasTest3_argsStandardScheme getScheme() {
+        return new koaloasTest3_argsStandardScheme();
+      }
+    }
+
+    private static class koaloasTest3_argsStandardScheme extends StandardScheme<koaloasTest3_args> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, koaloasTest3_args struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 1: // WM_CREATE_ACCOUNT_REQUEST
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.wmCreateAccountRequest = new thrift.domain.WmCreateAccountRequest();
+                struct.wmCreateAccountRequest.read(iprot);
+                struct.setWmCreateAccountRequestIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, koaloasTest3_args struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.wmCreateAccountRequest != null) {
+          oprot.writeFieldBegin(WM_CREATE_ACCOUNT_REQUEST_FIELD_DESC);
+          struct.wmCreateAccountRequest.write(oprot);
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class koaloasTest3_argsTupleSchemeFactory implements SchemeFactory {
+      public koaloasTest3_argsTupleScheme getScheme() {
+        return new koaloasTest3_argsTupleScheme();
+      }
+    }
+
+    private static class koaloasTest3_argsTupleScheme extends TupleScheme<koaloasTest3_args> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, koaloasTest3_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetWmCreateAccountRequest()) {
+          optionals.set(0);
+        }
+        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetWmCreateAccountRequest()) {
+          struct.wmCreateAccountRequest.write(oprot);
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, koaloasTest3_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(1);
+        if (incoming.get(0)) {
+          struct.wmCreateAccountRequest = new thrift.domain.WmCreateAccountRequest();
+          struct.wmCreateAccountRequest.read(iprot);
+          struct.setWmCreateAccountRequestIsSet(true);
+        }
+      }
+    }
+
+  }
+
+  public static class koaloasTest3_result implements org.apache.thrift.TBase<koaloasTest3_result, koaloasTest3_result._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("koaloasTest3_result");
+
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new koaloasTest3_resultStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new koaloasTest3_resultTupleSchemeFactory());
+    }
+
+    public thrift.domain.WmCreateAccountRespone success; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      SUCCESS((short)0, "success");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 0: // SUCCESS
+            return SUCCESS;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, thrift.domain.WmCreateAccountRespone.class)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(koaloasTest3_result.class, metaDataMap);
+    }
+
+    public koaloasTest3_result() {
+    }
+
+    public koaloasTest3_result(
+      thrift.domain.WmCreateAccountRespone success)
+    {
+      this();
+      this.success = success;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public koaloasTest3_result(koaloasTest3_result other) {
+      if (other.isSetSuccess()) {
+        this.success = new thrift.domain.WmCreateAccountRespone(other.success);
+      }
+    }
+
+    public koaloasTest3_result deepCopy() {
+      return new koaloasTest3_result(this);
+    }
+
+    @Override
+    public void clear() {
+      this.success = null;
+    }
+
+    public thrift.domain.WmCreateAccountRespone getSuccess() {
+      return this.success;
+    }
+
+    public koaloasTest3_result setSuccess(thrift.domain.WmCreateAccountRespone success) {
+      this.success = success;
+      return this;
+    }
+
+    public void unsetSuccess() {
+      this.success = null;
+    }
+
+    /** Returns true if field success is set (has been assigned a value) and false otherwise */
+    public boolean isSetSuccess() {
+      return this.success != null;
+    }
+
+    public void setSuccessIsSet(boolean value) {
+      if (!value) {
+        this.success = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case SUCCESS:
+        if (value == null) {
+          unsetSuccess();
+        } else {
+          setSuccess((thrift.domain.WmCreateAccountRespone)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case SUCCESS:
+        return getSuccess();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case SUCCESS:
+        return isSetSuccess();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof koaloasTest3_result)
+        return this.equals((koaloasTest3_result)that);
+      return false;
+    }
+
+    public boolean equals(koaloasTest3_result that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_success = true && this.isSetSuccess();
+      boolean that_present_success = true && that.isSetSuccess();
+      if (this_present_success || that_present_success) {
+        if (!(this_present_success && that_present_success))
+          return false;
+        if (!this.success.equals(that.success))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    public int compareTo(koaloasTest3_result other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      koaloasTest3_result typedOther = (koaloasTest3_result)other;
+
+      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetSuccess()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, typedOther.success);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+      }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("koaloasTest3_result(");
+      boolean first = true;
+
+      sb.append("success:");
+      if (this.success == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.success);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class koaloasTest3_resultStandardSchemeFactory implements SchemeFactory {
+      public koaloasTest3_resultStandardScheme getScheme() {
+        return new koaloasTest3_resultStandardScheme();
+      }
+    }
+
+    private static class koaloasTest3_resultStandardScheme extends StandardScheme<koaloasTest3_result> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, koaloasTest3_result struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 0: // SUCCESS
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.success = new thrift.domain.WmCreateAccountRespone();
+                struct.success.read(iprot);
+                struct.setSuccessIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, koaloasTest3_result struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.success != null) {
+          oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
+          struct.success.write(oprot);
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class koaloasTest3_resultTupleSchemeFactory implements SchemeFactory {
+      public koaloasTest3_resultTupleScheme getScheme() {
+        return new koaloasTest3_resultTupleScheme();
+      }
+    }
+
+    private static class koaloasTest3_resultTupleScheme extends TupleScheme<koaloasTest3_result> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, koaloasTest3_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetSuccess()) {
+          optionals.set(0);
+        }
+        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetSuccess()) {
+          struct.success.write(oprot);
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, koaloasTest3_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(1);
+        if (incoming.get(0)) {
+          struct.success = new thrift.domain.WmCreateAccountRespone();
+          struct.success.read(iprot);
+          struct.setSuccessIsSet(true);
+        }
+      }
+    }
+
+  }
+
+  public static class koaloasTest4_args implements org.apache.thrift.TBase<koaloasTest4_args, koaloasTest4_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("koaloasTest4_args");
+
+    private static final org.apache.thrift.protocol.TField WM_CREATE_ACCOUNT_REQUEST_FIELD_DESC = new org.apache.thrift.protocol.TField("wmCreateAccountRequest", org.apache.thrift.protocol.TType.STRUCT, (short)1);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new koaloasTest4_argsStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new koaloasTest4_argsTupleSchemeFactory());
+    }
+
+    public thrift.domain.WmCreateAccountRequest wmCreateAccountRequest; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      WM_CREATE_ACCOUNT_REQUEST((short)1, "wmCreateAccountRequest");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 1: // WM_CREATE_ACCOUNT_REQUEST
+            return WM_CREATE_ACCOUNT_REQUEST;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.WM_CREATE_ACCOUNT_REQUEST, new org.apache.thrift.meta_data.FieldMetaData("wmCreateAccountRequest", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, thrift.domain.WmCreateAccountRequest.class)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(koaloasTest4_args.class, metaDataMap);
+    }
+
+    public koaloasTest4_args() {
+    }
+
+    public koaloasTest4_args(
+      thrift.domain.WmCreateAccountRequest wmCreateAccountRequest)
+    {
+      this();
+      this.wmCreateAccountRequest = wmCreateAccountRequest;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public koaloasTest4_args(koaloasTest4_args other) {
+      if (other.isSetWmCreateAccountRequest()) {
+        this.wmCreateAccountRequest = new thrift.domain.WmCreateAccountRequest(other.wmCreateAccountRequest);
+      }
+    }
+
+    public koaloasTest4_args deepCopy() {
+      return new koaloasTest4_args(this);
+    }
+
+    @Override
+    public void clear() {
+      this.wmCreateAccountRequest = null;
+    }
+
+    public thrift.domain.WmCreateAccountRequest getWmCreateAccountRequest() {
+      return this.wmCreateAccountRequest;
+    }
+
+    public koaloasTest4_args setWmCreateAccountRequest(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest) {
+      this.wmCreateAccountRequest = wmCreateAccountRequest;
+      return this;
+    }
+
+    public void unsetWmCreateAccountRequest() {
+      this.wmCreateAccountRequest = null;
+    }
+
+    /** Returns true if field wmCreateAccountRequest is set (has been assigned a value) and false otherwise */
+    public boolean isSetWmCreateAccountRequest() {
+      return this.wmCreateAccountRequest != null;
+    }
+
+    public void setWmCreateAccountRequestIsSet(boolean value) {
+      if (!value) {
+        this.wmCreateAccountRequest = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case WM_CREATE_ACCOUNT_REQUEST:
+        if (value == null) {
+          unsetWmCreateAccountRequest();
+        } else {
+          setWmCreateAccountRequest((thrift.domain.WmCreateAccountRequest)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case WM_CREATE_ACCOUNT_REQUEST:
+        return getWmCreateAccountRequest();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case WM_CREATE_ACCOUNT_REQUEST:
+        return isSetWmCreateAccountRequest();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof koaloasTest4_args)
+        return this.equals((koaloasTest4_args)that);
+      return false;
+    }
+
+    public boolean equals(koaloasTest4_args that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_wmCreateAccountRequest = true && this.isSetWmCreateAccountRequest();
+      boolean that_present_wmCreateAccountRequest = true && that.isSetWmCreateAccountRequest();
+      if (this_present_wmCreateAccountRequest || that_present_wmCreateAccountRequest) {
+        if (!(this_present_wmCreateAccountRequest && that_present_wmCreateAccountRequest))
+          return false;
+        if (!this.wmCreateAccountRequest.equals(that.wmCreateAccountRequest))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    public int compareTo(koaloasTest4_args other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      koaloasTest4_args typedOther = (koaloasTest4_args)other;
+
+      lastComparison = Boolean.valueOf(isSetWmCreateAccountRequest()).compareTo(typedOther.isSetWmCreateAccountRequest());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetWmCreateAccountRequest()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.wmCreateAccountRequest, typedOther.wmCreateAccountRequest);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("koaloasTest4_args(");
+      boolean first = true;
+
+      sb.append("wmCreateAccountRequest:");
+      if (this.wmCreateAccountRequest == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.wmCreateAccountRequest);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class koaloasTest4_argsStandardSchemeFactory implements SchemeFactory {
+      public koaloasTest4_argsStandardScheme getScheme() {
+        return new koaloasTest4_argsStandardScheme();
+      }
+    }
+
+    private static class koaloasTest4_argsStandardScheme extends StandardScheme<koaloasTest4_args> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, koaloasTest4_args struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 1: // WM_CREATE_ACCOUNT_REQUEST
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.wmCreateAccountRequest = new thrift.domain.WmCreateAccountRequest();
+                struct.wmCreateAccountRequest.read(iprot);
+                struct.setWmCreateAccountRequestIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, koaloasTest4_args struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.wmCreateAccountRequest != null) {
+          oprot.writeFieldBegin(WM_CREATE_ACCOUNT_REQUEST_FIELD_DESC);
+          struct.wmCreateAccountRequest.write(oprot);
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class koaloasTest4_argsTupleSchemeFactory implements SchemeFactory {
+      public koaloasTest4_argsTupleScheme getScheme() {
+        return new koaloasTest4_argsTupleScheme();
+      }
+    }
+
+    private static class koaloasTest4_argsTupleScheme extends TupleScheme<koaloasTest4_args> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, koaloasTest4_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetWmCreateAccountRequest()) {
+          optionals.set(0);
+        }
+        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetWmCreateAccountRequest()) {
+          struct.wmCreateAccountRequest.write(oprot);
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, koaloasTest4_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(1);
+        if (incoming.get(0)) {
+          struct.wmCreateAccountRequest = new thrift.domain.WmCreateAccountRequest();
+          struct.wmCreateAccountRequest.read(iprot);
+          struct.setWmCreateAccountRequestIsSet(true);
+        }
+      }
+    }
+
+  }
+
+  public static class koaloasTest4_result implements org.apache.thrift.TBase<koaloasTest4_result, koaloasTest4_result._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("koaloasTest4_result");
+
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new koaloasTest4_resultStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new koaloasTest4_resultTupleSchemeFactory());
+    }
+
+    public thrift.domain.WmCreateAccountRespone success; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      SUCCESS((short)0, "success");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 0: // SUCCESS
+            return SUCCESS;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, thrift.domain.WmCreateAccountRespone.class)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(koaloasTest4_result.class, metaDataMap);
+    }
+
+    public koaloasTest4_result() {
+    }
+
+    public koaloasTest4_result(
+      thrift.domain.WmCreateAccountRespone success)
+    {
+      this();
+      this.success = success;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public koaloasTest4_result(koaloasTest4_result other) {
+      if (other.isSetSuccess()) {
+        this.success = new thrift.domain.WmCreateAccountRespone(other.success);
+      }
+    }
+
+    public koaloasTest4_result deepCopy() {
+      return new koaloasTest4_result(this);
+    }
+
+    @Override
+    public void clear() {
+      this.success = null;
+    }
+
+    public thrift.domain.WmCreateAccountRespone getSuccess() {
+      return this.success;
+    }
+
+    public koaloasTest4_result setSuccess(thrift.domain.WmCreateAccountRespone success) {
+      this.success = success;
+      return this;
+    }
+
+    public void unsetSuccess() {
+      this.success = null;
+    }
+
+    /** Returns true if field success is set (has been assigned a value) and false otherwise */
+    public boolean isSetSuccess() {
+      return this.success != null;
+    }
+
+    public void setSuccessIsSet(boolean value) {
+      if (!value) {
+        this.success = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case SUCCESS:
+        if (value == null) {
+          unsetSuccess();
+        } else {
+          setSuccess((thrift.domain.WmCreateAccountRespone)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case SUCCESS:
+        return getSuccess();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case SUCCESS:
+        return isSetSuccess();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof koaloasTest4_result)
+        return this.equals((koaloasTest4_result)that);
+      return false;
+    }
+
+    public boolean equals(koaloasTest4_result that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_success = true && this.isSetSuccess();
+      boolean that_present_success = true && that.isSetSuccess();
+      if (this_present_success || that_present_success) {
+        if (!(this_present_success && that_present_success))
+          return false;
+        if (!this.success.equals(that.success))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    public int compareTo(koaloasTest4_result other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      koaloasTest4_result typedOther = (koaloasTest4_result)other;
+
+      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetSuccess()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, typedOther.success);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+      }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("koaloasTest4_result(");
+      boolean first = true;
+
+      sb.append("success:");
+      if (this.success == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.success);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class koaloasTest4_resultStandardSchemeFactory implements SchemeFactory {
+      public koaloasTest4_resultStandardScheme getScheme() {
+        return new koaloasTest4_resultStandardScheme();
+      }
+    }
+
+    private static class koaloasTest4_resultStandardScheme extends StandardScheme<koaloasTest4_result> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, koaloasTest4_result struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 0: // SUCCESS
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.success = new thrift.domain.WmCreateAccountRespone();
+                struct.success.read(iprot);
+                struct.setSuccessIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, koaloasTest4_result struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.success != null) {
+          oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
+          struct.success.write(oprot);
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class koaloasTest4_resultTupleSchemeFactory implements SchemeFactory {
+      public koaloasTest4_resultTupleScheme getScheme() {
+        return new koaloasTest4_resultTupleScheme();
+      }
+    }
+
+    private static class koaloasTest4_resultTupleScheme extends TupleScheme<koaloasTest4_result> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, koaloasTest4_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetSuccess()) {
+          optionals.set(0);
+        }
+        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetSuccess()) {
+          struct.success.write(oprot);
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, koaloasTest4_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(1);
+        if (incoming.get(0)) {
+          struct.success = new thrift.domain.WmCreateAccountRespone();
+          struct.success.read(iprot);
+          struct.setSuccessIsSet(true);
+        }
+      }
+    }
+
+  }
+
+  public static class koaloasTest5_args implements org.apache.thrift.TBase<koaloasTest5_args, koaloasTest5_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("koaloasTest5_args");
+
+    private static final org.apache.thrift.protocol.TField WM_CREATE_ACCOUNT_REQUEST_FIELD_DESC = new org.apache.thrift.protocol.TField("wmCreateAccountRequest", org.apache.thrift.protocol.TType.STRUCT, (short)1);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new koaloasTest5_argsStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new koaloasTest5_argsTupleSchemeFactory());
+    }
+
+    public thrift.domain.WmCreateAccountRequest wmCreateAccountRequest; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      WM_CREATE_ACCOUNT_REQUEST((short)1, "wmCreateAccountRequest");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 1: // WM_CREATE_ACCOUNT_REQUEST
+            return WM_CREATE_ACCOUNT_REQUEST;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.WM_CREATE_ACCOUNT_REQUEST, new org.apache.thrift.meta_data.FieldMetaData("wmCreateAccountRequest", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, thrift.domain.WmCreateAccountRequest.class)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(koaloasTest5_args.class, metaDataMap);
+    }
+
+    public koaloasTest5_args() {
+    }
+
+    public koaloasTest5_args(
+      thrift.domain.WmCreateAccountRequest wmCreateAccountRequest)
+    {
+      this();
+      this.wmCreateAccountRequest = wmCreateAccountRequest;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public koaloasTest5_args(koaloasTest5_args other) {
+      if (other.isSetWmCreateAccountRequest()) {
+        this.wmCreateAccountRequest = new thrift.domain.WmCreateAccountRequest(other.wmCreateAccountRequest);
+      }
+    }
+
+    public koaloasTest5_args deepCopy() {
+      return new koaloasTest5_args(this);
+    }
+
+    @Override
+    public void clear() {
+      this.wmCreateAccountRequest = null;
+    }
+
+    public thrift.domain.WmCreateAccountRequest getWmCreateAccountRequest() {
+      return this.wmCreateAccountRequest;
+    }
+
+    public koaloasTest5_args setWmCreateAccountRequest(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest) {
+      this.wmCreateAccountRequest = wmCreateAccountRequest;
+      return this;
+    }
+
+    public void unsetWmCreateAccountRequest() {
+      this.wmCreateAccountRequest = null;
+    }
+
+    /** Returns true if field wmCreateAccountRequest is set (has been assigned a value) and false otherwise */
+    public boolean isSetWmCreateAccountRequest() {
+      return this.wmCreateAccountRequest != null;
+    }
+
+    public void setWmCreateAccountRequestIsSet(boolean value) {
+      if (!value) {
+        this.wmCreateAccountRequest = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case WM_CREATE_ACCOUNT_REQUEST:
+        if (value == null) {
+          unsetWmCreateAccountRequest();
+        } else {
+          setWmCreateAccountRequest((thrift.domain.WmCreateAccountRequest)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case WM_CREATE_ACCOUNT_REQUEST:
+        return getWmCreateAccountRequest();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case WM_CREATE_ACCOUNT_REQUEST:
+        return isSetWmCreateAccountRequest();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof koaloasTest5_args)
+        return this.equals((koaloasTest5_args)that);
+      return false;
+    }
+
+    public boolean equals(koaloasTest5_args that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_wmCreateAccountRequest = true && this.isSetWmCreateAccountRequest();
+      boolean that_present_wmCreateAccountRequest = true && that.isSetWmCreateAccountRequest();
+      if (this_present_wmCreateAccountRequest || that_present_wmCreateAccountRequest) {
+        if (!(this_present_wmCreateAccountRequest && that_present_wmCreateAccountRequest))
+          return false;
+        if (!this.wmCreateAccountRequest.equals(that.wmCreateAccountRequest))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    public int compareTo(koaloasTest5_args other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      koaloasTest5_args typedOther = (koaloasTest5_args)other;
+
+      lastComparison = Boolean.valueOf(isSetWmCreateAccountRequest()).compareTo(typedOther.isSetWmCreateAccountRequest());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetWmCreateAccountRequest()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.wmCreateAccountRequest, typedOther.wmCreateAccountRequest);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("koaloasTest5_args(");
+      boolean first = true;
+
+      sb.append("wmCreateAccountRequest:");
+      if (this.wmCreateAccountRequest == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.wmCreateAccountRequest);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class koaloasTest5_argsStandardSchemeFactory implements SchemeFactory {
+      public koaloasTest5_argsStandardScheme getScheme() {
+        return new koaloasTest5_argsStandardScheme();
+      }
+    }
+
+    private static class koaloasTest5_argsStandardScheme extends StandardScheme<koaloasTest5_args> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, koaloasTest5_args struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 1: // WM_CREATE_ACCOUNT_REQUEST
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.wmCreateAccountRequest = new thrift.domain.WmCreateAccountRequest();
+                struct.wmCreateAccountRequest.read(iprot);
+                struct.setWmCreateAccountRequestIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, koaloasTest5_args struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.wmCreateAccountRequest != null) {
+          oprot.writeFieldBegin(WM_CREATE_ACCOUNT_REQUEST_FIELD_DESC);
+          struct.wmCreateAccountRequest.write(oprot);
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class koaloasTest5_argsTupleSchemeFactory implements SchemeFactory {
+      public koaloasTest5_argsTupleScheme getScheme() {
+        return new koaloasTest5_argsTupleScheme();
+      }
+    }
+
+    private static class koaloasTest5_argsTupleScheme extends TupleScheme<koaloasTest5_args> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, koaloasTest5_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetWmCreateAccountRequest()) {
+          optionals.set(0);
+        }
+        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetWmCreateAccountRequest()) {
+          struct.wmCreateAccountRequest.write(oprot);
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, koaloasTest5_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(1);
+        if (incoming.get(0)) {
+          struct.wmCreateAccountRequest = new thrift.domain.WmCreateAccountRequest();
+          struct.wmCreateAccountRequest.read(iprot);
+          struct.setWmCreateAccountRequestIsSet(true);
+        }
+      }
+    }
+
+  }
+
+  public static class koaloasTest5_result implements org.apache.thrift.TBase<koaloasTest5_result, koaloasTest5_result._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("koaloasTest5_result");
+
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new koaloasTest5_resultStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new koaloasTest5_resultTupleSchemeFactory());
+    }
+
+    public thrift.domain.WmCreateAccountRespone success; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      SUCCESS((short)0, "success");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 0: // SUCCESS
+            return SUCCESS;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, thrift.domain.WmCreateAccountRespone.class)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(koaloasTest5_result.class, metaDataMap);
+    }
+
+    public koaloasTest5_result() {
+    }
+
+    public koaloasTest5_result(
+      thrift.domain.WmCreateAccountRespone success)
+    {
+      this();
+      this.success = success;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public koaloasTest5_result(koaloasTest5_result other) {
+      if (other.isSetSuccess()) {
+        this.success = new thrift.domain.WmCreateAccountRespone(other.success);
+      }
+    }
+
+    public koaloasTest5_result deepCopy() {
+      return new koaloasTest5_result(this);
+    }
+
+    @Override
+    public void clear() {
+      this.success = null;
+    }
+
+    public thrift.domain.WmCreateAccountRespone getSuccess() {
+      return this.success;
+    }
+
+    public koaloasTest5_result setSuccess(thrift.domain.WmCreateAccountRespone success) {
+      this.success = success;
+      return this;
+    }
+
+    public void unsetSuccess() {
+      this.success = null;
+    }
+
+    /** Returns true if field success is set (has been assigned a value) and false otherwise */
+    public boolean isSetSuccess() {
+      return this.success != null;
+    }
+
+    public void setSuccessIsSet(boolean value) {
+      if (!value) {
+        this.success = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case SUCCESS:
+        if (value == null) {
+          unsetSuccess();
+        } else {
+          setSuccess((thrift.domain.WmCreateAccountRespone)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case SUCCESS:
+        return getSuccess();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case SUCCESS:
+        return isSetSuccess();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof koaloasTest5_result)
+        return this.equals((koaloasTest5_result)that);
+      return false;
+    }
+
+    public boolean equals(koaloasTest5_result that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_success = true && this.isSetSuccess();
+      boolean that_present_success = true && that.isSetSuccess();
+      if (this_present_success || that_present_success) {
+        if (!(this_present_success && that_present_success))
+          return false;
+        if (!this.success.equals(that.success))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    public int compareTo(koaloasTest5_result other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      koaloasTest5_result typedOther = (koaloasTest5_result)other;
+
+      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetSuccess()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, typedOther.success);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+      }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("koaloasTest5_result(");
+      boolean first = true;
+
+      sb.append("success:");
+      if (this.success == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.success);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class koaloasTest5_resultStandardSchemeFactory implements SchemeFactory {
+      public koaloasTest5_resultStandardScheme getScheme() {
+        return new koaloasTest5_resultStandardScheme();
+      }
+    }
+
+    private static class koaloasTest5_resultStandardScheme extends StandardScheme<koaloasTest5_result> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, koaloasTest5_result struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 0: // SUCCESS
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.success = new thrift.domain.WmCreateAccountRespone();
+                struct.success.read(iprot);
+                struct.setSuccessIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, koaloasTest5_result struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.success != null) {
+          oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
+          struct.success.write(oprot);
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class koaloasTest5_resultTupleSchemeFactory implements SchemeFactory {
+      public koaloasTest5_resultTupleScheme getScheme() {
+        return new koaloasTest5_resultTupleScheme();
+      }
+    }
+
+    private static class koaloasTest5_resultTupleScheme extends TupleScheme<koaloasTest5_result> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, koaloasTest5_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetSuccess()) {
+          optionals.set(0);
+        }
+        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetSuccess()) {
+          struct.success.write(oprot);
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, koaloasTest5_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(1);
+        if (incoming.get(0)) {
+          struct.success = new thrift.domain.WmCreateAccountRespone();
+          struct.success.read(iprot);
+          struct.setSuccessIsSet(true);
+        }
+      }
+    }
+
+  }
+
+  public static class koaloasTest6_args implements org.apache.thrift.TBase<koaloasTest6_args, koaloasTest6_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("koaloasTest6_args");
+
+    private static final org.apache.thrift.protocol.TField WM_CREATE_ACCOUNT_REQUEST_FIELD_DESC = new org.apache.thrift.protocol.TField("wmCreateAccountRequest", org.apache.thrift.protocol.TType.STRUCT, (short)1);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new koaloasTest6_argsStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new koaloasTest6_argsTupleSchemeFactory());
+    }
+
+    public thrift.domain.WmCreateAccountRequest wmCreateAccountRequest; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      WM_CREATE_ACCOUNT_REQUEST((short)1, "wmCreateAccountRequest");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 1: // WM_CREATE_ACCOUNT_REQUEST
+            return WM_CREATE_ACCOUNT_REQUEST;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.WM_CREATE_ACCOUNT_REQUEST, new org.apache.thrift.meta_data.FieldMetaData("wmCreateAccountRequest", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, thrift.domain.WmCreateAccountRequest.class)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(koaloasTest6_args.class, metaDataMap);
+    }
+
+    public koaloasTest6_args() {
+    }
+
+    public koaloasTest6_args(
+      thrift.domain.WmCreateAccountRequest wmCreateAccountRequest)
+    {
+      this();
+      this.wmCreateAccountRequest = wmCreateAccountRequest;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public koaloasTest6_args(koaloasTest6_args other) {
+      if (other.isSetWmCreateAccountRequest()) {
+        this.wmCreateAccountRequest = new thrift.domain.WmCreateAccountRequest(other.wmCreateAccountRequest);
+      }
+    }
+
+    public koaloasTest6_args deepCopy() {
+      return new koaloasTest6_args(this);
+    }
+
+    @Override
+    public void clear() {
+      this.wmCreateAccountRequest = null;
+    }
+
+    public thrift.domain.WmCreateAccountRequest getWmCreateAccountRequest() {
+      return this.wmCreateAccountRequest;
+    }
+
+    public koaloasTest6_args setWmCreateAccountRequest(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest) {
+      this.wmCreateAccountRequest = wmCreateAccountRequest;
+      return this;
+    }
+
+    public void unsetWmCreateAccountRequest() {
+      this.wmCreateAccountRequest = null;
+    }
+
+    /** Returns true if field wmCreateAccountRequest is set (has been assigned a value) and false otherwise */
+    public boolean isSetWmCreateAccountRequest() {
+      return this.wmCreateAccountRequest != null;
+    }
+
+    public void setWmCreateAccountRequestIsSet(boolean value) {
+      if (!value) {
+        this.wmCreateAccountRequest = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case WM_CREATE_ACCOUNT_REQUEST:
+        if (value == null) {
+          unsetWmCreateAccountRequest();
+        } else {
+          setWmCreateAccountRequest((thrift.domain.WmCreateAccountRequest)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case WM_CREATE_ACCOUNT_REQUEST:
+        return getWmCreateAccountRequest();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case WM_CREATE_ACCOUNT_REQUEST:
+        return isSetWmCreateAccountRequest();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof koaloasTest6_args)
+        return this.equals((koaloasTest6_args)that);
+      return false;
+    }
+
+    public boolean equals(koaloasTest6_args that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_wmCreateAccountRequest = true && this.isSetWmCreateAccountRequest();
+      boolean that_present_wmCreateAccountRequest = true && that.isSetWmCreateAccountRequest();
+      if (this_present_wmCreateAccountRequest || that_present_wmCreateAccountRequest) {
+        if (!(this_present_wmCreateAccountRequest && that_present_wmCreateAccountRequest))
+          return false;
+        if (!this.wmCreateAccountRequest.equals(that.wmCreateAccountRequest))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    public int compareTo(koaloasTest6_args other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      koaloasTest6_args typedOther = (koaloasTest6_args)other;
+
+      lastComparison = Boolean.valueOf(isSetWmCreateAccountRequest()).compareTo(typedOther.isSetWmCreateAccountRequest());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetWmCreateAccountRequest()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.wmCreateAccountRequest, typedOther.wmCreateAccountRequest);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("koaloasTest6_args(");
+      boolean first = true;
+
+      sb.append("wmCreateAccountRequest:");
+      if (this.wmCreateAccountRequest == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.wmCreateAccountRequest);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class koaloasTest6_argsStandardSchemeFactory implements SchemeFactory {
+      public koaloasTest6_argsStandardScheme getScheme() {
+        return new koaloasTest6_argsStandardScheme();
+      }
+    }
+
+    private static class koaloasTest6_argsStandardScheme extends StandardScheme<koaloasTest6_args> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, koaloasTest6_args struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 1: // WM_CREATE_ACCOUNT_REQUEST
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.wmCreateAccountRequest = new thrift.domain.WmCreateAccountRequest();
+                struct.wmCreateAccountRequest.read(iprot);
+                struct.setWmCreateAccountRequestIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, koaloasTest6_args struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.wmCreateAccountRequest != null) {
+          oprot.writeFieldBegin(WM_CREATE_ACCOUNT_REQUEST_FIELD_DESC);
+          struct.wmCreateAccountRequest.write(oprot);
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class koaloasTest6_argsTupleSchemeFactory implements SchemeFactory {
+      public koaloasTest6_argsTupleScheme getScheme() {
+        return new koaloasTest6_argsTupleScheme();
+      }
+    }
+
+    private static class koaloasTest6_argsTupleScheme extends TupleScheme<koaloasTest6_args> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, koaloasTest6_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetWmCreateAccountRequest()) {
+          optionals.set(0);
+        }
+        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetWmCreateAccountRequest()) {
+          struct.wmCreateAccountRequest.write(oprot);
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, koaloasTest6_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(1);
+        if (incoming.get(0)) {
+          struct.wmCreateAccountRequest = new thrift.domain.WmCreateAccountRequest();
+          struct.wmCreateAccountRequest.read(iprot);
+          struct.setWmCreateAccountRequestIsSet(true);
+        }
+      }
+    }
+
+  }
+
+  public static class koaloasTest6_result implements org.apache.thrift.TBase<koaloasTest6_result, koaloasTest6_result._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("koaloasTest6_result");
+
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new koaloasTest6_resultStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new koaloasTest6_resultTupleSchemeFactory());
+    }
+
+    public thrift.domain.WmCreateAccountRespone success; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      SUCCESS((short)0, "success");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 0: // SUCCESS
+            return SUCCESS;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, thrift.domain.WmCreateAccountRespone.class)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(koaloasTest6_result.class, metaDataMap);
+    }
+
+    public koaloasTest6_result() {
+    }
+
+    public koaloasTest6_result(
+      thrift.domain.WmCreateAccountRespone success)
+    {
+      this();
+      this.success = success;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public koaloasTest6_result(koaloasTest6_result other) {
+      if (other.isSetSuccess()) {
+        this.success = new thrift.domain.WmCreateAccountRespone(other.success);
+      }
+    }
+
+    public koaloasTest6_result deepCopy() {
+      return new koaloasTest6_result(this);
+    }
+
+    @Override
+    public void clear() {
+      this.success = null;
+    }
+
+    public thrift.domain.WmCreateAccountRespone getSuccess() {
+      return this.success;
+    }
+
+    public koaloasTest6_result setSuccess(thrift.domain.WmCreateAccountRespone success) {
+      this.success = success;
+      return this;
+    }
+
+    public void unsetSuccess() {
+      this.success = null;
+    }
+
+    /** Returns true if field success is set (has been assigned a value) and false otherwise */
+    public boolean isSetSuccess() {
+      return this.success != null;
+    }
+
+    public void setSuccessIsSet(boolean value) {
+      if (!value) {
+        this.success = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case SUCCESS:
+        if (value == null) {
+          unsetSuccess();
+        } else {
+          setSuccess((thrift.domain.WmCreateAccountRespone)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case SUCCESS:
+        return getSuccess();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case SUCCESS:
+        return isSetSuccess();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof koaloasTest6_result)
+        return this.equals((koaloasTest6_result)that);
+      return false;
+    }
+
+    public boolean equals(koaloasTest6_result that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_success = true && this.isSetSuccess();
+      boolean that_present_success = true && that.isSetSuccess();
+      if (this_present_success || that_present_success) {
+        if (!(this_present_success && that_present_success))
+          return false;
+        if (!this.success.equals(that.success))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    public int compareTo(koaloasTest6_result other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      koaloasTest6_result typedOther = (koaloasTest6_result)other;
+
+      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetSuccess()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, typedOther.success);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+      }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("koaloasTest6_result(");
+      boolean first = true;
+
+      sb.append("success:");
+      if (this.success == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.success);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class koaloasTest6_resultStandardSchemeFactory implements SchemeFactory {
+      public koaloasTest6_resultStandardScheme getScheme() {
+        return new koaloasTest6_resultStandardScheme();
+      }
+    }
+
+    private static class koaloasTest6_resultStandardScheme extends StandardScheme<koaloasTest6_result> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, koaloasTest6_result struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 0: // SUCCESS
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.success = new thrift.domain.WmCreateAccountRespone();
+                struct.success.read(iprot);
+                struct.setSuccessIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, koaloasTest6_result struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.success != null) {
+          oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
+          struct.success.write(oprot);
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class koaloasTest6_resultTupleSchemeFactory implements SchemeFactory {
+      public koaloasTest6_resultTupleScheme getScheme() {
+        return new koaloasTest6_resultTupleScheme();
+      }
+    }
+
+    private static class koaloasTest6_resultTupleScheme extends TupleScheme<koaloasTest6_result> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, koaloasTest6_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetSuccess()) {
+          optionals.set(0);
+        }
+        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetSuccess()) {
+          struct.success.write(oprot);
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, koaloasTest6_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(1);
+        if (incoming.get(0)) {
+          struct.success = new thrift.domain.WmCreateAccountRespone();
+          struct.success.read(iprot);
+          struct.setSuccessIsSet(true);
+        }
+      }
+    }
+
+  }
+
+  public static class koaloasTest7_args implements org.apache.thrift.TBase<koaloasTest7_args, koaloasTest7_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("koaloasTest7_args");
+
+    private static final org.apache.thrift.protocol.TField WM_CREATE_ACCOUNT_REQUEST_FIELD_DESC = new org.apache.thrift.protocol.TField("wmCreateAccountRequest", org.apache.thrift.protocol.TType.STRUCT, (short)1);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new koaloasTest7_argsStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new koaloasTest7_argsTupleSchemeFactory());
+    }
+
+    public thrift.domain.WmCreateAccountRequest wmCreateAccountRequest; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      WM_CREATE_ACCOUNT_REQUEST((short)1, "wmCreateAccountRequest");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 1: // WM_CREATE_ACCOUNT_REQUEST
+            return WM_CREATE_ACCOUNT_REQUEST;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.WM_CREATE_ACCOUNT_REQUEST, new org.apache.thrift.meta_data.FieldMetaData("wmCreateAccountRequest", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, thrift.domain.WmCreateAccountRequest.class)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(koaloasTest7_args.class, metaDataMap);
+    }
+
+    public koaloasTest7_args() {
+    }
+
+    public koaloasTest7_args(
+      thrift.domain.WmCreateAccountRequest wmCreateAccountRequest)
+    {
+      this();
+      this.wmCreateAccountRequest = wmCreateAccountRequest;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public koaloasTest7_args(koaloasTest7_args other) {
+      if (other.isSetWmCreateAccountRequest()) {
+        this.wmCreateAccountRequest = new thrift.domain.WmCreateAccountRequest(other.wmCreateAccountRequest);
+      }
+    }
+
+    public koaloasTest7_args deepCopy() {
+      return new koaloasTest7_args(this);
+    }
+
+    @Override
+    public void clear() {
+      this.wmCreateAccountRequest = null;
+    }
+
+    public thrift.domain.WmCreateAccountRequest getWmCreateAccountRequest() {
+      return this.wmCreateAccountRequest;
+    }
+
+    public koaloasTest7_args setWmCreateAccountRequest(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest) {
+      this.wmCreateAccountRequest = wmCreateAccountRequest;
+      return this;
+    }
+
+    public void unsetWmCreateAccountRequest() {
+      this.wmCreateAccountRequest = null;
+    }
+
+    /** Returns true if field wmCreateAccountRequest is set (has been assigned a value) and false otherwise */
+    public boolean isSetWmCreateAccountRequest() {
+      return this.wmCreateAccountRequest != null;
+    }
+
+    public void setWmCreateAccountRequestIsSet(boolean value) {
+      if (!value) {
+        this.wmCreateAccountRequest = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case WM_CREATE_ACCOUNT_REQUEST:
+        if (value == null) {
+          unsetWmCreateAccountRequest();
+        } else {
+          setWmCreateAccountRequest((thrift.domain.WmCreateAccountRequest)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case WM_CREATE_ACCOUNT_REQUEST:
+        return getWmCreateAccountRequest();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case WM_CREATE_ACCOUNT_REQUEST:
+        return isSetWmCreateAccountRequest();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof koaloasTest7_args)
+        return this.equals((koaloasTest7_args)that);
+      return false;
+    }
+
+    public boolean equals(koaloasTest7_args that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_wmCreateAccountRequest = true && this.isSetWmCreateAccountRequest();
+      boolean that_present_wmCreateAccountRequest = true && that.isSetWmCreateAccountRequest();
+      if (this_present_wmCreateAccountRequest || that_present_wmCreateAccountRequest) {
+        if (!(this_present_wmCreateAccountRequest && that_present_wmCreateAccountRequest))
+          return false;
+        if (!this.wmCreateAccountRequest.equals(that.wmCreateAccountRequest))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    public int compareTo(koaloasTest7_args other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      koaloasTest7_args typedOther = (koaloasTest7_args)other;
+
+      lastComparison = Boolean.valueOf(isSetWmCreateAccountRequest()).compareTo(typedOther.isSetWmCreateAccountRequest());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetWmCreateAccountRequest()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.wmCreateAccountRequest, typedOther.wmCreateAccountRequest);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("koaloasTest7_args(");
+      boolean first = true;
+
+      sb.append("wmCreateAccountRequest:");
+      if (this.wmCreateAccountRequest == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.wmCreateAccountRequest);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class koaloasTest7_argsStandardSchemeFactory implements SchemeFactory {
+      public koaloasTest7_argsStandardScheme getScheme() {
+        return new koaloasTest7_argsStandardScheme();
+      }
+    }
+
+    private static class koaloasTest7_argsStandardScheme extends StandardScheme<koaloasTest7_args> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, koaloasTest7_args struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 1: // WM_CREATE_ACCOUNT_REQUEST
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.wmCreateAccountRequest = new thrift.domain.WmCreateAccountRequest();
+                struct.wmCreateAccountRequest.read(iprot);
+                struct.setWmCreateAccountRequestIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, koaloasTest7_args struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.wmCreateAccountRequest != null) {
+          oprot.writeFieldBegin(WM_CREATE_ACCOUNT_REQUEST_FIELD_DESC);
+          struct.wmCreateAccountRequest.write(oprot);
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class koaloasTest7_argsTupleSchemeFactory implements SchemeFactory {
+      public koaloasTest7_argsTupleScheme getScheme() {
+        return new koaloasTest7_argsTupleScheme();
+      }
+    }
+
+    private static class koaloasTest7_argsTupleScheme extends TupleScheme<koaloasTest7_args> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, koaloasTest7_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetWmCreateAccountRequest()) {
+          optionals.set(0);
+        }
+        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetWmCreateAccountRequest()) {
+          struct.wmCreateAccountRequest.write(oprot);
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, koaloasTest7_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(1);
+        if (incoming.get(0)) {
+          struct.wmCreateAccountRequest = new thrift.domain.WmCreateAccountRequest();
+          struct.wmCreateAccountRequest.read(iprot);
+          struct.setWmCreateAccountRequestIsSet(true);
+        }
+      }
+    }
+
+  }
+
+  public static class koaloasTest7_result implements org.apache.thrift.TBase<koaloasTest7_result, koaloasTest7_result._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("koaloasTest7_result");
+
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new koaloasTest7_resultStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new koaloasTest7_resultTupleSchemeFactory());
+    }
+
+    public thrift.domain.WmCreateAccountRespone success; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      SUCCESS((short)0, "success");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 0: // SUCCESS
+            return SUCCESS;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, thrift.domain.WmCreateAccountRespone.class)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(koaloasTest7_result.class, metaDataMap);
+    }
+
+    public koaloasTest7_result() {
+    }
+
+    public koaloasTest7_result(
+      thrift.domain.WmCreateAccountRespone success)
+    {
+      this();
+      this.success = success;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public koaloasTest7_result(koaloasTest7_result other) {
+      if (other.isSetSuccess()) {
+        this.success = new thrift.domain.WmCreateAccountRespone(other.success);
+      }
+    }
+
+    public koaloasTest7_result deepCopy() {
+      return new koaloasTest7_result(this);
+    }
+
+    @Override
+    public void clear() {
+      this.success = null;
+    }
+
+    public thrift.domain.WmCreateAccountRespone getSuccess() {
+      return this.success;
+    }
+
+    public koaloasTest7_result setSuccess(thrift.domain.WmCreateAccountRespone success) {
+      this.success = success;
+      return this;
+    }
+
+    public void unsetSuccess() {
+      this.success = null;
+    }
+
+    /** Returns true if field success is set (has been assigned a value) and false otherwise */
+    public boolean isSetSuccess() {
+      return this.success != null;
+    }
+
+    public void setSuccessIsSet(boolean value) {
+      if (!value) {
+        this.success = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case SUCCESS:
+        if (value == null) {
+          unsetSuccess();
+        } else {
+          setSuccess((thrift.domain.WmCreateAccountRespone)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case SUCCESS:
+        return getSuccess();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case SUCCESS:
+        return isSetSuccess();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof koaloasTest7_result)
+        return this.equals((koaloasTest7_result)that);
+      return false;
+    }
+
+    public boolean equals(koaloasTest7_result that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_success = true && this.isSetSuccess();
+      boolean that_present_success = true && that.isSetSuccess();
+      if (this_present_success || that_present_success) {
+        if (!(this_present_success && that_present_success))
+          return false;
+        if (!this.success.equals(that.success))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    public int compareTo(koaloasTest7_result other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      koaloasTest7_result typedOther = (koaloasTest7_result)other;
+
+      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetSuccess()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, typedOther.success);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+      }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("koaloasTest7_result(");
+      boolean first = true;
+
+      sb.append("success:");
+      if (this.success == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.success);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class koaloasTest7_resultStandardSchemeFactory implements SchemeFactory {
+      public koaloasTest7_resultStandardScheme getScheme() {
+        return new koaloasTest7_resultStandardScheme();
+      }
+    }
+
+    private static class koaloasTest7_resultStandardScheme extends StandardScheme<koaloasTest7_result> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, koaloasTest7_result struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 0: // SUCCESS
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.success = new thrift.domain.WmCreateAccountRespone();
+                struct.success.read(iprot);
+                struct.setSuccessIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, koaloasTest7_result struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.success != null) {
+          oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
+          struct.success.write(oprot);
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class koaloasTest7_resultTupleSchemeFactory implements SchemeFactory {
+      public koaloasTest7_resultTupleScheme getScheme() {
+        return new koaloasTest7_resultTupleScheme();
+      }
+    }
+
+    private static class koaloasTest7_resultTupleScheme extends TupleScheme<koaloasTest7_result> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, koaloasTest7_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetSuccess()) {
+          optionals.set(0);
+        }
+        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetSuccess()) {
+          struct.success.write(oprot);
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, koaloasTest7_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(1);
+        if (incoming.get(0)) {
+          struct.success = new thrift.domain.WmCreateAccountRespone();
+          struct.success.read(iprot);
+          struct.setSuccessIsSet(true);
+        }
+      }
+    }
+
+  }
+
+  public static class koaloasTest8_args implements org.apache.thrift.TBase<koaloasTest8_args, koaloasTest8_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("koaloasTest8_args");
+
+    private static final org.apache.thrift.protocol.TField WM_CREATE_ACCOUNT_REQUEST_FIELD_DESC = new org.apache.thrift.protocol.TField("wmCreateAccountRequest", org.apache.thrift.protocol.TType.STRUCT, (short)1);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new koaloasTest8_argsStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new koaloasTest8_argsTupleSchemeFactory());
+    }
+
+    public thrift.domain.WmCreateAccountRequest wmCreateAccountRequest; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      WM_CREATE_ACCOUNT_REQUEST((short)1, "wmCreateAccountRequest");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 1: // WM_CREATE_ACCOUNT_REQUEST
+            return WM_CREATE_ACCOUNT_REQUEST;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.WM_CREATE_ACCOUNT_REQUEST, new org.apache.thrift.meta_data.FieldMetaData("wmCreateAccountRequest", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, thrift.domain.WmCreateAccountRequest.class)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(koaloasTest8_args.class, metaDataMap);
+    }
+
+    public koaloasTest8_args() {
+    }
+
+    public koaloasTest8_args(
+      thrift.domain.WmCreateAccountRequest wmCreateAccountRequest)
+    {
+      this();
+      this.wmCreateAccountRequest = wmCreateAccountRequest;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public koaloasTest8_args(koaloasTest8_args other) {
+      if (other.isSetWmCreateAccountRequest()) {
+        this.wmCreateAccountRequest = new thrift.domain.WmCreateAccountRequest(other.wmCreateAccountRequest);
+      }
+    }
+
+    public koaloasTest8_args deepCopy() {
+      return new koaloasTest8_args(this);
+    }
+
+    @Override
+    public void clear() {
+      this.wmCreateAccountRequest = null;
+    }
+
+    public thrift.domain.WmCreateAccountRequest getWmCreateAccountRequest() {
+      return this.wmCreateAccountRequest;
+    }
+
+    public koaloasTest8_args setWmCreateAccountRequest(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest) {
+      this.wmCreateAccountRequest = wmCreateAccountRequest;
+      return this;
+    }
+
+    public void unsetWmCreateAccountRequest() {
+      this.wmCreateAccountRequest = null;
+    }
+
+    /** Returns true if field wmCreateAccountRequest is set (has been assigned a value) and false otherwise */
+    public boolean isSetWmCreateAccountRequest() {
+      return this.wmCreateAccountRequest != null;
+    }
+
+    public void setWmCreateAccountRequestIsSet(boolean value) {
+      if (!value) {
+        this.wmCreateAccountRequest = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case WM_CREATE_ACCOUNT_REQUEST:
+        if (value == null) {
+          unsetWmCreateAccountRequest();
+        } else {
+          setWmCreateAccountRequest((thrift.domain.WmCreateAccountRequest)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case WM_CREATE_ACCOUNT_REQUEST:
+        return getWmCreateAccountRequest();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case WM_CREATE_ACCOUNT_REQUEST:
+        return isSetWmCreateAccountRequest();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof koaloasTest8_args)
+        return this.equals((koaloasTest8_args)that);
+      return false;
+    }
+
+    public boolean equals(koaloasTest8_args that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_wmCreateAccountRequest = true && this.isSetWmCreateAccountRequest();
+      boolean that_present_wmCreateAccountRequest = true && that.isSetWmCreateAccountRequest();
+      if (this_present_wmCreateAccountRequest || that_present_wmCreateAccountRequest) {
+        if (!(this_present_wmCreateAccountRequest && that_present_wmCreateAccountRequest))
+          return false;
+        if (!this.wmCreateAccountRequest.equals(that.wmCreateAccountRequest))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    public int compareTo(koaloasTest8_args other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      koaloasTest8_args typedOther = (koaloasTest8_args)other;
+
+      lastComparison = Boolean.valueOf(isSetWmCreateAccountRequest()).compareTo(typedOther.isSetWmCreateAccountRequest());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetWmCreateAccountRequest()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.wmCreateAccountRequest, typedOther.wmCreateAccountRequest);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("koaloasTest8_args(");
+      boolean first = true;
+
+      sb.append("wmCreateAccountRequest:");
+      if (this.wmCreateAccountRequest == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.wmCreateAccountRequest);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class koaloasTest8_argsStandardSchemeFactory implements SchemeFactory {
+      public koaloasTest8_argsStandardScheme getScheme() {
+        return new koaloasTest8_argsStandardScheme();
+      }
+    }
+
+    private static class koaloasTest8_argsStandardScheme extends StandardScheme<koaloasTest8_args> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, koaloasTest8_args struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 1: // WM_CREATE_ACCOUNT_REQUEST
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.wmCreateAccountRequest = new thrift.domain.WmCreateAccountRequest();
+                struct.wmCreateAccountRequest.read(iprot);
+                struct.setWmCreateAccountRequestIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, koaloasTest8_args struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.wmCreateAccountRequest != null) {
+          oprot.writeFieldBegin(WM_CREATE_ACCOUNT_REQUEST_FIELD_DESC);
+          struct.wmCreateAccountRequest.write(oprot);
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class koaloasTest8_argsTupleSchemeFactory implements SchemeFactory {
+      public koaloasTest8_argsTupleScheme getScheme() {
+        return new koaloasTest8_argsTupleScheme();
+      }
+    }
+
+    private static class koaloasTest8_argsTupleScheme extends TupleScheme<koaloasTest8_args> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, koaloasTest8_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetWmCreateAccountRequest()) {
+          optionals.set(0);
+        }
+        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetWmCreateAccountRequest()) {
+          struct.wmCreateAccountRequest.write(oprot);
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, koaloasTest8_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(1);
+        if (incoming.get(0)) {
+          struct.wmCreateAccountRequest = new thrift.domain.WmCreateAccountRequest();
+          struct.wmCreateAccountRequest.read(iprot);
+          struct.setWmCreateAccountRequestIsSet(true);
+        }
+      }
+    }
+
+  }
+
+  public static class koaloasTest8_result implements org.apache.thrift.TBase<koaloasTest8_result, koaloasTest8_result._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("koaloasTest8_result");
+
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new koaloasTest8_resultStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new koaloasTest8_resultTupleSchemeFactory());
+    }
+
+    public thrift.domain.WmCreateAccountRespone success; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      SUCCESS((short)0, "success");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 0: // SUCCESS
+            return SUCCESS;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, thrift.domain.WmCreateAccountRespone.class)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(koaloasTest8_result.class, metaDataMap);
+    }
+
+    public koaloasTest8_result() {
+    }
+
+    public koaloasTest8_result(
+      thrift.domain.WmCreateAccountRespone success)
+    {
+      this();
+      this.success = success;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public koaloasTest8_result(koaloasTest8_result other) {
+      if (other.isSetSuccess()) {
+        this.success = new thrift.domain.WmCreateAccountRespone(other.success);
+      }
+    }
+
+    public koaloasTest8_result deepCopy() {
+      return new koaloasTest8_result(this);
+    }
+
+    @Override
+    public void clear() {
+      this.success = null;
+    }
+
+    public thrift.domain.WmCreateAccountRespone getSuccess() {
+      return this.success;
+    }
+
+    public koaloasTest8_result setSuccess(thrift.domain.WmCreateAccountRespone success) {
+      this.success = success;
+      return this;
+    }
+
+    public void unsetSuccess() {
+      this.success = null;
+    }
+
+    /** Returns true if field success is set (has been assigned a value) and false otherwise */
+    public boolean isSetSuccess() {
+      return this.success != null;
+    }
+
+    public void setSuccessIsSet(boolean value) {
+      if (!value) {
+        this.success = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case SUCCESS:
+        if (value == null) {
+          unsetSuccess();
+        } else {
+          setSuccess((thrift.domain.WmCreateAccountRespone)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case SUCCESS:
+        return getSuccess();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case SUCCESS:
+        return isSetSuccess();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof koaloasTest8_result)
+        return this.equals((koaloasTest8_result)that);
+      return false;
+    }
+
+    public boolean equals(koaloasTest8_result that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_success = true && this.isSetSuccess();
+      boolean that_present_success = true && that.isSetSuccess();
+      if (this_present_success || that_present_success) {
+        if (!(this_present_success && that_present_success))
+          return false;
+        if (!this.success.equals(that.success))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    public int compareTo(koaloasTest8_result other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      koaloasTest8_result typedOther = (koaloasTest8_result)other;
+
+      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetSuccess()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, typedOther.success);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+      }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("koaloasTest8_result(");
+      boolean first = true;
+
+      sb.append("success:");
+      if (this.success == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.success);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class koaloasTest8_resultStandardSchemeFactory implements SchemeFactory {
+      public koaloasTest8_resultStandardScheme getScheme() {
+        return new koaloasTest8_resultStandardScheme();
+      }
+    }
+
+    private static class koaloasTest8_resultStandardScheme extends StandardScheme<koaloasTest8_result> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, koaloasTest8_result struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 0: // SUCCESS
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.success = new thrift.domain.WmCreateAccountRespone();
+                struct.success.read(iprot);
+                struct.setSuccessIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, koaloasTest8_result struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.success != null) {
+          oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
+          struct.success.write(oprot);
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class koaloasTest8_resultTupleSchemeFactory implements SchemeFactory {
+      public koaloasTest8_resultTupleScheme getScheme() {
+        return new koaloasTest8_resultTupleScheme();
+      }
+    }
+
+    private static class koaloasTest8_resultTupleScheme extends TupleScheme<koaloasTest8_result> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, koaloasTest8_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetSuccess()) {
+          optionals.set(0);
+        }
+        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetSuccess()) {
+          struct.success.write(oprot);
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, koaloasTest8_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(1);
+        if (incoming.get(0)) {
+          struct.success = new thrift.domain.WmCreateAccountRespone();
+          struct.success.read(iprot);
+          struct.setSuccessIsSet(true);
+        }
+      }
+    }
+
+  }
+
+  public static class koaloasTest9_args implements org.apache.thrift.TBase<koaloasTest9_args, koaloasTest9_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("koaloasTest9_args");
+
+    private static final org.apache.thrift.protocol.TField WM_CREATE_ACCOUNT_REQUEST_FIELD_DESC = new org.apache.thrift.protocol.TField("wmCreateAccountRequest", org.apache.thrift.protocol.TType.STRUCT, (short)1);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new koaloasTest9_argsStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new koaloasTest9_argsTupleSchemeFactory());
+    }
+
+    public thrift.domain.WmCreateAccountRequest wmCreateAccountRequest; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      WM_CREATE_ACCOUNT_REQUEST((short)1, "wmCreateAccountRequest");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 1: // WM_CREATE_ACCOUNT_REQUEST
+            return WM_CREATE_ACCOUNT_REQUEST;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.WM_CREATE_ACCOUNT_REQUEST, new org.apache.thrift.meta_data.FieldMetaData("wmCreateAccountRequest", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, thrift.domain.WmCreateAccountRequest.class)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(koaloasTest9_args.class, metaDataMap);
+    }
+
+    public koaloasTest9_args() {
+    }
+
+    public koaloasTest9_args(
+      thrift.domain.WmCreateAccountRequest wmCreateAccountRequest)
+    {
+      this();
+      this.wmCreateAccountRequest = wmCreateAccountRequest;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public koaloasTest9_args(koaloasTest9_args other) {
+      if (other.isSetWmCreateAccountRequest()) {
+        this.wmCreateAccountRequest = new thrift.domain.WmCreateAccountRequest(other.wmCreateAccountRequest);
+      }
+    }
+
+    public koaloasTest9_args deepCopy() {
+      return new koaloasTest9_args(this);
+    }
+
+    @Override
+    public void clear() {
+      this.wmCreateAccountRequest = null;
+    }
+
+    public thrift.domain.WmCreateAccountRequest getWmCreateAccountRequest() {
+      return this.wmCreateAccountRequest;
+    }
+
+    public koaloasTest9_args setWmCreateAccountRequest(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest) {
+      this.wmCreateAccountRequest = wmCreateAccountRequest;
+      return this;
+    }
+
+    public void unsetWmCreateAccountRequest() {
+      this.wmCreateAccountRequest = null;
+    }
+
+    /** Returns true if field wmCreateAccountRequest is set (has been assigned a value) and false otherwise */
+    public boolean isSetWmCreateAccountRequest() {
+      return this.wmCreateAccountRequest != null;
+    }
+
+    public void setWmCreateAccountRequestIsSet(boolean value) {
+      if (!value) {
+        this.wmCreateAccountRequest = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case WM_CREATE_ACCOUNT_REQUEST:
+        if (value == null) {
+          unsetWmCreateAccountRequest();
+        } else {
+          setWmCreateAccountRequest((thrift.domain.WmCreateAccountRequest)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case WM_CREATE_ACCOUNT_REQUEST:
+        return getWmCreateAccountRequest();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case WM_CREATE_ACCOUNT_REQUEST:
+        return isSetWmCreateAccountRequest();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof koaloasTest9_args)
+        return this.equals((koaloasTest9_args)that);
+      return false;
+    }
+
+    public boolean equals(koaloasTest9_args that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_wmCreateAccountRequest = true && this.isSetWmCreateAccountRequest();
+      boolean that_present_wmCreateAccountRequest = true && that.isSetWmCreateAccountRequest();
+      if (this_present_wmCreateAccountRequest || that_present_wmCreateAccountRequest) {
+        if (!(this_present_wmCreateAccountRequest && that_present_wmCreateAccountRequest))
+          return false;
+        if (!this.wmCreateAccountRequest.equals(that.wmCreateAccountRequest))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    public int compareTo(koaloasTest9_args other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      koaloasTest9_args typedOther = (koaloasTest9_args)other;
+
+      lastComparison = Boolean.valueOf(isSetWmCreateAccountRequest()).compareTo(typedOther.isSetWmCreateAccountRequest());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetWmCreateAccountRequest()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.wmCreateAccountRequest, typedOther.wmCreateAccountRequest);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("koaloasTest9_args(");
+      boolean first = true;
+
+      sb.append("wmCreateAccountRequest:");
+      if (this.wmCreateAccountRequest == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.wmCreateAccountRequest);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class koaloasTest9_argsStandardSchemeFactory implements SchemeFactory {
+      public koaloasTest9_argsStandardScheme getScheme() {
+        return new koaloasTest9_argsStandardScheme();
+      }
+    }
+
+    private static class koaloasTest9_argsStandardScheme extends StandardScheme<koaloasTest9_args> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, koaloasTest9_args struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 1: // WM_CREATE_ACCOUNT_REQUEST
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.wmCreateAccountRequest = new thrift.domain.WmCreateAccountRequest();
+                struct.wmCreateAccountRequest.read(iprot);
+                struct.setWmCreateAccountRequestIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, koaloasTest9_args struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.wmCreateAccountRequest != null) {
+          oprot.writeFieldBegin(WM_CREATE_ACCOUNT_REQUEST_FIELD_DESC);
+          struct.wmCreateAccountRequest.write(oprot);
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class koaloasTest9_argsTupleSchemeFactory implements SchemeFactory {
+      public koaloasTest9_argsTupleScheme getScheme() {
+        return new koaloasTest9_argsTupleScheme();
+      }
+    }
+
+    private static class koaloasTest9_argsTupleScheme extends TupleScheme<koaloasTest9_args> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, koaloasTest9_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetWmCreateAccountRequest()) {
+          optionals.set(0);
+        }
+        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetWmCreateAccountRequest()) {
+          struct.wmCreateAccountRequest.write(oprot);
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, koaloasTest9_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(1);
+        if (incoming.get(0)) {
+          struct.wmCreateAccountRequest = new thrift.domain.WmCreateAccountRequest();
+          struct.wmCreateAccountRequest.read(iprot);
+          struct.setWmCreateAccountRequestIsSet(true);
+        }
+      }
+    }
+
+  }
+
+  public static class koaloasTest9_result implements org.apache.thrift.TBase<koaloasTest9_result, koaloasTest9_result._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("koaloasTest9_result");
+
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new koaloasTest9_resultStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new koaloasTest9_resultTupleSchemeFactory());
+    }
+
+    public thrift.domain.WmCreateAccountRespone success; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      SUCCESS((short)0, "success");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 0: // SUCCESS
+            return SUCCESS;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, thrift.domain.WmCreateAccountRespone.class)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(koaloasTest9_result.class, metaDataMap);
+    }
+
+    public koaloasTest9_result() {
+    }
+
+    public koaloasTest9_result(
+      thrift.domain.WmCreateAccountRespone success)
+    {
+      this();
+      this.success = success;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public koaloasTest9_result(koaloasTest9_result other) {
+      if (other.isSetSuccess()) {
+        this.success = new thrift.domain.WmCreateAccountRespone(other.success);
+      }
+    }
+
+    public koaloasTest9_result deepCopy() {
+      return new koaloasTest9_result(this);
+    }
+
+    @Override
+    public void clear() {
+      this.success = null;
+    }
+
+    public thrift.domain.WmCreateAccountRespone getSuccess() {
+      return this.success;
+    }
+
+    public koaloasTest9_result setSuccess(thrift.domain.WmCreateAccountRespone success) {
+      this.success = success;
+      return this;
+    }
+
+    public void unsetSuccess() {
+      this.success = null;
+    }
+
+    /** Returns true if field success is set (has been assigned a value) and false otherwise */
+    public boolean isSetSuccess() {
+      return this.success != null;
+    }
+
+    public void setSuccessIsSet(boolean value) {
+      if (!value) {
+        this.success = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case SUCCESS:
+        if (value == null) {
+          unsetSuccess();
+        } else {
+          setSuccess((thrift.domain.WmCreateAccountRespone)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case SUCCESS:
+        return getSuccess();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case SUCCESS:
+        return isSetSuccess();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof koaloasTest9_result)
+        return this.equals((koaloasTest9_result)that);
+      return false;
+    }
+
+    public boolean equals(koaloasTest9_result that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_success = true && this.isSetSuccess();
+      boolean that_present_success = true && that.isSetSuccess();
+      if (this_present_success || that_present_success) {
+        if (!(this_present_success && that_present_success))
+          return false;
+        if (!this.success.equals(that.success))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    public int compareTo(koaloasTest9_result other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      koaloasTest9_result typedOther = (koaloasTest9_result)other;
+
+      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetSuccess()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, typedOther.success);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+      }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("koaloasTest9_result(");
+      boolean first = true;
+
+      sb.append("success:");
+      if (this.success == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.success);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class koaloasTest9_resultStandardSchemeFactory implements SchemeFactory {
+      public koaloasTest9_resultStandardScheme getScheme() {
+        return new koaloasTest9_resultStandardScheme();
+      }
+    }
+
+    private static class koaloasTest9_resultStandardScheme extends StandardScheme<koaloasTest9_result> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, koaloasTest9_result struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 0: // SUCCESS
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.success = new thrift.domain.WmCreateAccountRespone();
+                struct.success.read(iprot);
+                struct.setSuccessIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, koaloasTest9_result struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.success != null) {
+          oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
+          struct.success.write(oprot);
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class koaloasTest9_resultTupleSchemeFactory implements SchemeFactory {
+      public koaloasTest9_resultTupleScheme getScheme() {
+        return new koaloasTest9_resultTupleScheme();
+      }
+    }
+
+    private static class koaloasTest9_resultTupleScheme extends TupleScheme<koaloasTest9_result> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, koaloasTest9_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetSuccess()) {
+          optionals.set(0);
+        }
+        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetSuccess()) {
+          struct.success.write(oprot);
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, koaloasTest9_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(1);
+        if (incoming.get(0)) {
+          struct.success = new thrift.domain.WmCreateAccountRespone();
+          struct.success.read(iprot);
+          struct.setSuccessIsSet(true);
+        }
+      }
+    }
+
+  }
+
+  public static class koaloasTest10_args implements org.apache.thrift.TBase<koaloasTest10_args, koaloasTest10_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("koaloasTest10_args");
+
+    private static final org.apache.thrift.protocol.TField WM_CREATE_ACCOUNT_REQUEST_FIELD_DESC = new org.apache.thrift.protocol.TField("wmCreateAccountRequest", org.apache.thrift.protocol.TType.STRUCT, (short)1);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new koaloasTest10_argsStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new koaloasTest10_argsTupleSchemeFactory());
+    }
+
+    public thrift.domain.WmCreateAccountRequest wmCreateAccountRequest; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      WM_CREATE_ACCOUNT_REQUEST((short)1, "wmCreateAccountRequest");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 1: // WM_CREATE_ACCOUNT_REQUEST
+            return WM_CREATE_ACCOUNT_REQUEST;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.WM_CREATE_ACCOUNT_REQUEST, new org.apache.thrift.meta_data.FieldMetaData("wmCreateAccountRequest", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, thrift.domain.WmCreateAccountRequest.class)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(koaloasTest10_args.class, metaDataMap);
+    }
+
+    public koaloasTest10_args() {
+    }
+
+    public koaloasTest10_args(
+      thrift.domain.WmCreateAccountRequest wmCreateAccountRequest)
+    {
+      this();
+      this.wmCreateAccountRequest = wmCreateAccountRequest;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public koaloasTest10_args(koaloasTest10_args other) {
+      if (other.isSetWmCreateAccountRequest()) {
+        this.wmCreateAccountRequest = new thrift.domain.WmCreateAccountRequest(other.wmCreateAccountRequest);
+      }
+    }
+
+    public koaloasTest10_args deepCopy() {
+      return new koaloasTest10_args(this);
+    }
+
+    @Override
+    public void clear() {
+      this.wmCreateAccountRequest = null;
+    }
+
+    public thrift.domain.WmCreateAccountRequest getWmCreateAccountRequest() {
+      return this.wmCreateAccountRequest;
+    }
+
+    public koaloasTest10_args setWmCreateAccountRequest(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest) {
+      this.wmCreateAccountRequest = wmCreateAccountRequest;
+      return this;
+    }
+
+    public void unsetWmCreateAccountRequest() {
+      this.wmCreateAccountRequest = null;
+    }
+
+    /** Returns true if field wmCreateAccountRequest is set (has been assigned a value) and false otherwise */
+    public boolean isSetWmCreateAccountRequest() {
+      return this.wmCreateAccountRequest != null;
+    }
+
+    public void setWmCreateAccountRequestIsSet(boolean value) {
+      if (!value) {
+        this.wmCreateAccountRequest = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case WM_CREATE_ACCOUNT_REQUEST:
+        if (value == null) {
+          unsetWmCreateAccountRequest();
+        } else {
+          setWmCreateAccountRequest((thrift.domain.WmCreateAccountRequest)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case WM_CREATE_ACCOUNT_REQUEST:
+        return getWmCreateAccountRequest();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case WM_CREATE_ACCOUNT_REQUEST:
+        return isSetWmCreateAccountRequest();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof koaloasTest10_args)
+        return this.equals((koaloasTest10_args)that);
+      return false;
+    }
+
+    public boolean equals(koaloasTest10_args that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_wmCreateAccountRequest = true && this.isSetWmCreateAccountRequest();
+      boolean that_present_wmCreateAccountRequest = true && that.isSetWmCreateAccountRequest();
+      if (this_present_wmCreateAccountRequest || that_present_wmCreateAccountRequest) {
+        if (!(this_present_wmCreateAccountRequest && that_present_wmCreateAccountRequest))
+          return false;
+        if (!this.wmCreateAccountRequest.equals(that.wmCreateAccountRequest))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    public int compareTo(koaloasTest10_args other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      koaloasTest10_args typedOther = (koaloasTest10_args)other;
+
+      lastComparison = Boolean.valueOf(isSetWmCreateAccountRequest()).compareTo(typedOther.isSetWmCreateAccountRequest());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetWmCreateAccountRequest()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.wmCreateAccountRequest, typedOther.wmCreateAccountRequest);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("koaloasTest10_args(");
+      boolean first = true;
+
+      sb.append("wmCreateAccountRequest:");
+      if (this.wmCreateAccountRequest == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.wmCreateAccountRequest);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class koaloasTest10_argsStandardSchemeFactory implements SchemeFactory {
+      public koaloasTest10_argsStandardScheme getScheme() {
+        return new koaloasTest10_argsStandardScheme();
+      }
+    }
+
+    private static class koaloasTest10_argsStandardScheme extends StandardScheme<koaloasTest10_args> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, koaloasTest10_args struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 1: // WM_CREATE_ACCOUNT_REQUEST
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.wmCreateAccountRequest = new thrift.domain.WmCreateAccountRequest();
+                struct.wmCreateAccountRequest.read(iprot);
+                struct.setWmCreateAccountRequestIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, koaloasTest10_args struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.wmCreateAccountRequest != null) {
+          oprot.writeFieldBegin(WM_CREATE_ACCOUNT_REQUEST_FIELD_DESC);
+          struct.wmCreateAccountRequest.write(oprot);
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class koaloasTest10_argsTupleSchemeFactory implements SchemeFactory {
+      public koaloasTest10_argsTupleScheme getScheme() {
+        return new koaloasTest10_argsTupleScheme();
+      }
+    }
+
+    private static class koaloasTest10_argsTupleScheme extends TupleScheme<koaloasTest10_args> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, koaloasTest10_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetWmCreateAccountRequest()) {
+          optionals.set(0);
+        }
+        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetWmCreateAccountRequest()) {
+          struct.wmCreateAccountRequest.write(oprot);
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, koaloasTest10_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(1);
+        if (incoming.get(0)) {
+          struct.wmCreateAccountRequest = new thrift.domain.WmCreateAccountRequest();
+          struct.wmCreateAccountRequest.read(iprot);
+          struct.setWmCreateAccountRequestIsSet(true);
+        }
+      }
+    }
+
+  }
+
+  public static class koaloasTest10_result implements org.apache.thrift.TBase<koaloasTest10_result, koaloasTest10_result._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("koaloasTest10_result");
+
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new koaloasTest10_resultStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new koaloasTest10_resultTupleSchemeFactory());
+    }
+
+    public thrift.domain.WmCreateAccountRespone success; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      SUCCESS((short)0, "success");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 0: // SUCCESS
+            return SUCCESS;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, thrift.domain.WmCreateAccountRespone.class)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(koaloasTest10_result.class, metaDataMap);
+    }
+
+    public koaloasTest10_result() {
+    }
+
+    public koaloasTest10_result(
+      thrift.domain.WmCreateAccountRespone success)
+    {
+      this();
+      this.success = success;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public koaloasTest10_result(koaloasTest10_result other) {
+      if (other.isSetSuccess()) {
+        this.success = new thrift.domain.WmCreateAccountRespone(other.success);
+      }
+    }
+
+    public koaloasTest10_result deepCopy() {
+      return new koaloasTest10_result(this);
+    }
+
+    @Override
+    public void clear() {
+      this.success = null;
+    }
+
+    public thrift.domain.WmCreateAccountRespone getSuccess() {
+      return this.success;
+    }
+
+    public koaloasTest10_result setSuccess(thrift.domain.WmCreateAccountRespone success) {
+      this.success = success;
+      return this;
+    }
+
+    public void unsetSuccess() {
+      this.success = null;
+    }
+
+    /** Returns true if field success is set (has been assigned a value) and false otherwise */
+    public boolean isSetSuccess() {
+      return this.success != null;
+    }
+
+    public void setSuccessIsSet(boolean value) {
+      if (!value) {
+        this.success = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case SUCCESS:
+        if (value == null) {
+          unsetSuccess();
+        } else {
+          setSuccess((thrift.domain.WmCreateAccountRespone)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case SUCCESS:
+        return getSuccess();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case SUCCESS:
+        return isSetSuccess();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof koaloasTest10_result)
+        return this.equals((koaloasTest10_result)that);
+      return false;
+    }
+
+    public boolean equals(koaloasTest10_result that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_success = true && this.isSetSuccess();
+      boolean that_present_success = true && that.isSetSuccess();
+      if (this_present_success || that_present_success) {
+        if (!(this_present_success && that_present_success))
+          return false;
+        if (!this.success.equals(that.success))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    public int compareTo(koaloasTest10_result other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      koaloasTest10_result typedOther = (koaloasTest10_result)other;
+
+      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetSuccess()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, typedOther.success);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+      }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("koaloasTest10_result(");
+      boolean first = true;
+
+      sb.append("success:");
+      if (this.success == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.success);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class koaloasTest10_resultStandardSchemeFactory implements SchemeFactory {
+      public koaloasTest10_resultStandardScheme getScheme() {
+        return new koaloasTest10_resultStandardScheme();
+      }
+    }
+
+    private static class koaloasTest10_resultStandardScheme extends StandardScheme<koaloasTest10_result> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, koaloasTest10_result struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 0: // SUCCESS
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.success = new thrift.domain.WmCreateAccountRespone();
+                struct.success.read(iprot);
+                struct.setSuccessIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, koaloasTest10_result struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.success != null) {
+          oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
+          struct.success.write(oprot);
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class koaloasTest10_resultTupleSchemeFactory implements SchemeFactory {
+      public koaloasTest10_resultTupleScheme getScheme() {
+        return new koaloasTest10_resultTupleScheme();
+      }
+    }
+
+    private static class koaloasTest10_resultTupleScheme extends TupleScheme<koaloasTest10_result> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, koaloasTest10_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetSuccess()) {
+          optionals.set(0);
+        }
+        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetSuccess()) {
+          struct.success.write(oprot);
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, koaloasTest10_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(1);
+        if (incoming.get(0)) {
+          struct.success = new thrift.domain.WmCreateAccountRespone();
+          struct.success.read(iprot);
+          struct.setSuccessIsSet(true);
+        }
+      }
+    }
+
+  }
+
+  public static class koaloasTest11_args implements org.apache.thrift.TBase<koaloasTest11_args, koaloasTest11_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("koaloasTest11_args");
+
+    private static final org.apache.thrift.protocol.TField WM_CREATE_ACCOUNT_REQUEST_FIELD_DESC = new org.apache.thrift.protocol.TField("wmCreateAccountRequest", org.apache.thrift.protocol.TType.STRUCT, (short)1);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new koaloasTest11_argsStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new koaloasTest11_argsTupleSchemeFactory());
+    }
+
+    public thrift.domain.WmCreateAccountRequest wmCreateAccountRequest; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      WM_CREATE_ACCOUNT_REQUEST((short)1, "wmCreateAccountRequest");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 1: // WM_CREATE_ACCOUNT_REQUEST
+            return WM_CREATE_ACCOUNT_REQUEST;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.WM_CREATE_ACCOUNT_REQUEST, new org.apache.thrift.meta_data.FieldMetaData("wmCreateAccountRequest", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, thrift.domain.WmCreateAccountRequest.class)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(koaloasTest11_args.class, metaDataMap);
+    }
+
+    public koaloasTest11_args() {
+    }
+
+    public koaloasTest11_args(
+      thrift.domain.WmCreateAccountRequest wmCreateAccountRequest)
+    {
+      this();
+      this.wmCreateAccountRequest = wmCreateAccountRequest;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public koaloasTest11_args(koaloasTest11_args other) {
+      if (other.isSetWmCreateAccountRequest()) {
+        this.wmCreateAccountRequest = new thrift.domain.WmCreateAccountRequest(other.wmCreateAccountRequest);
+      }
+    }
+
+    public koaloasTest11_args deepCopy() {
+      return new koaloasTest11_args(this);
+    }
+
+    @Override
+    public void clear() {
+      this.wmCreateAccountRequest = null;
+    }
+
+    public thrift.domain.WmCreateAccountRequest getWmCreateAccountRequest() {
+      return this.wmCreateAccountRequest;
+    }
+
+    public koaloasTest11_args setWmCreateAccountRequest(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest) {
+      this.wmCreateAccountRequest = wmCreateAccountRequest;
+      return this;
+    }
+
+    public void unsetWmCreateAccountRequest() {
+      this.wmCreateAccountRequest = null;
+    }
+
+    /** Returns true if field wmCreateAccountRequest is set (has been assigned a value) and false otherwise */
+    public boolean isSetWmCreateAccountRequest() {
+      return this.wmCreateAccountRequest != null;
+    }
+
+    public void setWmCreateAccountRequestIsSet(boolean value) {
+      if (!value) {
+        this.wmCreateAccountRequest = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case WM_CREATE_ACCOUNT_REQUEST:
+        if (value == null) {
+          unsetWmCreateAccountRequest();
+        } else {
+          setWmCreateAccountRequest((thrift.domain.WmCreateAccountRequest)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case WM_CREATE_ACCOUNT_REQUEST:
+        return getWmCreateAccountRequest();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case WM_CREATE_ACCOUNT_REQUEST:
+        return isSetWmCreateAccountRequest();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof koaloasTest11_args)
+        return this.equals((koaloasTest11_args)that);
+      return false;
+    }
+
+    public boolean equals(koaloasTest11_args that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_wmCreateAccountRequest = true && this.isSetWmCreateAccountRequest();
+      boolean that_present_wmCreateAccountRequest = true && that.isSetWmCreateAccountRequest();
+      if (this_present_wmCreateAccountRequest || that_present_wmCreateAccountRequest) {
+        if (!(this_present_wmCreateAccountRequest && that_present_wmCreateAccountRequest))
+          return false;
+        if (!this.wmCreateAccountRequest.equals(that.wmCreateAccountRequest))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    public int compareTo(koaloasTest11_args other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      koaloasTest11_args typedOther = (koaloasTest11_args)other;
+
+      lastComparison = Boolean.valueOf(isSetWmCreateAccountRequest()).compareTo(typedOther.isSetWmCreateAccountRequest());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetWmCreateAccountRequest()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.wmCreateAccountRequest, typedOther.wmCreateAccountRequest);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("koaloasTest11_args(");
+      boolean first = true;
+
+      sb.append("wmCreateAccountRequest:");
+      if (this.wmCreateAccountRequest == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.wmCreateAccountRequest);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class koaloasTest11_argsStandardSchemeFactory implements SchemeFactory {
+      public koaloasTest11_argsStandardScheme getScheme() {
+        return new koaloasTest11_argsStandardScheme();
+      }
+    }
+
+    private static class koaloasTest11_argsStandardScheme extends StandardScheme<koaloasTest11_args> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, koaloasTest11_args struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 1: // WM_CREATE_ACCOUNT_REQUEST
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.wmCreateAccountRequest = new thrift.domain.WmCreateAccountRequest();
+                struct.wmCreateAccountRequest.read(iprot);
+                struct.setWmCreateAccountRequestIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, koaloasTest11_args struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.wmCreateAccountRequest != null) {
+          oprot.writeFieldBegin(WM_CREATE_ACCOUNT_REQUEST_FIELD_DESC);
+          struct.wmCreateAccountRequest.write(oprot);
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class koaloasTest11_argsTupleSchemeFactory implements SchemeFactory {
+      public koaloasTest11_argsTupleScheme getScheme() {
+        return new koaloasTest11_argsTupleScheme();
+      }
+    }
+
+    private static class koaloasTest11_argsTupleScheme extends TupleScheme<koaloasTest11_args> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, koaloasTest11_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetWmCreateAccountRequest()) {
+          optionals.set(0);
+        }
+        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetWmCreateAccountRequest()) {
+          struct.wmCreateAccountRequest.write(oprot);
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, koaloasTest11_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(1);
+        if (incoming.get(0)) {
+          struct.wmCreateAccountRequest = new thrift.domain.WmCreateAccountRequest();
+          struct.wmCreateAccountRequest.read(iprot);
+          struct.setWmCreateAccountRequestIsSet(true);
+        }
+      }
+    }
+
+  }
+
+  public static class koaloasTest11_result implements org.apache.thrift.TBase<koaloasTest11_result, koaloasTest11_result._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("koaloasTest11_result");
+
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new koaloasTest11_resultStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new koaloasTest11_resultTupleSchemeFactory());
+    }
+
+    public thrift.domain.WmCreateAccountRespone success; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      SUCCESS((short)0, "success");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 0: // SUCCESS
+            return SUCCESS;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, thrift.domain.WmCreateAccountRespone.class)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(koaloasTest11_result.class, metaDataMap);
+    }
+
+    public koaloasTest11_result() {
+    }
+
+    public koaloasTest11_result(
+      thrift.domain.WmCreateAccountRespone success)
+    {
+      this();
+      this.success = success;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public koaloasTest11_result(koaloasTest11_result other) {
+      if (other.isSetSuccess()) {
+        this.success = new thrift.domain.WmCreateAccountRespone(other.success);
+      }
+    }
+
+    public koaloasTest11_result deepCopy() {
+      return new koaloasTest11_result(this);
+    }
+
+    @Override
+    public void clear() {
+      this.success = null;
+    }
+
+    public thrift.domain.WmCreateAccountRespone getSuccess() {
+      return this.success;
+    }
+
+    public koaloasTest11_result setSuccess(thrift.domain.WmCreateAccountRespone success) {
+      this.success = success;
+      return this;
+    }
+
+    public void unsetSuccess() {
+      this.success = null;
+    }
+
+    /** Returns true if field success is set (has been assigned a value) and false otherwise */
+    public boolean isSetSuccess() {
+      return this.success != null;
+    }
+
+    public void setSuccessIsSet(boolean value) {
+      if (!value) {
+        this.success = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case SUCCESS:
+        if (value == null) {
+          unsetSuccess();
+        } else {
+          setSuccess((thrift.domain.WmCreateAccountRespone)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case SUCCESS:
+        return getSuccess();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case SUCCESS:
+        return isSetSuccess();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof koaloasTest11_result)
+        return this.equals((koaloasTest11_result)that);
+      return false;
+    }
+
+    public boolean equals(koaloasTest11_result that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_success = true && this.isSetSuccess();
+      boolean that_present_success = true && that.isSetSuccess();
+      if (this_present_success || that_present_success) {
+        if (!(this_present_success && that_present_success))
+          return false;
+        if (!this.success.equals(that.success))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    public int compareTo(koaloasTest11_result other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      koaloasTest11_result typedOther = (koaloasTest11_result)other;
+
+      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetSuccess()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, typedOther.success);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+      }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("koaloasTest11_result(");
+      boolean first = true;
+
+      sb.append("success:");
+      if (this.success == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.success);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class koaloasTest11_resultStandardSchemeFactory implements SchemeFactory {
+      public koaloasTest11_resultStandardScheme getScheme() {
+        return new koaloasTest11_resultStandardScheme();
+      }
+    }
+
+    private static class koaloasTest11_resultStandardScheme extends StandardScheme<koaloasTest11_result> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, koaloasTest11_result struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 0: // SUCCESS
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.success = new thrift.domain.WmCreateAccountRespone();
+                struct.success.read(iprot);
+                struct.setSuccessIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, koaloasTest11_result struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.success != null) {
+          oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
+          struct.success.write(oprot);
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class koaloasTest11_resultTupleSchemeFactory implements SchemeFactory {
+      public koaloasTest11_resultTupleScheme getScheme() {
+        return new koaloasTest11_resultTupleScheme();
+      }
+    }
+
+    private static class koaloasTest11_resultTupleScheme extends TupleScheme<koaloasTest11_result> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, koaloasTest11_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetSuccess()) {
+          optionals.set(0);
+        }
+        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetSuccess()) {
+          struct.success.write(oprot);
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, koaloasTest11_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(1);
+        if (incoming.get(0)) {
+          struct.success = new thrift.domain.WmCreateAccountRespone();
+          struct.success.read(iprot);
+          struct.setSuccessIsSet(true);
+        }
+      }
+    }
+
+  }
+
+  public static class koaloasTest12_args implements org.apache.thrift.TBase<koaloasTest12_args, koaloasTest12_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("koaloasTest12_args");
+
+    private static final org.apache.thrift.protocol.TField WM_CREATE_ACCOUNT_REQUEST_FIELD_DESC = new org.apache.thrift.protocol.TField("wmCreateAccountRequest", org.apache.thrift.protocol.TType.STRUCT, (short)1);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new koaloasTest12_argsStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new koaloasTest12_argsTupleSchemeFactory());
+    }
+
+    public thrift.domain.WmCreateAccountRequest wmCreateAccountRequest; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      WM_CREATE_ACCOUNT_REQUEST((short)1, "wmCreateAccountRequest");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 1: // WM_CREATE_ACCOUNT_REQUEST
+            return WM_CREATE_ACCOUNT_REQUEST;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.WM_CREATE_ACCOUNT_REQUEST, new org.apache.thrift.meta_data.FieldMetaData("wmCreateAccountRequest", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, thrift.domain.WmCreateAccountRequest.class)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(koaloasTest12_args.class, metaDataMap);
+    }
+
+    public koaloasTest12_args() {
+    }
+
+    public koaloasTest12_args(
+      thrift.domain.WmCreateAccountRequest wmCreateAccountRequest)
+    {
+      this();
+      this.wmCreateAccountRequest = wmCreateAccountRequest;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public koaloasTest12_args(koaloasTest12_args other) {
+      if (other.isSetWmCreateAccountRequest()) {
+        this.wmCreateAccountRequest = new thrift.domain.WmCreateAccountRequest(other.wmCreateAccountRequest);
+      }
+    }
+
+    public koaloasTest12_args deepCopy() {
+      return new koaloasTest12_args(this);
+    }
+
+    @Override
+    public void clear() {
+      this.wmCreateAccountRequest = null;
+    }
+
+    public thrift.domain.WmCreateAccountRequest getWmCreateAccountRequest() {
+      return this.wmCreateAccountRequest;
+    }
+
+    public koaloasTest12_args setWmCreateAccountRequest(thrift.domain.WmCreateAccountRequest wmCreateAccountRequest) {
+      this.wmCreateAccountRequest = wmCreateAccountRequest;
+      return this;
+    }
+
+    public void unsetWmCreateAccountRequest() {
+      this.wmCreateAccountRequest = null;
+    }
+
+    /** Returns true if field wmCreateAccountRequest is set (has been assigned a value) and false otherwise */
+    public boolean isSetWmCreateAccountRequest() {
+      return this.wmCreateAccountRequest != null;
+    }
+
+    public void setWmCreateAccountRequestIsSet(boolean value) {
+      if (!value) {
+        this.wmCreateAccountRequest = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case WM_CREATE_ACCOUNT_REQUEST:
+        if (value == null) {
+          unsetWmCreateAccountRequest();
+        } else {
+          setWmCreateAccountRequest((thrift.domain.WmCreateAccountRequest)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case WM_CREATE_ACCOUNT_REQUEST:
+        return getWmCreateAccountRequest();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case WM_CREATE_ACCOUNT_REQUEST:
+        return isSetWmCreateAccountRequest();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof koaloasTest12_args)
+        return this.equals((koaloasTest12_args)that);
+      return false;
+    }
+
+    public boolean equals(koaloasTest12_args that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_wmCreateAccountRequest = true && this.isSetWmCreateAccountRequest();
+      boolean that_present_wmCreateAccountRequest = true && that.isSetWmCreateAccountRequest();
+      if (this_present_wmCreateAccountRequest || that_present_wmCreateAccountRequest) {
+        if (!(this_present_wmCreateAccountRequest && that_present_wmCreateAccountRequest))
+          return false;
+        if (!this.wmCreateAccountRequest.equals(that.wmCreateAccountRequest))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    public int compareTo(koaloasTest12_args other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      koaloasTest12_args typedOther = (koaloasTest12_args)other;
+
+      lastComparison = Boolean.valueOf(isSetWmCreateAccountRequest()).compareTo(typedOther.isSetWmCreateAccountRequest());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetWmCreateAccountRequest()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.wmCreateAccountRequest, typedOther.wmCreateAccountRequest);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("koaloasTest12_args(");
+      boolean first = true;
+
+      sb.append("wmCreateAccountRequest:");
+      if (this.wmCreateAccountRequest == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.wmCreateAccountRequest);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class koaloasTest12_argsStandardSchemeFactory implements SchemeFactory {
+      public koaloasTest12_argsStandardScheme getScheme() {
+        return new koaloasTest12_argsStandardScheme();
+      }
+    }
+
+    private static class koaloasTest12_argsStandardScheme extends StandardScheme<koaloasTest12_args> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, koaloasTest12_args struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 1: // WM_CREATE_ACCOUNT_REQUEST
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.wmCreateAccountRequest = new thrift.domain.WmCreateAccountRequest();
+                struct.wmCreateAccountRequest.read(iprot);
+                struct.setWmCreateAccountRequestIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, koaloasTest12_args struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.wmCreateAccountRequest != null) {
+          oprot.writeFieldBegin(WM_CREATE_ACCOUNT_REQUEST_FIELD_DESC);
+          struct.wmCreateAccountRequest.write(oprot);
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class koaloasTest12_argsTupleSchemeFactory implements SchemeFactory {
+      public koaloasTest12_argsTupleScheme getScheme() {
+        return new koaloasTest12_argsTupleScheme();
+      }
+    }
+
+    private static class koaloasTest12_argsTupleScheme extends TupleScheme<koaloasTest12_args> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, koaloasTest12_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetWmCreateAccountRequest()) {
+          optionals.set(0);
+        }
+        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetWmCreateAccountRequest()) {
+          struct.wmCreateAccountRequest.write(oprot);
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, koaloasTest12_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(1);
+        if (incoming.get(0)) {
+          struct.wmCreateAccountRequest = new thrift.domain.WmCreateAccountRequest();
+          struct.wmCreateAccountRequest.read(iprot);
+          struct.setWmCreateAccountRequestIsSet(true);
+        }
+      }
+    }
+
+  }
+
+  public static class koaloasTest12_result implements org.apache.thrift.TBase<koaloasTest12_result, koaloasTest12_result._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("koaloasTest12_result");
+
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new koaloasTest12_resultStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new koaloasTest12_resultTupleSchemeFactory());
+    }
+
+    public thrift.domain.WmCreateAccountRespone success; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      SUCCESS((short)0, "success");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 0: // SUCCESS
+            return SUCCESS;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, thrift.domain.WmCreateAccountRespone.class)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(koaloasTest12_result.class, metaDataMap);
+    }
+
+    public koaloasTest12_result() {
+    }
+
+    public koaloasTest12_result(
+      thrift.domain.WmCreateAccountRespone success)
+    {
+      this();
+      this.success = success;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public koaloasTest12_result(koaloasTest12_result other) {
+      if (other.isSetSuccess()) {
+        this.success = new thrift.domain.WmCreateAccountRespone(other.success);
+      }
+    }
+
+    public koaloasTest12_result deepCopy() {
+      return new koaloasTest12_result(this);
+    }
+
+    @Override
+    public void clear() {
+      this.success = null;
+    }
+
+    public thrift.domain.WmCreateAccountRespone getSuccess() {
+      return this.success;
+    }
+
+    public koaloasTest12_result setSuccess(thrift.domain.WmCreateAccountRespone success) {
+      this.success = success;
+      return this;
+    }
+
+    public void unsetSuccess() {
+      this.success = null;
+    }
+
+    /** Returns true if field success is set (has been assigned a value) and false otherwise */
+    public boolean isSetSuccess() {
+      return this.success != null;
+    }
+
+    public void setSuccessIsSet(boolean value) {
+      if (!value) {
+        this.success = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case SUCCESS:
+        if (value == null) {
+          unsetSuccess();
+        } else {
+          setSuccess((thrift.domain.WmCreateAccountRespone)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case SUCCESS:
+        return getSuccess();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case SUCCESS:
+        return isSetSuccess();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof koaloasTest12_result)
+        return this.equals((koaloasTest12_result)that);
+      return false;
+    }
+
+    public boolean equals(koaloasTest12_result that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_success = true && this.isSetSuccess();
+      boolean that_present_success = true && that.isSetSuccess();
+      if (this_present_success || that_present_success) {
+        if (!(this_present_success && that_present_success))
+          return false;
+        if (!this.success.equals(that.success))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    public int compareTo(koaloasTest12_result other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      koaloasTest12_result typedOther = (koaloasTest12_result)other;
+
+      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetSuccess()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, typedOther.success);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+      }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("koaloasTest12_result(");
+      boolean first = true;
+
+      sb.append("success:");
+      if (this.success == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.success);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class koaloasTest12_resultStandardSchemeFactory implements SchemeFactory {
+      public koaloasTest12_resultStandardScheme getScheme() {
+        return new koaloasTest12_resultStandardScheme();
+      }
+    }
+
+    private static class koaloasTest12_resultStandardScheme extends StandardScheme<koaloasTest12_result> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, koaloasTest12_result struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 0: // SUCCESS
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.success = new thrift.domain.WmCreateAccountRespone();
+                struct.success.read(iprot);
+                struct.setSuccessIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, koaloasTest12_result struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.success != null) {
+          oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
+          struct.success.write(oprot);
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class koaloasTest12_resultTupleSchemeFactory implements SchemeFactory {
+      public koaloasTest12_resultTupleScheme getScheme() {
+        return new koaloasTest12_resultTupleScheme();
+      }
+    }
+
+    private static class koaloasTest12_resultTupleScheme extends TupleScheme<koaloasTest12_result> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, koaloasTest12_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetSuccess()) {
+          optionals.set(0);
+        }
+        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetSuccess()) {
+          struct.success.write(oprot);
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, koaloasTest12_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(1);
+        if (incoming.get(0)) {
+          struct.success = new thrift.domain.WmCreateAccountRespone();
           struct.success.read(iprot);
           struct.setSuccessIsSet(true);
         }

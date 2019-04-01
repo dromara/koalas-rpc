@@ -1,21 +1,24 @@
 package netty.hanlder;
 
+import com.dianping.cat.Cat;
+import com.dianping.cat.message.Transaction;
 import ex.RSAException;
 import heartbeat.impl.HeartbeatServiceImpl;
 import heartbeat.service.HeartbeatService;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.thrift.TApplicationException;
 import org.apache.thrift.TException;
 import org.apache.thrift.TProcessor;
 import org.apache.thrift.protocol.*;
-import org.apache.thrift.transport.TFramedTransport;
 import org.apache.thrift.transport.TIOStreamTransport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import server.domain.ErrorType;
 import transport.TKoalasFramedTransport;
+import utils.KoalasRsaUtil;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -40,87 +43,94 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
 
     private String publicKey;
 
-    public KoalasHandler(TProcessor tprocessor, ExecutorService executorService, String privateKey, String publicKey) {
+    private String className;
+
+    public KoalasHandler(TProcessor tprocessor, ExecutorService executorService, String privateKey, String publicKey, String className) {
         this.tprocessor = tprocessor;
         this.executorService = executorService;
         this.privateKey = privateKey;
         this.publicKey = publicKey;
+        this.className = className;
     }
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, ByteBuf msg) throws Exception {
 
-        int i =msg.readableBytes ();
-        byte[] b = new byte[i];
-        msg.readBytes ( b );
+            int i =msg.readableBytes ();
+            byte[] b = new byte[i];
+            msg.readBytes ( b );
 
-        boolean ifUserProtocol;
-        if(b[4]==TKoalasFramedTransport.first && b[5]==TKoalasFramedTransport.second){
-            ifUserProtocol = true;
-        }else{
-            ifUserProtocol = false;
-        }
+            TMessage tMessage;
+            boolean ifUserProtocol;
+            if(b[4]==TKoalasFramedTransport.first && b[5]==TKoalasFramedTransport.second){
+                ifUserProtocol = true;
+                tMessage = getKoalasTmessage ( b);
+            }else{
+                ifUserProtocol = false;
+                tMessage =getTMessage ( b );
+            }
 
-        ByteArrayInputStream inputStream = new ByteArrayInputStream ( b );
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream (  );
+            ByteArrayInputStream inputStream = new ByteArrayInputStream ( b );
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream (  );
 
-        TIOStreamTransport tioStreamTransportInput = new TIOStreamTransport (  inputStream);
-        TIOStreamTransport tioStreamTransportOutput = new TIOStreamTransport (  outputStream);
+            TIOStreamTransport tioStreamTransportInput = new TIOStreamTransport (  inputStream);
+            TIOStreamTransport tioStreamTransportOutput = new TIOStreamTransport (  outputStream);
 
-        TKoalasFramedTransport inTransport = new TKoalasFramedTransport( tioStreamTransportInput,2048000 );
-        TKoalasFramedTransport outTransport = new TKoalasFramedTransport ( tioStreamTransportOutput,2048000,ifUserProtocol );
+            TKoalasFramedTransport inTransport = new TKoalasFramedTransport( tioStreamTransportInput,2048000 );
+            TKoalasFramedTransport outTransport = new TKoalasFramedTransport ( tioStreamTransportOutput,2048000,ifUserProtocol );
 
-        if(this.privateKey != null && this.publicKey!=null){
-            if(b[8] != (byte) 1 || !(b[4]==TKoalasFramedTransport.first && b[5]==TKoalasFramedTransport.second)){
-                logger.error ("rsa error the client is not ras support!");
-                handlerException(b,ctx,new RSAException ( "rsa error" ),ErrorType.APPLICATION,privateKey,publicKey);
-                return;
+            if(this.privateKey != null && this.publicKey!=null){
+                if(b[8] != (byte) 1 || !(b[4]==TKoalasFramedTransport.first && b[5]==TKoalasFramedTransport.second)){
+                    logger.error ("rsa error the client is not ras support!");
+                    handlerException(b,ctx,new RSAException ( "rsa error" ),ErrorType.APPLICATION,privateKey,publicKey);
+                    return;
+                }
+            }
+
+            if(b[4]==TKoalasFramedTransport.first && b[5]==TKoalasFramedTransport.second){
+
+                //heartbeat
+                if(b[7] == (byte) 2){
+                    TProcessor tprocessorheartbeat = new HeartbeatService.Processor<> (new HeartbeatServiceImpl () );
+                    outTransport.setHeartbeat ( (byte) 2 );
+                    TProtocolFactory tProtocolFactory =new TBinaryProtocol.Factory();
+                    TProtocol in =tProtocolFactory.getProtocol ( inTransport );
+                    TProtocol out =tProtocolFactory.getProtocol ( outTransport );
+                    try {
+                        tprocessorheartbeat.process ( in,out );
+                        ctx.writeAndFlush ( outputStream );
+                        return;
+                    } catch (Exception e){
+                        logger.error ( "heartbeat error e" );
+                        handlerException(b,ctx,e,ErrorType.APPLICATION,privateKey,publicKey);
+                        return;
+                    }
+                }
+
+                //rsa support
+                if(b[8] == (byte) 1){
+                    //in
+                    inTransport.setPrivateKey ( this.privateKey );
+                    inTransport.setPublicKey ( this.publicKey );
+
+                    //out
+                    outTransport.setRsa ( (byte) 1 );
+                    outTransport.setPrivateKey ( this.privateKey );
+                    outTransport.setPublicKey ( this.publicKey );
+                }
+            }
+            TProtocolFactory  tProtocolFactory =new TBinaryProtocol.Factory();
+
+            TProtocol in =tProtocolFactory.getProtocol ( inTransport );
+            TProtocol out =tProtocolFactory.getProtocol ( outTransport );
+            try {
+                executorService.execute ( new NettyRunable (  ctx,in,out,outputStream,tprocessor,b,privateKey,publicKey,className,tMessage.name));
+            } catch (RejectedExecutionException e){
+                logger.error ( e.getMessage ()+ErrorType.THREAD,e );
+                handlerException(b,ctx,e,ErrorType.THREAD,privateKey,publicKey);
             }
         }
 
-        if(b[4]==TKoalasFramedTransport.first && b[5]==TKoalasFramedTransport.second){
-
-            //heartbeat
-            if(b[7] == (byte) 2){
-                TProcessor tprocessorheartbeat = new HeartbeatService.Processor<> (new HeartbeatServiceImpl () );
-                outTransport.setHeartbeat ( (byte) 2 );
-                TProtocolFactory tProtocolFactory =new TBinaryProtocol.Factory();
-                TProtocol in =tProtocolFactory.getProtocol ( inTransport );
-                TProtocol out =tProtocolFactory.getProtocol ( outTransport );
-               try {
-                   tprocessorheartbeat.process ( in,out );
-                   ctx.writeAndFlush ( outputStream );
-                   return;
-               } catch (Exception e){
-                   logger.error ( "heartbeat error e" );
-                   handlerException(b,ctx,e,ErrorType.APPLICATION,privateKey,publicKey);
-                   return;
-               }
-            }
-
-            //rsa support
-            if(b[8] == (byte) 1){
-                //in
-                inTransport.setPrivateKey ( this.privateKey );
-                inTransport.setPublicKey ( this.publicKey );
-
-                //out
-                outTransport.setRsa ( (byte) 1 );
-                outTransport.setPrivateKey ( this.privateKey );
-                outTransport.setPublicKey ( this.publicKey );
-            }
-        }
-
-        TProtocolFactory tProtocolFactory =new TBinaryProtocol.Factory();
-        TProtocol in =tProtocolFactory.getProtocol ( inTransport );
-        TProtocol out =tProtocolFactory.getProtocol ( outTransport );
-        try {
-            executorService.execute ( new NettyRunable (  ctx,in,out,outputStream,tprocessor,b,privateKey,publicKey));
-        } catch (RejectedExecutionException e){
-            logger.error ( e.getMessage ()+ErrorType.THREAD,e );
-            handlerException(b,ctx,e,ErrorType.THREAD,privateKey,publicKey);
-        }
-    }
 
     public static class NettyRunable implements  Runnable{
 
@@ -132,8 +142,10 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
         private byte[] b;
         private String privateKey;
         private String publicKey;
+        private String className;
+        private String methodName;
 
-        public NettyRunable(ChannelHandlerContext ctx, TProtocol in, TProtocol out, ByteArrayOutputStream outputStream, TProcessor tprocessor, byte[] b, String privateKey, String publicKey) {
+        public NettyRunable(ChannelHandlerContext ctx, TProtocol in, TProtocol out, ByteArrayOutputStream outputStream, TProcessor tprocessor, byte[] b, String privateKey, String publicKey, String className, String methodName) {
             this.ctx = ctx;
             this.in = in;
             this.out = out;
@@ -142,16 +154,29 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
             this.b = b;
             this.privateKey = privateKey;
             this.publicKey = publicKey;
+            this.className = className;
+            this.methodName = methodName;
         }
+
 
         @Override
         public void run() {
+            Transaction transaction=null;
+            if(StringUtils.isNotEmpty ( methodName ))
+                 transaction = Cat.newTransaction("Service", className.concat ( "." ).concat ( methodName ));
             try {
                 tprocessor.process ( in,out );
                 ctx.writeAndFlush (outputStream);
+                if(transaction!=null)
+                    transaction.setStatus ( Transaction.SUCCESS );
             } catch (Exception e) {
+                if(transaction!=null)
+                    transaction.setStatus ( e );
                 logger.error ( e.getMessage () + ErrorType.APPLICATION,e );
                 handlerException(this.b,ctx,e,ErrorType.APPLICATION,privateKey,publicKey);
+            }finally {
+                if(transaction!=null)
+                    transaction.complete ();
             }
         }
 
@@ -180,6 +205,7 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
         TKoalasFramedTransport outTransport = new TKoalasFramedTransport ( tioStreamTransportOutput,16384000,ifUserProtocol );
 
         TProtocolFactory tProtocolFactory =new TBinaryProtocol.Factory();
+
         TProtocol in =tProtocolFactory.getProtocol ( inTransport );
         TProtocol out =tProtocolFactory.getProtocol ( outTransport );
 
@@ -253,7 +279,7 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
         }
     }
 
-    public static String getClientIP(ChannelHandlerContext ctx) {
+    private static String getClientIP(ChannelHandlerContext ctx) {
         String ip;
         try {
             InetSocketAddress socketAddress = (InetSocketAddress) ctx.channel().remoteAddress();
@@ -262,5 +288,74 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
             ip = "unknown";
         }
         return ip;
+    }
+
+    private TMessage getTMessage(byte[] b){
+
+        byte[] buff = new byte[b.length-4];
+        System.arraycopy (  b,4,buff,0,buff.length);
+        ByteArrayInputStream inputStream = new ByteArrayInputStream ( buff );
+        TIOStreamTransport tioStreamTransportInput = new TIOStreamTransport (  inputStream);
+        TProtocol tBinaryProtocol = new TBinaryProtocol( tioStreamTransportInput );
+        TMessage tMessage=null;
+        try {
+             tMessage= tBinaryProtocol.readMessageBegin ();
+             return tMessage;
+        } catch (TException e) {
+        }
+
+        return new TMessage();
+    }
+
+    private TMessage getKoalasTmessage(byte[] b){
+
+        byte[] buff = new byte[b.length-4];
+        System.arraycopy (  b,4,buff,0,buff.length);
+
+        int size = buff.length;
+        byte[] request = new byte[size - 6];
+        byte[] header = new byte[6];
+        System.arraycopy ( buff, 6, request, 0, size - 6 );
+        System.arraycopy ( buff, 0, header, 0, 6 );
+
+        //RSA
+        if (header[4] == (byte) 1) {
+
+            byte[] signLenByte = new byte[4];
+            System.arraycopy ( buff, 6, signLenByte, 0, 4 );
+
+            int signLen = TKoalasFramedTransport.decodeFrameSize ( signLenByte );
+            byte[] signByte = new byte[signLen];
+            System.arraycopy ( buff, 10, signByte, 0, signLen );
+
+            String sign = "";
+            try {
+                sign = new String ( signByte, "UTF-8" );
+            } catch (Exception e) {
+                return new TMessage (  );
+            }
+
+            byte[] rsaBody = new byte[size -10-signLen];
+            System.arraycopy ( buff, 10+signLen, rsaBody, 0, size -10-signLen );
+
+            try {
+                if(!KoalasRsaUtil.verify ( rsaBody,publicKey,sign )){
+                    return new TMessage (  );
+                }
+                request = KoalasRsaUtil.decryptByPrivateKey (rsaBody,privateKey);
+            } catch (Exception e) {
+                return new TMessage (  );
+            }
+        }
+        TMessage tMessage;
+        ByteArrayInputStream inputStream = new ByteArrayInputStream ( request );
+        TIOStreamTransport tioStreamTransportInput = new TIOStreamTransport (  inputStream);
+        try {
+            TProtocol tBinaryProtocol = new TBinaryProtocol( tioStreamTransportInput );
+            tMessage= tBinaryProtocol.readMessageBegin ();
+        } catch (TException e) {
+             return new TMessage (  );
+        }
+        return tMessage;
     }
 }

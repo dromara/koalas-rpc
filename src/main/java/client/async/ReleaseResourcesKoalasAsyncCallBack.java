@@ -60,6 +60,8 @@ public class ReleaseResourcesKoalasAsyncCallBack<T> implements AsyncMethodCallba
                 } catch (Exception e1) {
                     logger.error ( "onComplete invalidateObject object error !", e );
                 }
+            } else{
+                asyncMethodCallback.onError ( e );
             }
             try {
                 serverObject.getGenericObjectPool ().invalidateObject ( socket );

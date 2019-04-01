@@ -17,7 +17,7 @@ public class ClientRunSync {
     @Test
     public void testRunSync(){
         long a = System.currentTimeMillis ();
-        for (int i = 0; i < 100000; i++) {
+        for (int i = 0; i < 1; i++) {
             try {
                 testServiceSync.getRemoteRpc ();
             }catch (Exception e){

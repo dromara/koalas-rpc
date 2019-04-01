@@ -6,13 +6,26 @@
  */
 package thrift.domain;
 
-import org.apache.thrift.protocol.TTupleProtocol;
 import org.apache.thrift.scheme.IScheme;
 import org.apache.thrift.scheme.SchemeFactory;
 import org.apache.thrift.scheme.StandardScheme;
-import org.apache.thrift.scheme.TupleScheme;
 
-import java.util.*;
+import org.apache.thrift.scheme.TupleScheme;
+import org.apache.thrift.protocol.TTupleProtocol;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.EnumMap;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.EnumSet;
+import java.util.Collections;
+import java.util.BitSet;
+import java.nio.ByteBuffer;
+import java.util.Arrays;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 测试类
@@ -34,56 +47,20 @@ public class WmCreateAccountRequest implements org.apache.thrift.TBase<WmCreateA
     schemes.put(TupleScheme.class, new WmCreateAccountRequestTupleSchemeFactory());
   }
 
-  /**
-   * 业务线来源
-   */
   public int source; // required
-  /**
-   * 账户类型
-   */
   public int accountType; // required
-  /**
-   * 合作方id
-   */
   public long partnerId; // required
-  /**
-   * 合作方类型
-   */
   public int partnerType; // required
-  /**
-   * 合作方名称
-   */
   public String partnerName; // required
-  /**
-   * 是否多店 1:单店,2:多店
-   */
-  public int poiFlag; // optional
+  public int poiFlag; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    /**
-     * 业务线来源
-     */
     SOURCE((short)1, "source"),
-    /**
-     * 账户类型
-     */
     ACCOUNT_TYPE((short)2, "accountType"),
-    /**
-     * 合作方id
-     */
     PARTNER_ID((short)3, "partnerId"),
-    /**
-     * 合作方类型
-     */
     PARTNER_TYPE((short)4, "partnerType"),
-    /**
-     * 合作方名称
-     */
     PARTNER_NAME((short)5, "partnerName"),
-    /**
-     * 是否多店 1:单店,2:多店
-     */
     POI_FLAG((short)6, "poiFlag");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
@@ -157,21 +134,20 @@ public class WmCreateAccountRequest implements org.apache.thrift.TBase<WmCreateA
   private static final int __PARTNERTYPE_ISSET_ID = 3;
   private static final int __POIFLAG_ISSET_ID = 4;
   private BitSet __isset_bit_vector = new BitSet(5);
-  private _Fields optionals[] = {_Fields.POI_FLAG};
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put( _Fields.SOURCE, new org.apache.thrift.meta_data.FieldMetaData("source", org.apache.thrift.TFieldRequirementType.DEFAULT,
+    tmpMap.put(_Fields.SOURCE, new org.apache.thrift.meta_data.FieldMetaData("source", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
-    tmpMap.put( _Fields.ACCOUNT_TYPE, new org.apache.thrift.meta_data.FieldMetaData("accountType", org.apache.thrift.TFieldRequirementType.REQUIRED,
+    tmpMap.put(_Fields.ACCOUNT_TYPE, new org.apache.thrift.meta_data.FieldMetaData("accountType", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
-    tmpMap.put( _Fields.PARTNER_ID, new org.apache.thrift.meta_data.FieldMetaData("partnerId", org.apache.thrift.TFieldRequirementType.DEFAULT,
+    tmpMap.put(_Fields.PARTNER_ID, new org.apache.thrift.meta_data.FieldMetaData("partnerId", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64)));
-    tmpMap.put( _Fields.PARTNER_TYPE, new org.apache.thrift.meta_data.FieldMetaData("partnerType", org.apache.thrift.TFieldRequirementType.DEFAULT,
+    tmpMap.put(_Fields.PARTNER_TYPE, new org.apache.thrift.meta_data.FieldMetaData("partnerType", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
-    tmpMap.put( _Fields.PARTNER_NAME, new org.apache.thrift.meta_data.FieldMetaData("partnerName", org.apache.thrift.TFieldRequirementType.REQUIRED,
+    tmpMap.put(_Fields.PARTNER_NAME, new org.apache.thrift.meta_data.FieldMetaData("partnerName", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put( _Fields.POI_FLAG, new org.apache.thrift.meta_data.FieldMetaData("poiFlag", org.apache.thrift.TFieldRequirementType.OPTIONAL,
+    tmpMap.put(_Fields.POI_FLAG, new org.apache.thrift.meta_data.FieldMetaData("poiFlag", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(WmCreateAccountRequest.class, metaDataMap);
@@ -185,7 +161,8 @@ public class WmCreateAccountRequest implements org.apache.thrift.TBase<WmCreateA
     int accountType,
     long partnerId,
     int partnerType,
-    String partnerName)
+    String partnerName,
+    int poiFlag)
   {
     this();
     this.source = source;
@@ -197,6 +174,8 @@ public class WmCreateAccountRequest implements org.apache.thrift.TBase<WmCreateA
     this.partnerType = partnerType;
     setPartnerTypeIsSet(true);
     this.partnerName = partnerName;
+    this.poiFlag = poiFlag;
+    setPoiFlagIsSet(true);
   }
 
   /**
@@ -234,16 +213,10 @@ public class WmCreateAccountRequest implements org.apache.thrift.TBase<WmCreateA
     this.poiFlag = 0;
   }
 
-  /**
-   * 业务线来源
-   */
   public int getSource() {
     return this.source;
   }
 
-  /**
-   * 业务线来源
-   */
   public WmCreateAccountRequest setSource(int source) {
     this.source = source;
     setSourceIsSet(true);
@@ -263,16 +236,10 @@ public class WmCreateAccountRequest implements org.apache.thrift.TBase<WmCreateA
     __isset_bit_vector.set(__SOURCE_ISSET_ID, value);
   }
 
-  /**
-   * 账户类型
-   */
   public int getAccountType() {
     return this.accountType;
   }
 
-  /**
-   * 账户类型
-   */
   public WmCreateAccountRequest setAccountType(int accountType) {
     this.accountType = accountType;
     setAccountTypeIsSet(true);
@@ -292,16 +259,10 @@ public class WmCreateAccountRequest implements org.apache.thrift.TBase<WmCreateA
     __isset_bit_vector.set(__ACCOUNTTYPE_ISSET_ID, value);
   }
 
-  /**
-   * 合作方id
-   */
   public long getPartnerId() {
     return this.partnerId;
   }
 
-  /**
-   * 合作方id
-   */
   public WmCreateAccountRequest setPartnerId(long partnerId) {
     this.partnerId = partnerId;
     setPartnerIdIsSet(true);
@@ -321,16 +282,10 @@ public class WmCreateAccountRequest implements org.apache.thrift.TBase<WmCreateA
     __isset_bit_vector.set(__PARTNERID_ISSET_ID, value);
   }
 
-  /**
-   * 合作方类型
-   */
   public int getPartnerType() {
     return this.partnerType;
   }
 
-  /**
-   * 合作方类型
-   */
   public WmCreateAccountRequest setPartnerType(int partnerType) {
     this.partnerType = partnerType;
     setPartnerTypeIsSet(true);
@@ -350,16 +305,10 @@ public class WmCreateAccountRequest implements org.apache.thrift.TBase<WmCreateA
     __isset_bit_vector.set(__PARTNERTYPE_ISSET_ID, value);
   }
 
-  /**
-   * 合作方名称
-   */
   public String getPartnerName() {
     return this.partnerName;
   }
 
-  /**
-   * 合作方名称
-   */
   public WmCreateAccountRequest setPartnerName(String partnerName) {
     this.partnerName = partnerName;
     return this;
@@ -380,16 +329,10 @@ public class WmCreateAccountRequest implements org.apache.thrift.TBase<WmCreateA
     }
   }
 
-  /**
-   * 是否多店 1:单店,2:多店
-   */
   public int getPoiFlag() {
     return this.poiFlag;
   }
 
-  /**
-   * 是否多店 1:单店,2:多店
-   */
   public WmCreateAccountRequest setPoiFlag(int poiFlag) {
     this.poiFlag = poiFlag;
     setPoiFlagIsSet(true);
@@ -567,8 +510,8 @@ public class WmCreateAccountRequest implements org.apache.thrift.TBase<WmCreateA
         return false;
     }
 
-    boolean this_present_poiFlag = true && this.isSetPoiFlag();
-    boolean that_present_poiFlag = true && that.isSetPoiFlag();
+    boolean this_present_poiFlag = true;
+    boolean that_present_poiFlag = true;
     if (this_present_poiFlag || that_present_poiFlag) {
       if (!(this_present_poiFlag && that_present_poiFlag))
         return false;
@@ -695,22 +638,16 @@ public class WmCreateAccountRequest implements org.apache.thrift.TBase<WmCreateA
       sb.append(this.partnerName);
     }
     first = false;
-    if (isSetPoiFlag()) {
-      if (!first) sb.append(", ");
-      sb.append("poiFlag:");
-      sb.append(this.poiFlag);
-      first = false;
-    }
+    if (!first) sb.append(", ");
+    sb.append("poiFlag:");
+    sb.append(this.poiFlag);
+    first = false;
     sb.append(")");
     return sb.toString();
   }
 
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
-    // alas, we cannot check 'accountType' because it's a primitive and you chose the non-beans generator.
-    if (partnerName == null) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'partnerName' was not present! Struct: " + toString());
-    }
   }
 
   private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
@@ -805,9 +742,6 @@ public class WmCreateAccountRequest implements org.apache.thrift.TBase<WmCreateA
       iprot.readStructEnd();
 
       // check for required fields of primitive type, which can't be checked in the validate method
-      if (!struct.isSetAccountType()) {
-        throw new org.apache.thrift.protocol.TProtocolException("Required field 'accountType' was not found in serialized data! Struct: " + toString());
-      }
       struct.validate();
     }
 
@@ -832,11 +766,9 @@ public class WmCreateAccountRequest implements org.apache.thrift.TBase<WmCreateA
         oprot.writeString(struct.partnerName);
         oprot.writeFieldEnd();
       }
-      if (struct.isSetPoiFlag()) {
-        oprot.writeFieldBegin(POI_FLAG_FIELD_DESC);
-        oprot.writeI32(struct.poiFlag);
-        oprot.writeFieldEnd();
-      }
+      oprot.writeFieldBegin(POI_FLAG_FIELD_DESC);
+      oprot.writeI32(struct.poiFlag);
+      oprot.writeFieldEnd();
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }
@@ -854,30 +786,40 @@ public class WmCreateAccountRequest implements org.apache.thrift.TBase<WmCreateA
     @Override
     public void write(org.apache.thrift.protocol.TProtocol prot, WmCreateAccountRequest struct) throws org.apache.thrift.TException {
       TTupleProtocol oprot = (TTupleProtocol) prot;
-      oprot.writeI32(struct.accountType);
-      oprot.writeString(struct.partnerName);
       BitSet optionals = new BitSet();
       if (struct.isSetSource()) {
         optionals.set(0);
       }
-      if (struct.isSetPartnerId()) {
+      if (struct.isSetAccountType()) {
         optionals.set(1);
       }
-      if (struct.isSetPartnerType()) {
+      if (struct.isSetPartnerId()) {
         optionals.set(2);
       }
-      if (struct.isSetPoiFlag()) {
+      if (struct.isSetPartnerType()) {
         optionals.set(3);
       }
-      oprot.writeBitSet(optionals, 4);
+      if (struct.isSetPartnerName()) {
+        optionals.set(4);
+      }
+      if (struct.isSetPoiFlag()) {
+        optionals.set(5);
+      }
+      oprot.writeBitSet(optionals, 6);
       if (struct.isSetSource()) {
         oprot.writeI32(struct.source);
+      }
+      if (struct.isSetAccountType()) {
+        oprot.writeI32(struct.accountType);
       }
       if (struct.isSetPartnerId()) {
         oprot.writeI64(struct.partnerId);
       }
       if (struct.isSetPartnerType()) {
         oprot.writeI32(struct.partnerType);
+      }
+      if (struct.isSetPartnerName()) {
+        oprot.writeString(struct.partnerName);
       }
       if (struct.isSetPoiFlag()) {
         oprot.writeI32(struct.poiFlag);
@@ -887,24 +829,28 @@ public class WmCreateAccountRequest implements org.apache.thrift.TBase<WmCreateA
     @Override
     public void read(org.apache.thrift.protocol.TProtocol prot, WmCreateAccountRequest struct) throws org.apache.thrift.TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
-      struct.accountType = iprot.readI32();
-      struct.setAccountTypeIsSet(true);
-      struct.partnerName = iprot.readString();
-      struct.setPartnerNameIsSet(true);
-      BitSet incoming = iprot.readBitSet(4);
+      BitSet incoming = iprot.readBitSet(6);
       if (incoming.get(0)) {
         struct.source = iprot.readI32();
         struct.setSourceIsSet(true);
       }
       if (incoming.get(1)) {
+        struct.accountType = iprot.readI32();
+        struct.setAccountTypeIsSet(true);
+      }
+      if (incoming.get(2)) {
         struct.partnerId = iprot.readI64();
         struct.setPartnerIdIsSet(true);
       }
-      if (incoming.get(2)) {
+      if (incoming.get(3)) {
         struct.partnerType = iprot.readI32();
         struct.setPartnerTypeIsSet(true);
       }
-      if (incoming.get(3)) {
+      if (incoming.get(4)) {
+        struct.partnerName = iprot.readString();
+        struct.setPartnerNameIsSet(true);
+      }
+      if (incoming.get(5)) {
         struct.poiFlag = iprot.readI32();
         struct.setPoiFlagIsSet(true);
       }
