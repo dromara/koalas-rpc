@@ -128,7 +128,7 @@ struct WmCreateAccountRespone {
 thrift -gen java WmCreateAccountService.thrift,
 thrift -gen java WmCreateAccountRequest.thrift,
 thrift -gen java WmCreateAccountRespone.thrift
-
+在当前目录下会生成3个java文件 这三个文件分别是请求体，返回体，和服务类，就这么简单
 Ok作为开发者而言，所有的准备工作都结束了。下面就开始进入实际开发~
 
 #### 1：客户端使用方式
