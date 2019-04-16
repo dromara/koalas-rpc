@@ -4,6 +4,11 @@ import client.async.ReleaseResourcesKoalasAsyncCallBack;
 import client.cluster.Icluster;
 import client.cluster.ServerObject;
 import client.proxyfactory.KoalasClientProxy;
+import com.dianping.cat.Cat;
+import com.dianping.cat.CatConstants;
+import com.dianping.cat.message.Event;
+import com.dianping.cat.message.Transaction;
+import com.dianping.cat.message.spi.MessageTree;
 import ex.OutMaxLengthException;
 import ex.RSAException;
 import org.aopalliance.intercept.MethodInterceptor;
@@ -17,6 +22,8 @@ import org.apache.thrift.transport.TTransport;
 import org.apache.thrift.transport.TTransportException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import protocol.KoalasTrace;
+import utils.TraceThreadContext;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -73,173 +80,241 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
             return this.equals ( args[0] );
         }
 
-        TTransport socket = null;
-        int currTryTimes = 0;
-        while (currTryTimes++ < retryTimes) {
-            ServerObject serverObject = icluster.getObjectForRemote ();
-            if (serverObject == null) throw new IllegalStateException("no server list to use :" + koalasClientProxy.getServiceInterface ().getName ());
-            GenericObjectPool<TTransport> genericObjectPool = serverObject.getGenericObjectPool ();
-            try {
-                long before = System.currentTimeMillis ();
-                socket = genericObjectPool.borrowObject ();
-                long after = System.currentTimeMillis ();
-                LOG.debug ( "get Object from pool with {} ms", after - before );
-            } catch (Exception e) {
-                if (socket != null)
-                    genericObjectPool.returnObject ( socket );
-                LOG.error ( e.getMessage (), e );
-                throw new IllegalStateException("borrowObject error :" + koalasClientProxy.getServiceInterface ().getName ());
+        boolean serviceTop =false;
+
+        Transaction transaction=null;
+        if(TraceThreadContext.get () ==null){
+            serviceTop=true;
+            transaction = Cat.newTransaction("Service", method.getDeclaringClass ().getName ().concat ( "." ).concat ( methodName ).concat ( ".top" ));
+
+            MessageTree tree = Cat.getManager().getThreadLocalMessageTree();
+            String messageId = tree.getMessageId();
+
+            if (messageId == null) {
+                messageId = Cat.createMessageId();
+                tree.setMessageId(messageId);
             }
 
-            Object obj = koalasClientProxy.getInterfaceClientInstance ( socket, serverObject.getRemoteServer ().getServer () );
+            String childId = Cat.getProducer().createRpcServerId("default");
 
-            if (obj instanceof TAsyncClient) {
-                ((TAsyncClient) obj).setTimeout ( asyncTimeOut );
-                if (args.length < 1) {
-                    genericObjectPool.returnObject ( socket );
-                    throw new IllegalStateException ( "args number error" );
-                }
+            String root = tree.getRootMessageId();
 
-                Object argslast = args[args.length - 1];
-                if (!(argslast instanceof AsyncMethodCallback)) {
-                    genericObjectPool.returnObject ( socket );
-                    throw new IllegalStateException ( "args type error" );
-                }
-
-                AsyncMethodCallback callback = (AsyncMethodCallback) argslast;
-                ReleaseResourcesKoalasAsyncCallBack releaseResourcesKoalasAsyncCallBack = new ReleaseResourcesKoalasAsyncCallBack ( callback, serverObject, socket );
-                args[args.length - 1] = releaseResourcesKoalasAsyncCallBack;
-
+            if (root == null) {
+                root = messageId;
             }
-            try {
-                Object o = method.invoke ( obj, args );
-                if (socket instanceof TSocket) {
-                    genericObjectPool.returnObject ( socket );
-                }
-                return o;
-            } catch (Exception e) {
-                Throwable cause = (e.getCause () == null) ? e : e.getCause ();
+            Cat.logEvent(CatConstants.TYPE_REMOTE_CALL, "", Event.SUCCESS, childId);
 
-                boolean ifreturn = false;
-                if (cause instanceof TApplicationException) {
-                    if (((TApplicationException) cause).getType () == 6666) {
-                        LOG.info ( "the server{}--serverName【{}】 thread pool is busy ,retry it!", serverObject.getRemoteServer (),koalasClientProxy.getServiceInterface ().getName () );
-                        if (socket != null) {
-                            genericObjectPool.returnObject ( socket );
-                            ifreturn = true;
-                        }
-                        Thread.yield ();
-                        if (retryRequest)
-                            continue;
-                    }
-
-                    if (((TApplicationException) cause).getType () == 9999) {
-                        LOG.error ( "rsa error with service--{}--serverName【{}】", serverObject.getRemoteServer (),koalasClientProxy.getServiceInterface ().getName () );
-                        if (socket != null) {
-                            genericObjectPool.returnObject ( socket );
-                        }
-                        throw new IllegalStateException("rsa error with service" + serverObject.getRemoteServer ().toString ()+koalasClientProxy.getServiceInterface ().getName () );
-                    }
-
-                    if (((TApplicationException) cause).getType () == 6699) {
-                        LOG.error ( "this client is not rsa support,please get the privateKey and publickey with server--{}--serverName【{}】", serverObject.getRemoteServer (),koalasClientProxy.getServiceInterface ().getName () );
-                        if (socket != null) {
-                            genericObjectPool.returnObject ( socket );
-                        }
-                        throw new IllegalStateException("this client is not rsa support,please get the privateKey and publickey with server" + serverObject.getRemoteServer ().toString ()+koalasClientProxy.getServiceInterface ().getName ());
-                    }
-
-                    if (((TApplicationException) cause).getType () == TApplicationException.INTERNAL_ERROR) {
-                        LOG.error ( "this server is error please take the error log with server--{}--serverName【{}】", serverObject.getRemoteServer (),koalasClientProxy.getServiceInterface ().getName () );
-                        if (socket != null) {
-                            genericObjectPool.returnObject ( socket );
-                        }
-                        throw new IllegalStateException("this server is error please take the error log with server" + serverObject.getRemoteServer ()+koalasClientProxy.getServiceInterface ().getName ());
-                    }
-
-                    if (((TApplicationException) cause).getType () == TApplicationException.MISSING_RESULT) {
-                        if (socket != null) {
-                            genericObjectPool.returnObject ( socket );
-                        }
-                        return null;
-                    }
-                }
-
-                if (cause instanceof RSAException) {
-                    LOG.error ( "this client privateKey or publicKey is error,please check it! --{}--serverName【{}】", serverObject.getRemoteServer (),koalasClientProxy.getServiceInterface ().getName () );
-                    if (socket != null) {
+            KoalasTrace koalasTrace = new KoalasTrace (  );
+            koalasTrace.setChildId (childId  );
+            koalasTrace.setParentId (  messageId);
+            koalasTrace.setRootId ( root );
+            TraceThreadContext.set (koalasTrace);
+        } else{
+            KoalasTrace currentKoalasTrace = TraceThreadContext.get ();
+            String child_Id = Cat.getProducer().createRpcServerId("default");
+            Cat.logEvent(CatConstants.TYPE_REMOTE_CALL, "", Event.SUCCESS, child_Id);
+            currentKoalasTrace.setChildId ( child_Id );
+        }
+        try {
+            TTransport socket = null;
+            int currTryTimes = 0;
+            while (currTryTimes++ < retryTimes) {
+                ServerObject serverObject = icluster.getObjectForRemote ();
+                if (serverObject == null) throw new IllegalStateException("no server list to use :" + koalasClientProxy.getServiceInterface ().getName ());
+                GenericObjectPool<TTransport> genericObjectPool = serverObject.getGenericObjectPool ();
+                try {
+                    long before = System.currentTimeMillis ();
+                    socket = genericObjectPool.borrowObject ();
+                    long after = System.currentTimeMillis ();
+                    LOG.debug ( "get Object from pool with {} ms", after - before );
+                } catch (Exception e) {
+                    if (socket != null)
                         genericObjectPool.returnObject ( socket );
-                    }
-                    throw new IllegalStateException("this client privateKey or publicKey is error,please check it!" + serverObject.getRemoteServer ()+ koalasClientProxy.getServiceInterface ().getName ());
+                    LOG.error ( e.getMessage (), e );
+                    if(transaction!=null)
+                        transaction.setStatus ( e );
+                    throw new IllegalStateException("borrowObject error :" + koalasClientProxy.getServiceInterface ().getName ());
                 }
 
-                if(cause instanceof OutMaxLengthException){
-                    LOG.error ( (cause ).getMessage (),cause );
-                    if (socket != null) {
+                Object obj = koalasClientProxy.getInterfaceClientInstance ( socket, serverObject.getRemoteServer ().getServer () );
+
+                if (obj instanceof TAsyncClient) {
+                    ((TAsyncClient) obj).setTimeout ( asyncTimeOut );
+                    if (args.length < 1) {
                         genericObjectPool.returnObject ( socket );
+                        throw new IllegalStateException ( "args number error" );
                     }
-                    throw new IllegalStateException("to big content!" + serverObject.getRemoteServer ()+ koalasClientProxy.getServiceInterface ().getName ());
-                }
 
-                if (cause.getCause () != null && cause.getCause () instanceof ConnectException) {
-                    LOG.error ( "the server {}--serverName【{}】 maybe is shutdown ,retry it!", serverObject.getRemoteServer (),koalasClientProxy.getServiceInterface ().getName () );
-                    try {
-                        if (socket != null) {
-                            genericObjectPool.returnObject ( socket );
-                            ifreturn = true;
-                        }
-
-                        if (retryRequest)
-                            continue;
-                    } catch (Exception e1) {
-                        LOG.error ( "invalidateObject error!", e1 );
+                    Object argslast = args[args.length - 1];
+                    if (!(argslast instanceof AsyncMethodCallback)) {
+                        genericObjectPool.returnObject ( socket );
+                        throw new IllegalStateException ( "args type error" );
                     }
-                }
 
-                if (cause.getCause () != null && cause.getCause () instanceof SocketTimeoutException) {
-                    LOG.error ( "read timeout SocketTimeoutException,retry it! {}--serverName【{}】", serverObject.getRemoteServer (),koalasClientProxy.getServiceInterface ().getName () );
-                    if (socket != null) {
-                        try {
-                            genericObjectPool.invalidateObject ( socket );
-                            ifreturn = true;
-                        } catch (Exception e1) {
-                            LOG.error ( "invalidateObject error ,", e );
-                            throw new IllegalStateException("SocketTimeout and invalidateObject error" + serverObject.getRemoteServer () + koalasClientProxy.getServiceInterface ().getName ());
-                        }
+                    AsyncMethodCallback callback = (AsyncMethodCallback) argslast;
+                    ReleaseResourcesKoalasAsyncCallBack releaseResourcesKoalasAsyncCallBack = new ReleaseResourcesKoalasAsyncCallBack ( callback, serverObject, socket );
+                    args[args.length - 1] = releaseResourcesKoalasAsyncCallBack;
+
+                }
+                try {
+                    Object o = method.invoke ( obj, args );
+                    if (socket instanceof TSocket) {
+                        genericObjectPool.returnObject ( socket );
+
                     }
-                    if (retryRequest)
-                        continue;
-                }
+                    if(transaction!=null)
+                        transaction.setStatus ( Transaction.SUCCESS );
+                    return o;
+                } catch (Exception e) {
+                    Throwable cause = (e.getCause () == null) ? e : e.getCause ();
 
-                if(cause instanceof TTransportException){
-                    if(((TTransportException) cause).getType () == TTransportException.END_OF_FILE){
-                        LOG.error ( "TTransportException,END_OF_FILE! {}--serverName【{}】", serverObject.getRemoteServer (),koalasClientProxy.getServiceInterface ().getName () );
-                        if (socket != null) {
-                            try {
-                                genericObjectPool.invalidateObject ( socket );
-                            } catch (Exception e1) {
-                                LOG.error ( "invalidateObject error", e );
-                                throw new IllegalStateException("TTransportException and invalidateObject error" + serverObject.getRemoteServer () + koalasClientProxy.getServiceInterface ().getName ());
+                    boolean ifreturn = false;
+                    if (cause instanceof TApplicationException) {
+                        if (((TApplicationException) cause).getType () == 6666) {
+                            LOG.info ( "the server{}--serverName【{}】 thread pool is busy ,retry it!", serverObject.getRemoteServer (),koalasClientProxy.getServiceInterface ().getName () );
+                            if (socket != null) {
+                                genericObjectPool.returnObject ( socket );
+                                ifreturn = true;
                             }
-                        }
-                        throw new IllegalStateException("the remote server error!" + serverObject.getRemoteServer () + koalasClientProxy.getServiceInterface ().getName ());
-                    }
-                    if(cause.getCause ()!=null && cause.getCause () instanceof SocketException){
-                        if(genericObjectPool.isClosed ()){
-                            LOG.warn ( "serverObject {} is close!,retry it",serverObject );
+                            Thread.yield ();
                             if (retryRequest)
                                 continue;
                         }
-                    }
-                }
 
-                if (socket != null && !ifreturn)
-                    genericObjectPool.returnObject ( socket );
-                LOG.error ( "invoke server error,server ip -【{}】,port -【{}】--serverName【{}】", serverObject.getRemoteServer ().getIp (), serverObject.getRemoteServer ().getPort (),koalasClientProxy.getServiceInterface ().getName ()  );
-                throw e;
+                        if (((TApplicationException) cause).getType () == 9999) {
+                            LOG.error ( "rsa error with service--{}--serverName【{}】", serverObject.getRemoteServer (),koalasClientProxy.getServiceInterface ().getName () );
+                            if (socket != null) {
+                                genericObjectPool.returnObject ( socket );
+                            }
+                            if(transaction!=null)
+                                transaction.setStatus ( cause );
+                            throw new IllegalStateException("rsa error with service" + serverObject.getRemoteServer ().toString ()+koalasClientProxy.getServiceInterface ().getName () );
+                        }
+
+                        if (((TApplicationException) cause).getType () == 6699) {
+                            LOG.error ( "this client is not rsa support,please get the privateKey and publickey with server--{}--serverName【{}】", serverObject.getRemoteServer (),koalasClientProxy.getServiceInterface ().getName () );
+                            if (socket != null) {
+                                genericObjectPool.returnObject ( socket );
+                            }
+                            if(transaction!=null)
+                                transaction.setStatus ( cause );
+                            throw new IllegalStateException("this client is not rsa support,please get the privateKey and publickey with server" + serverObject.getRemoteServer ().toString ()+koalasClientProxy.getServiceInterface ().getName ());
+                        }
+
+                        if (((TApplicationException) cause).getType () == TApplicationException.INTERNAL_ERROR) {
+                            LOG.error ( "this server is error please take the error log with server--{}--serverName【{}】the remote server error message data【{}】", serverObject.getRemoteServer (),koalasClientProxy.getServiceInterface ().getName (),((TApplicationException) cause).getMessage () );
+                            if (socket != null) {
+                                genericObjectPool.returnObject ( socket );
+                            }
+                            if(transaction!=null)
+                                transaction.setStatus ( cause );
+                            throw new IllegalStateException("this server is error please take the error log with server" + serverObject.getRemoteServer ()+koalasClientProxy.getServiceInterface ().getName ());
+                        }
+
+                        if (((TApplicationException) cause).getType () == TApplicationException.MISSING_RESULT) {
+                            if (socket != null) {
+                                genericObjectPool.returnObject ( socket );
+                            }
+                            return null;
+                        }
+                    }
+
+                    if (cause instanceof RSAException) {
+                        LOG.error ( "this client privateKey or publicKey is error,please check it! --{}--serverName【{}】", serverObject.getRemoteServer (),koalasClientProxy.getServiceInterface ().getName () );
+                        if (socket != null) {
+                            genericObjectPool.returnObject ( socket );
+                        }
+                        if(transaction!=null)
+                            transaction.setStatus ( cause );
+                        throw new IllegalStateException("this client privateKey or publicKey is error,please check it!" + serverObject.getRemoteServer ()+ koalasClientProxy.getServiceInterface ().getName ());
+                    }
+
+                    if(cause instanceof OutMaxLengthException){
+                        LOG.error ( (cause ).getMessage (),cause );
+                        if (socket != null) {
+                            genericObjectPool.returnObject ( socket );
+                        }
+                        if(transaction!=null)
+                            transaction.setStatus ( cause );
+                        throw new IllegalStateException("to big content!" + serverObject.getRemoteServer ()+ koalasClientProxy.getServiceInterface ().getName ());
+                    }
+
+                    if (cause.getCause () != null && cause.getCause () instanceof ConnectException) {
+                        LOG.error ( "the server {}--serverName【{}】 maybe is shutdown ,retry it!", serverObject.getRemoteServer (),koalasClientProxy.getServiceInterface ().getName () );
+                        try {
+                            if (socket != null) {
+                                genericObjectPool.returnObject ( socket );
+                                ifreturn = true;
+                            }
+
+                            if (retryRequest)
+                                continue;
+                        } catch (Exception e1) {
+                            LOG.error ( "invalidateObject error!", e1 );
+                        }
+                    }
+
+                    if (cause.getCause () != null && cause.getCause () instanceof SocketTimeoutException) {
+                        LOG.error ( "read timeout SocketTimeoutException,retry it! {}--serverName【{}】", serverObject.getRemoteServer (),koalasClientProxy.getServiceInterface ().getName () );
+                        if (socket != null) {
+                            try {
+                                genericObjectPool.invalidateObject ( socket );
+                                ifreturn = true;
+                            } catch (Exception e1) {
+                                LOG.error ( "invalidateObject error ,", e );
+                                if(transaction!=null)
+                                    transaction.setStatus ( e1 );
+                                throw new IllegalStateException("SocketTimeout and invalidateObject error" + serverObject.getRemoteServer () + koalasClientProxy.getServiceInterface ().getName ());
+                            }
+                        }
+                        if (retryRequest)
+                            continue;
+                    }
+
+                    if(cause instanceof TTransportException){
+                        if(((TTransportException) cause).getType () == TTransportException.END_OF_FILE){
+                            LOG.error ( "TTransportException,END_OF_FILE! {}--serverName【{}】", serverObject.getRemoteServer (),koalasClientProxy.getServiceInterface ().getName () );
+                            if (socket != null) {
+                                try {
+                                    genericObjectPool.invalidateObject ( socket );
+                                } catch (Exception e1) {
+                                    LOG.error ( "invalidateObject error", e );
+                                    if(transaction!=null)
+                                    transaction.setStatus ( e1 );
+                                    throw new IllegalStateException("TTransportException and invalidateObject error" + serverObject.getRemoteServer () + koalasClientProxy.getServiceInterface ().getName ());
+                                }
+                            }
+                            if(transaction!=null)
+                            transaction.setStatus ( cause );
+                            throw new IllegalStateException("the remote server error!" + serverObject.getRemoteServer () + koalasClientProxy.getServiceInterface ().getName ());
+                        }
+                        if(cause.getCause ()!=null && cause.getCause () instanceof SocketException){
+                            if(genericObjectPool.isClosed ()){
+                                LOG.warn ( "serverObject {} is close!,retry it",serverObject );
+                                if (retryRequest)
+                                    continue;
+                            }
+                        }
+                    }
+
+                    if (socket != null && !ifreturn)
+                        genericObjectPool.returnObject ( socket );
+                    LOG.error ( "invoke server error,server ip -【{}】,port -【{}】--serverName【{}】", serverObject.getRemoteServer ().getIp (), serverObject.getRemoteServer ().getPort (),koalasClientProxy.getServiceInterface ().getName ()  );
+                    if(transaction!=null)
+                    transaction.setStatus ( cause );
+                    throw e;
+                }
             }
+            IllegalStateException finallyException = new IllegalStateException("error!retry time out of:" + retryTimes + "!!! " + koalasClientProxy.getServiceInterface ().getName () );
+            if(transaction!=null)
+            transaction.setStatus ( finallyException );
+            throw finallyException;
+        } finally {
+            if(transaction!=null)
+                transaction.complete ();
+            if(serviceTop)
+                TraceThreadContext.remove ();
         }
-        throw new IllegalStateException("error!retry time out of:" + retryTimes + "!!! " + koalasClientProxy.getServiceInterface ().getName () );
     }
 
 }

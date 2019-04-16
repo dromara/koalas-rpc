@@ -24,6 +24,7 @@ import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import protocol.KoalasBinaryProtocol;
 import transport.TKoalasFramedTransport;
 
 import java.io.IOException;
@@ -413,7 +414,7 @@ public class KoalasClientProxy implements FactoryBean<Object>, ApplicationContex
                     ((TKoalasFramedTransport) transport).setPublicKey ( this.publicKey );
                 }
 
-                TProtocol protocol = new TBinaryProtocol ( transport );
+                TProtocol protocol = new KoalasBinaryProtocol ( transport );
 
                 return synConstructor.newInstance ( protocol );
 
@@ -452,7 +453,7 @@ public class KoalasClientProxy implements FactoryBean<Object>, ApplicationContex
             }
 
             try {
-                return asyncConstructor.newInstance ( new TBinaryProtocol.Factory (), asyncClientManagerList.get (socket.hashCode () % asyncSelectorThreadCount), socket );
+                return asyncConstructor.newInstance ( new KoalasBinaryProtocol.Factory (), asyncClientManagerList.get (socket.hashCode () % asyncSelectorThreadCount), socket );
             } catch (InstantiationException e) {
                 logger.error ( "get InstantiationException", e );
             } catch (IllegalAccessException e) {

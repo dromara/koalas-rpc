@@ -21,6 +21,7 @@ package thrift;
 
 import com.dianping.cat.Cat;
 import com.dianping.cat.message.Transaction;
+import com.dianping.cat.message.spi.MessageTree;
 import ex.RSAException;
 import heartbeat.impl.HeartbeatServiceImpl;
 import heartbeat.service.HeartbeatService;
@@ -28,16 +29,17 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.thrift.TByteArrayOutputStream;
 import org.apache.thrift.TException;
 import org.apache.thrift.TProcessor;
-import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TMessage;
 import org.apache.thrift.protocol.TProtocol;
-import org.apache.thrift.protocol.TProtocolFactory;
 import org.apache.thrift.server.TServer;
 import org.apache.thrift.transport.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import protocol.KoalasBinaryProtocol;
+import protocol.KoalasTrace;
 import transport.TKoalasFramedTransport;
 import utils.KoalasRsaUtil;
+import utils.TraceThreadContext;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -200,7 +202,7 @@ public abstract class KoalasAbstractNonblockingServer extends TServer {
         private String publicKey;
         private String serviceName;
         private String methodName;
-
+        private KoalasTrace koalasTrace;
         public FrameBuffer(final TNonblockingTransport trans,
                            final SelectionKey selectionKey,
                            final AbstractSelectThread selectThread,String privateKey,String publicKey,String serviceName) {
@@ -349,8 +351,26 @@ public abstract class KoalasAbstractNonblockingServer extends TServer {
                 } else{
                     Transaction transaction=null;
                     try {
-                        if(StringUtils.isNotEmpty ( methodName ))
+                        if(StringUtils.isNotEmpty ( methodName )){
                             transaction = Cat.newTransaction("Service", serviceName.concat ( "." ).concat ( methodName ));
+                            if(koalasTrace.getRootId ()!= null){
+                                String rootId = koalasTrace.getRootId ();
+                                String childId = koalasTrace.getChildId ();
+                                String parentId = koalasTrace.getParentId ();
+                                MessageTree tree = Cat.getManager().getThreadLocalMessageTree();
+                                tree.setParentMessageId(parentId);
+                                tree.setRootMessageId(rootId);
+                                tree.setMessageId(childId);
+                                //String child_Id = Cat.getProducer().createRpcServerId("default");
+                                //Cat.logEvent(CatConstants.TYPE_REMOTE_CALL, "", Event.SUCCESS, child_Id);
+                                KoalasTrace currentKoalasTrace = new KoalasTrace();
+                                currentKoalasTrace.setParentId ( childId );
+                                currentKoalasTrace.setRootId ( rootId );
+                                //CurrentKoalasTrace.setChildId ( child_Id );
+                                TraceThreadContext.set (currentKoalasTrace);
+                            }
+                        }
+
                         processorFactory_.getProcessor ( inTrans ).process ( inProt, outProt );
                         if(transaction!=null)
                             transaction.setStatus ( Transaction.SUCCESS );
@@ -361,6 +381,9 @@ public abstract class KoalasAbstractNonblockingServer extends TServer {
                     } finally {
                         if(transaction!=null)
                             transaction.complete ();
+                        if(koalasTrace.getRootId ()!= null){
+                            TraceThreadContext.remove ();
+                        }
                     }
                 }
 
@@ -386,14 +409,19 @@ public abstract class KoalasAbstractNonblockingServer extends TServer {
             System.arraycopy ( len, 0, b, 0, 4 );
             System.arraycopy ( body, 0, b, 4, body.length );
             TMessage tMessage;
+            KoalasTrace koalasTrace;
             if(b[4]==TKoalasFramedTransport.first && b[5]==TKoalasFramedTransport.second){
-                tMessage = getKoalasTmessage ( b);
+                KoalasMessage koalasMessage =  getKoalasTMessage ( b);
+                tMessage = koalasMessage.gettMessage ();
+                koalasTrace = koalasMessage.getKoalasTrace ();
             } else{
-                tMessage =getTMessage ( b );
+                KoalasMessage koalasMessage = getTMessage ( b);
+                tMessage =koalasMessage.gettMessage ();
+                koalasTrace =koalasMessage.getKoalasTrace ();
             }
 
             methodName = tMessage.name;
-
+            this.koalasTrace = koalasTrace;
             if(this.privateKey != null && this.publicKey!=null){
                 if(b[8] != (byte) 1 || !(b[4]==TKoalasFramedTransport.first && b[5]==TKoalasFramedTransport.second)){
                     throw new RSAException ( "thrift server rsa error" );
@@ -415,24 +443,26 @@ public abstract class KoalasAbstractNonblockingServer extends TServer {
             return inTransport;
         }
 
-        private TMessage getTMessage(byte[] b){
+        private KoalasMessage getTMessage(byte[] b){
 
             byte[] buff = new byte[b.length-4];
             System.arraycopy (  b,4,buff,0,buff.length);
             ByteArrayInputStream inputStream = new ByteArrayInputStream ( buff );
             TIOStreamTransport tioStreamTransportInput = new TIOStreamTransport (  inputStream);
-            TProtocol tBinaryProtocol = new TBinaryProtocol( tioStreamTransportInput );
-            TMessage tMessage=null;
+            TProtocol tBinaryProtocol = new KoalasBinaryProtocol ( tioStreamTransportInput );
+            TMessage tMessage;
+            KoalasTrace koalasTrace;
             try {
                 tMessage= tBinaryProtocol.readMessageBegin ();
-                return tMessage;
+                koalasTrace = ((KoalasBinaryProtocol) tBinaryProtocol).getKoalasTrace ();
             } catch (TException e) {
-            }
+                return new KoalasMessage (new TMessage(),new KoalasTrace());
 
-            return new TMessage();
+            }
+            return new KoalasMessage(tMessage,koalasTrace);
         }
 
-        private TMessage getKoalasTmessage(byte[] b){
+        private KoalasMessage getKoalasTMessage(byte[] b){
 
             byte[] buff = new byte[b.length-4];
             System.arraycopy (  b,4,buff,0,buff.length);
@@ -457,7 +487,7 @@ public abstract class KoalasAbstractNonblockingServer extends TServer {
                 try {
                     sign = new String ( signByte, "UTF-8" );
                 } catch (Exception e) {
-                    return new TMessage (  );
+                    return new KoalasMessage(new TMessage(),new KoalasTrace());
                 }
 
                 byte[] rsaBody = new byte[size -10-signLen];
@@ -465,23 +495,51 @@ public abstract class KoalasAbstractNonblockingServer extends TServer {
 
                 try {
                     if(!KoalasRsaUtil.verify ( rsaBody,publicKey,sign )){
-                        return new TMessage (  );
+                        return new KoalasMessage(new TMessage(),new KoalasTrace());
                     }
                     request = KoalasRsaUtil.decryptByPrivateKey (rsaBody,privateKey);
                 } catch (Exception e) {
-                    return new TMessage (  );
+                    return new KoalasMessage(new TMessage(),new KoalasTrace());
                 }
             }
             TMessage tMessage;
+            KoalasTrace koalasTrace;
             ByteArrayInputStream inputStream = new ByteArrayInputStream ( request );
             TIOStreamTransport tioStreamTransportInput = new TIOStreamTransport (  inputStream);
             try {
-                TProtocol tBinaryProtocol = new TBinaryProtocol( tioStreamTransportInput );
+                TProtocol tBinaryProtocol = new KoalasBinaryProtocol( tioStreamTransportInput );
                 tMessage= tBinaryProtocol.readMessageBegin ();
+                koalasTrace = ((KoalasBinaryProtocol) tBinaryProtocol).getKoalasTrace ();
             } catch (TException e) {
-                return new TMessage (  );
+                return new KoalasMessage(new TMessage(),new KoalasTrace());
             }
-            return tMessage;
+            return new KoalasMessage(tMessage,koalasTrace);
+        }
+
+        private class KoalasMessage{
+            private TMessage tMessage;
+            private KoalasTrace koalasTrace;
+
+            public KoalasMessage(TMessage tMessage, KoalasTrace koalasTrace) {
+                this.tMessage = tMessage;
+                this.koalasTrace = koalasTrace;
+            }
+
+            public TMessage gettMessage() {
+                return tMessage;
+            }
+
+            public void settMessage(TMessage tMessage) {
+                this.tMessage = tMessage;
+            }
+
+            public KoalasTrace getKoalasTrace() {
+                return koalasTrace;
+            }
+
+            public void setKoalasTrace(KoalasTrace koalasTrace) {
+                this.koalasTrace = koalasTrace;
+            }
         }
 
         public void encodeFrameSize(int frameSize, byte[] buf) {

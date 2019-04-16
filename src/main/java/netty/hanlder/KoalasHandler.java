@@ -2,6 +2,7 @@ package netty.hanlder;
 
 import com.dianping.cat.Cat;
 import com.dianping.cat.message.Transaction;
+import com.dianping.cat.message.spi.MessageTree;
 import ex.RSAException;
 import heartbeat.impl.HeartbeatServiceImpl;
 import heartbeat.service.HeartbeatService;
@@ -16,9 +17,12 @@ import org.apache.thrift.protocol.*;
 import org.apache.thrift.transport.TIOStreamTransport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import protocol.KoalasBinaryProtocol;
+import protocol.KoalasTrace;
 import server.domain.ErrorType;
 import transport.TKoalasFramedTransport;
 import utils.KoalasRsaUtil;
+import utils.TraceThreadContext;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -61,13 +65,18 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
             msg.readBytes ( b );
 
             TMessage tMessage;
+            KoalasTrace koalasTrace;
             boolean ifUserProtocol;
             if(b[4]==TKoalasFramedTransport.first && b[5]==TKoalasFramedTransport.second){
                 ifUserProtocol = true;
-                tMessage = getKoalasTmessage ( b);
+                KoalasMessage koalasMessage = getKoalasTMessage ( b);
+                tMessage = koalasMessage.gettMessage ();
+                koalasTrace = koalasMessage.getKoalasTrace ();
             }else{
                 ifUserProtocol = false;
-                tMessage =getTMessage ( b );
+                KoalasMessage koalasMessage = getTMessage ( b);
+                tMessage =koalasMessage.gettMessage ();
+                koalasTrace =koalasMessage.getKoalasTrace ();
             }
 
             ByteArrayInputStream inputStream = new ByteArrayInputStream ( b );
@@ -93,7 +102,7 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
                 if(b[7] == (byte) 2){
                     TProcessor tprocessorheartbeat = new HeartbeatService.Processor<> (new HeartbeatServiceImpl () );
                     outTransport.setHeartbeat ( (byte) 2 );
-                    TProtocolFactory tProtocolFactory =new TBinaryProtocol.Factory();
+                    TProtocolFactory tProtocolFactory =new KoalasBinaryProtocol.Factory();
                     TProtocol in =tProtocolFactory.getProtocol ( inTransport );
                     TProtocol out =tProtocolFactory.getProtocol ( outTransport );
                     try {
@@ -119,12 +128,12 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
                     outTransport.setPublicKey ( this.publicKey );
                 }
             }
-            TProtocolFactory  tProtocolFactory =new TBinaryProtocol.Factory();
+            TProtocolFactory  tProtocolFactory =new KoalasBinaryProtocol.Factory (  );
 
             TProtocol in =tProtocolFactory.getProtocol ( inTransport );
             TProtocol out =tProtocolFactory.getProtocol ( outTransport );
             try {
-                executorService.execute ( new NettyRunable (  ctx,in,out,outputStream,tprocessor,b,privateKey,publicKey,className,tMessage.name));
+                executorService.execute ( new NettyRunable (  ctx,in,out,outputStream,tprocessor,b,privateKey,publicKey,className,tMessage.name,koalasTrace));
             } catch (RejectedExecutionException e){
                 logger.error ( e.getMessage ()+ErrorType.THREAD,e );
                 handlerException(b,ctx,e,ErrorType.THREAD,privateKey,publicKey);
@@ -144,8 +153,9 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
         private String publicKey;
         private String className;
         private String methodName;
+        private KoalasTrace koalasTrace;
 
-        public NettyRunable(ChannelHandlerContext ctx, TProtocol in, TProtocol out, ByteArrayOutputStream outputStream, TProcessor tprocessor, byte[] b, String privateKey, String publicKey, String className, String methodName) {
+        public NettyRunable(ChannelHandlerContext ctx, TProtocol in, TProtocol out, ByteArrayOutputStream outputStream, TProcessor tprocessor, byte[] b, String privateKey, String publicKey, String className, String methodName, KoalasTrace koalasTrace) {
             this.ctx = ctx;
             this.in = in;
             this.out = out;
@@ -156,14 +166,31 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
             this.publicKey = publicKey;
             this.className = className;
             this.methodName = methodName;
+            this.koalasTrace = koalasTrace;
         }
-
 
         @Override
         public void run() {
             Transaction transaction=null;
-            if(StringUtils.isNotEmpty ( methodName ))
-                 transaction = Cat.newTransaction("Service", className.concat ( "." ).concat ( methodName ));
+            if(StringUtils.isNotEmpty ( methodName )){
+                transaction = Cat.newTransaction("Service", className.concat ( "." ).concat ( methodName ));
+                if(koalasTrace.getRootId ()!= null){
+                    String rootId = koalasTrace.getRootId ();
+                    String childId = koalasTrace.getChildId ();
+                    String parentId = koalasTrace.getParentId ();
+                    MessageTree tree = Cat.getManager().getThreadLocalMessageTree();
+                    tree.setParentMessageId(parentId);
+                    tree.setRootMessageId(rootId);
+                    tree.setMessageId(childId);
+                    //String child_Id = Cat.getProducer().createRpcServerId("default");
+                    //Cat.logEvent(CatConstants.TYPE_REMOTE_CALL, "", Event.SUCCESS, child_Id);
+                    KoalasTrace currentKoalasTrace = new KoalasTrace();
+                    currentKoalasTrace.setParentId ( childId );
+                    currentKoalasTrace.setRootId ( rootId );
+                    //CurrentKoalasTrace.setChildId ( child_Id );
+                    TraceThreadContext.set (currentKoalasTrace);
+                }
+            }
             try {
                 tprocessor.process ( in,out );
                 ctx.writeAndFlush (outputStream);
@@ -175,8 +202,12 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
                 logger.error ( e.getMessage () + ErrorType.APPLICATION,e );
                 handlerException(this.b,ctx,e,ErrorType.APPLICATION,privateKey,publicKey);
             }finally {
-                if(transaction!=null)
+                if(transaction!=null){
                     transaction.complete ();
+                    if(koalasTrace.getRootId ()!= null){
+                        TraceThreadContext.remove ();
+                    }
+                }
             }
         }
 
@@ -204,7 +235,7 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
         TKoalasFramedTransport inTransport = new TKoalasFramedTransport( tioStreamTransportInput );
         TKoalasFramedTransport outTransport = new TKoalasFramedTransport ( tioStreamTransportOutput,16384000,ifUserProtocol );
 
-        TProtocolFactory tProtocolFactory =new TBinaryProtocol.Factory();
+        TProtocolFactory tProtocolFactory =new KoalasBinaryProtocol.Factory();
 
         TProtocol in =tProtocolFactory.getProtocol ( inTransport );
         TProtocol out =tProtocolFactory.getProtocol ( outTransport );
@@ -290,24 +321,24 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
         return ip;
     }
 
-    private TMessage getTMessage(byte[] b){
-
+    private KoalasMessage getTMessage(byte[] b){
         byte[] buff = new byte[b.length-4];
         System.arraycopy (  b,4,buff,0,buff.length);
         ByteArrayInputStream inputStream = new ByteArrayInputStream ( buff );
         TIOStreamTransport tioStreamTransportInput = new TIOStreamTransport (  inputStream);
-        TProtocol tBinaryProtocol = new TBinaryProtocol( tioStreamTransportInput );
+        TProtocol tBinaryProtocol = new KoalasBinaryProtocol( tioStreamTransportInput );
         TMessage tMessage=null;
+        KoalasTrace koalasTrace;
         try {
              tMessage= tBinaryProtocol.readMessageBegin ();
-             return tMessage;
-        } catch (TException e) {
+             koalasTrace = ((KoalasBinaryProtocol) tBinaryProtocol).getKoalasTrace ();
+        } catch (Exception e) {
+            return new KoalasMessage(new TMessage(),new KoalasTrace());
         }
-
-        return new TMessage();
+        return new KoalasMessage(tMessage,koalasTrace);
     }
 
-    private TMessage getKoalasTmessage(byte[] b){
+    private KoalasMessage getKoalasTMessage(byte[] b){
 
         byte[] buff = new byte[b.length-4];
         System.arraycopy (  b,4,buff,0,buff.length);
@@ -332,7 +363,7 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
             try {
                 sign = new String ( signByte, "UTF-8" );
             } catch (Exception e) {
-                return new TMessage (  );
+                return new KoalasMessage(new TMessage(),new KoalasTrace());
             }
 
             byte[] rsaBody = new byte[size -10-signLen];
@@ -340,22 +371,50 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
 
             try {
                 if(!KoalasRsaUtil.verify ( rsaBody,publicKey,sign )){
-                    return new TMessage (  );
+                    return new KoalasMessage(new TMessage(),new KoalasTrace());
                 }
                 request = KoalasRsaUtil.decryptByPrivateKey (rsaBody,privateKey);
             } catch (Exception e) {
-                return new TMessage (  );
+                return new KoalasMessage(new TMessage(),new KoalasTrace());
             }
         }
         TMessage tMessage;
+        KoalasTrace koalasTrace;
         ByteArrayInputStream inputStream = new ByteArrayInputStream ( request );
         TIOStreamTransport tioStreamTransportInput = new TIOStreamTransport (  inputStream);
         try {
-            TProtocol tBinaryProtocol = new TBinaryProtocol( tioStreamTransportInput );
+            TProtocol tBinaryProtocol = new KoalasBinaryProtocol( tioStreamTransportInput );
             tMessage= tBinaryProtocol.readMessageBegin ();
-        } catch (TException e) {
-             return new TMessage (  );
+            koalasTrace = ((KoalasBinaryProtocol) tBinaryProtocol).getKoalasTrace ();
+        } catch (Exception e) {
+            return new KoalasMessage(new TMessage(),new KoalasTrace());
         }
-        return tMessage;
+        return new KoalasMessage(tMessage,koalasTrace);
+    }
+
+    private static class KoalasMessage{
+        private TMessage tMessage;
+        private KoalasTrace koalasTrace;
+
+        public KoalasMessage(TMessage tMessage, KoalasTrace koalasTrace) {
+            this.tMessage = tMessage;
+            this.koalasTrace = koalasTrace;
+        }
+
+        public TMessage gettMessage() {
+            return tMessage;
+        }
+
+        public void settMessage(TMessage tMessage) {
+            this.tMessage = tMessage;
+        }
+
+        public KoalasTrace getKoalasTrace() {
+            return koalasTrace;
+        }
+
+        public void setKoalasTrace(KoalasTrace koalasTrace) {
+            this.koalasTrace = koalasTrace;
+        }
     }
 }

@@ -6,7 +6,6 @@ import com.alibaba.fastjson.JSONObject;
 import heartbeat.request.HeartBeat;
 import heartbeat.service.HeartbeatService;
 import org.apache.commons.pool2.impl.GenericObjectPool;
-import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.transport.TSocket;
 import org.apache.thrift.transport.TTransport;
@@ -15,6 +14,7 @@ import org.apache.zookeeper.*;
 import org.apache.zookeeper.data.Stat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import protocol.KoalasBinaryProtocol;
 import transport.TKoalasFramedTransport;
 import utils.IPUtil;
 
@@ -309,7 +309,7 @@ public class ZookeeperClient {
                         TSocket t = new TSocket ( remoteServer.getIp (), Integer.parseInt ( remoteServer.getPort () ), TIMEOUT );
                         TTransport transport = new TKoalasFramedTransport ( t );
                         ((TKoalasFramedTransport) transport).setHeartbeat ( HEARTBEAT );
-                        TProtocol protocol = new TBinaryProtocol ( transport );
+                        TProtocol protocol = new KoalasBinaryProtocol  ( transport );
                         HeartbeatService.Client client = new HeartbeatService.Client ( protocol );
                         transport.open ();
                         serverHeartbeatMap.put ( zookeeperClister.createMapKey ( remoteServer ), client );

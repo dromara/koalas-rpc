@@ -9,6 +9,7 @@ import org.apache.thrift.transport.TNonblockingServerSocket;
 import org.apache.thrift.transport.TTransportException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import protocol.KoalasBinaryProtocol;
 import register.ZookeeperServer;
 import server.IkoalasServer;
 import server.KoalasDefaultThreadFactory;
@@ -53,7 +54,7 @@ public class ThriftServer implements IkoalasServer {
             tServerTransport = new  TNonblockingServerSocket (serverPublisher.port);
             KoalasThreadedSelectorServer.Args tArgs = new KoalasThreadedSelectorServer.Args(tServerTransport);
             TKoalasFramedTransport.Factory transportFactory = new TKoalasFramedTransport.Factory (  );
-            TProtocolFactory tProtocolFactory = new TBinaryProtocol.Factory();
+            TProtocolFactory tProtocolFactory = new KoalasBinaryProtocol.Factory();
             tArgs.transportFactory(transportFactory);
             tArgs.protocolFactory(tProtocolFactory);
             tArgs.maxReadBufferBytes=2048000;
