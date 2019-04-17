@@ -15,6 +15,9 @@ public class TestServiceSync {
     @KoalasClient(zkPath = "127.0.0.1:2181",readTimeout = 5000*1000)
     WmCreateAccountService.Iface wmCreateAccountService;
 
+    @KoalasClient(zkPath = "127.0.0.1:2181",readTimeout = 5000*1000)
+    WmCreateAccountService.Iface wmCreateAccountService1;
+
     public void getRemoteRpc() throws TException {
         WmCreateAccountRequest request= new WmCreateAccountRequest (  );
         //request.setSource ( 10 );

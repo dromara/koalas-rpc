@@ -23,7 +23,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 
 /**
@@ -42,8 +44,8 @@ public class KoalasAnnotationBean implements DisposableBean, BeanFactoryPostProc
 
     private BeanFactory beanFactory;
 
-    private final Set<KoalasClientProxy> koalasClientProxies = new HashSet<> (  );
     private final Set<KoalasServerPublisher> koalasServerPublishers = new HashSet<> (  );
+    private  final Map<String,KoalasClientProxy> koalasClientProxyMap = new ConcurrentHashMap<>();
 
     @Override
     public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
@@ -52,7 +54,7 @@ public class KoalasAnnotationBean implements DisposableBean, BeanFactoryPostProc
 
     @Override
     public void destroy() throws Exception {
-        for (KoalasClientProxy koalasClientProxy:koalasClientProxies){
+        for (KoalasClientProxy koalasClientProxy:koalasClientProxyMap.values ()){
             koalasClientProxy.destroy ();
         }
         for (KoalasServerPublisher koalasServerPublisher:koalasServerPublishers){
@@ -147,6 +149,9 @@ public class KoalasAnnotationBean implements DisposableBean, BeanFactoryPostProc
 
         KoalasClientProxy koalasClientProxy = new KoalasClientProxy ();
         String interfaceName = beanClass.getName ();
+        if(koalasClientProxyMap.containsKey (  interfaceName)){
+            return koalasClientProxyMap.get ( interfaceName ).getObject ();
+        }
         if (interfaceName.endsWith ( "$Iface" )) {
             koalasClientProxy.setAsync ( false );
         } else if (interfaceName.endsWith ( "$AsyncIface" )) {
@@ -203,7 +208,7 @@ public class KoalasAnnotationBean implements DisposableBean, BeanFactoryPostProc
             koalasClientProxy.setPublicKey (koalasClient.publicKey ()  );
         }
         koalasClientProxy.afterPropertiesSet ();
-        koalasClientProxies.add (koalasClientProxy);
+        koalasClientProxyMap.put ( interfaceName, koalasClientProxy);
         return koalasClientProxy.getObject ();
     }
 
