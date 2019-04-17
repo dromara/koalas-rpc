@@ -498,7 +498,7 @@ removeAbandonedOnBorrow | TCP长连接池，参照Apache Pool参数 | row 1 col 
 removeAbandonedOnMaintenance | TCP长连接池，参照Apache Pool参数 | row 1 col 2
 removeAbandonedTimeout| TCP长连接池，参照Apache Pool参数 | row 1 col 2
 maxLength_ | 允许发送最大字节数 | N,10 * 1024 * 1024
-cores | selecter核心数量 | N，默认当前cpu数量
+cores | selecter核心数量 | N，默认当前cpu数量 
 asyncSelectorThreadCount | 异步请求时线程数量 | N，默认当前CPU核心数量*2
 privateKey | 私钥 | N
 publicKey | 公钥 | N
