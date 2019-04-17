@@ -1,6 +1,5 @@
-# koalas-rpc
 <p align="center">
- <img src="https://images.gitee.com/uploads/images/2019/0417/122151_abcd2032_536094.png" width="150">
+ <img src="https://images.gitee.com/uploads/images/2019/0417/122151_abcd2032_536094.png" width="300">
 </p>
 #### 项目介绍
 koalas-RPC
