@@ -307,6 +307,7 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
             logger.info ( "handlerException:" + tApplicationException.getType () + value );
         } catch (TException e1) {
             logger.error ( "unknown Exception:" + type + value,e1 );
+            ctx.close ();
         }
     }
 
@@ -416,5 +417,12 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
         public void setKoalasTrace(KoalasTrace koalasTrace) {
             this.koalasTrace = koalasTrace;
         }
+    }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
+            throws Exception {
+        logger.error ( "exceptionCaught",cause );
+        ctx.fireExceptionCaught(cause);
     }
 }
