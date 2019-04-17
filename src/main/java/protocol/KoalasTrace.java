@@ -26,7 +26,12 @@ import java.nio.ByteBuffer;
 import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+/**
+ * Copyright (C) 2019
+ * All rights reserved
+ * User: yulong.zhang
+ * Date:2019年04月17日13:46:40
+ */
 public class KoalasTrace implements org.apache.thrift.TBase<KoalasTrace, KoalasTrace._Fields>, java.io.Serializable, Cloneable {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("KoalasTrace");
 

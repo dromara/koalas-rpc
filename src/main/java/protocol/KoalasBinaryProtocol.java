@@ -11,7 +11,12 @@ import org.apache.thrift.TException;
 import org.apache.thrift.protocol.*;
 import org.apache.thrift.transport.TTransport;
 import utils.TraceThreadContext;
-
+/**
+ * Copyright (C) 2019
+ * All rights reserved
+ * User: yulong.zhang
+ * Date:2019年04月17日13:46:40
+ */
 public class KoalasBinaryProtocol extends TProtocol {
     private static final TStruct ANONYMOUS_STRUCT = new TStruct();
     protected static final int VERSION_MASK = -65536;

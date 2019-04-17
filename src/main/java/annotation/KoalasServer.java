@@ -2,6 +2,12 @@ package annotation;
 
 import java.lang.annotation.*;
 
+/**
+ * Copyright (C) 2019
+ * All rights reserved
+ * User: yulong.zhang
+ * Date:2019年04月17日13:46:40
+ */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
