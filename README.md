@@ -1,5 +1,6 @@
 <p align="center">
  <img src="https://images.gitee.com/uploads/images/2019/0417/122151_abcd2032_536094.png" width="300">
+ [![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
 </p>
 
 # 项目介绍
@@ -20,7 +21,7 @@ log4j，slf4j
 org.apache.commons(v2.0+)
 io.netty(v4.0+)
 fastJson
-zookeeper3.4.6
+zookeeper3.4.6````
 点评cat（V3.0.0+ 做数据大盘统计上报等使用，可不配置服务端，则失去数据大盘功能，但是RPC功能不受影响）
 
 #### 关于技术选型
