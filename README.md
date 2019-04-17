@@ -468,7 +468,7 @@ public class WmCreateAccountServiceNettyImpl implements WmCreateAccountService.I
 **1：客户端**
 
 参数名 | 说明 | 是否必须 |
----|---|---|---
+---|---|---
 serviceInterface | thrift生成的接口类| Y
 zkPath | zk的服务地址，集群中间逗号分隔| Y
 serverIpPorts | 不实用zk发现直接连接服务器server，格式ip:端口#权重。多个逗号分隔 | N
