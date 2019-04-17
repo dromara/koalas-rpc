@@ -1,6 +1,8 @@
 <p align="center">
  <img src="https://images.gitee.com/uploads/images/2019/0417/122151_abcd2032_536094.png" width="300">
- [![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
+<a href="https://www.apache.org/licenses/LICENSE-2.0">
+    <img alt="code style" src="https://img.shields.io/badge/license-Apache%202-4EB1BA.svg?style=flat-square">
+  </a>
 </p>
 
 # 项目介绍
