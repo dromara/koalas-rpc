@@ -520,19 +520,48 @@ serverType | 采用哪些服务端，可以选NETTY和THRIFT，默认NETTY| N
 workQueue | 当server超载时，可以容纳等待任务的队列长度| 0
 privateKey | 私钥|N
 publicKey | 公钥| N
-#### 4：客户端服务端RSA双向加密
-源码中utils.KoalasRsaUtil的main方法已经为大家写好生成私钥和公钥的代码，执行即可
-![输入图片说明](https://images.gitee.com/uploads/images/2018/1126/150109_89b08514_536094.png "屏幕截图.png")
-自动生成4个很长的字符串
-将前两个字符串放进client中，后面两个字符串放进server中，依次对应privateKey和publicKey，按照1，2，3，4傻瓜式复制即可:如图
-![输入图片说明](https://images.gitee.com/uploads/images/2018/1126/150530_82c8bb6c_536094.png "屏幕截图.png")
-![输入图片说明](https://images.gitee.com/uploads/images/2018/1126/150559_56305a69_536094.png "屏幕截图.png")
 
-当其中一方的RSA秘钥无法对应，请求会报错。
+##### 3：客户端服务端RSA双向加密
+源码中utils.KoalasRsaUtil的main方法已经为大家写好生成私钥和公钥的代码，执行即可 ，下面为核心源码展示
 
-![输入图片说明](https://images.gitee.com/uploads/images/2018/1126/150900_491f3ec4_536094.png "屏幕截图.png")
-此时客户端会返回null
-RSA对称加密适合给三方系统进行调用,对称加密会影响传输性能。
+```
+public static String sign(byte[] data, String privateKey) throws Exception {
+        byte[] keyBytes = Base64.decodeBase64 ( privateKey.getBytes ( "UTF-8" ) );
+        PKCS8EncodedKeySpec pkcs8KeySpec = new PKCS8EncodedKeySpec ( keyBytes );
+        KeyFactory keyFactory = KeyFactory.getInstance ( KEY_ALGORITHM );
+        PrivateKey privateK = keyFactory.generatePrivate ( pkcs8KeySpec );
+        Signature signature = Signature.getInstance ( SIGNATURE_ALGORITHM );
+        signature.initSign ( privateK );
+        signature.update ( data );
+        return new String ( Base64.encodeBase64 ( signature.sign () ), "UTF-8" );
+    }
+```
+
+```
+public static boolean verify(byte[] data, String publicKey, String sign)
+            throws Exception {
+        byte[] keyBytes = Base64.decodeBase64 ( publicKey.getBytes ("UTF-8") );
+        X509EncodedKeySpec keySpec = new X509EncodedKeySpec ( keyBytes );
+        KeyFactory keyFactory = KeyFactory.getInstance ( KEY_ALGORITHM );
+        PublicKey publicK = keyFactory.generatePublic ( keySpec );
+        Signature signature = Signature.getInstance ( SIGNATURE_ALGORITHM );
+        signature.initVerify ( publicK );
+        signature.update ( data );
+        return signature.verify ( Base64.decodeBase64 ( sign.getBytes ("UTF-8") ) );
+    }
+```
+执行main方法之后，会得到4个长长的字符串
+
+```
+下面四个字符串为koalas-rpc中客户端和服务端使用的rsa非对称秘钥，复制使用即可
+MIICdQIBADANBgkqhkiG9w0BAQEFAASCAl8wggJbAgEAAoGBAIPQIc8/+wl5hTDT8fT4rCEA//pwSqdX8djur+UDwR/qg5iW3xBHUuxTGXRko/3SXYKJLugRmT2gV4ZggSHLpToSFYJZwATIbVD2p3oqZx4ZC5g3mZdTCScHbTb4CITFPacJCKads75Plrk8ryW7wP9dWlSmrF8f3CzReKUTjf5dAgMBAAECgYBRigXwK9cCNG8lFmc9sDriq7it1psHzApqtLSQifME6FCBqwrQCh8M3BcJ/lvH30NDRdODcaeHDNI36SjYnB5X25mMG95OEgLqPm7T8oB3DBY/BhJbAY43FbZSU3Lb+El5zknpTtH0M8DTlul1EmLbe+TJVL/x/SkpDx/HSS3GAQJBALtSSBeskQ4P+Pn5M4F2+GZJmFDxaOQHIuy/RdfckxV1aEMN425ieSrinSCXyBC8uTN0zF1NlJsfWLAUhtfSQ90CQQC0I+mEXsxWtTDT+fd3bDgiJtfOwPpyNT4HSObdq+aAqO44NL7fqD2plNZ3vBULfDbdbnTlvKJJnPUdt457WjyBAkAiM63SFMIPbT8qdSPAWbaVBo73CHz8VYk87NeVyEJawqscwyZpezVgbSv/TXdMBwlRqdu+lXGyuRB6ZeUQ9uVJAkAscjfpqyIruqUDiEdgtdjbxE22+7JPf4eAcKJVy1YiJIwyXgFCWdZtAwYvoL5oiQtYcypwjKxWEV4BKQsEsG0BAkBmlDi0wSPA2x7YjudQNWv+H51CsYDWMjOQ7AzUYABfkWVnbeYS/3uf7W56AHl3Rmdo7zUTBJFCyM/Rt28yZVLj
+MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDAAxbccTLuu12V2Le1mI5b+0kZMiQwN/WTSv8d2y0J/wVl+yMWgjZi4c8/kAs8pACEiFQ8hUUovmoAwceKEd5h3ISSV5lEPyBt+68DzinOrSGv7bZhGm5bwkRG7MMpSgAVSJj2lWTkf63fp2e/FwHs3WM64sSlbdlUN/57YtUC6QIDAQAB
+MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAMADFtxxMu67XZXYt7WYjlv7SRkyJDA39ZNK/x3bLQn/BWX7IxaCNmLhzz+QCzykAISIVDyFRSi+agDBx4oR3mHchJJXmUQ/IG37rwPOKc6tIa/ttmEablvCREbswylKABVImPaVZOR/rd+nZ78XAezdYzrixKVt2VQ3/nti1QLpAgMBAAECgYEApwwI/4+b+AYZzRvV967Zazyaw8jTov+MLrC4cokUDfZIBAkQ5awzFKPPYkU3AXLM4ICaiGyJVoESR8ZOitgw1wB6tbI2DhP4FD5dqJkIOdUNujo+gAda3kfeCjAgWbtUL3Zhj7Ff+xFvSDDxUYKGG4fZwge3CFwyQ2vjxhPTXGECQQDpAkS6AW17LvWAiiu2924MEicJQW/s3w+chjuQ3VaauzotAHoSMi8VjBSlINbKxpklthKB4vubfA6AtTHae3hPAkEA0vVBKk9Qz8TkraN3QcILJwHjcjqP8+51n1jimSpZeZQL4BJxStdqqMP2nUzAVnh4ncEoFZ/3QA0sSwcdPtDLRwJBAIDpMmC+HXYDWuvMhbbqWUXwXQxv2Z5xIk/0q8vPyPQ+FUeEdgTPIuGG6H0bF/qDuYL1onOdwpoZHmTy2iwIF10CQBiVNdvNVFhx1EgbtWj3SL9p6+xCwMWnMxO3kuhQVA7j3qJk48jZ43b5JwLbj8pDzaJsgNRMSM6w+klf8duBDz8CQBMIMmhU84An2nv/CPNPArCC8BN8YhY1AH685zgRQBLv5untRhfZ+hJtqjSzTJlY7JHybMzc6wt2FZXrhvuopO4=
+MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCD0CHPP/sJeYUw0/H0+KwhAP/6cEqnV/HY7q/lA8Ef6oOYlt8QR1LsUxl0ZKP90l2CiS7oEZk9oFeGYIEhy6U6EhWCWcAEyG1Q9qd6KmceGQuYN5mXUwknB202+AiExT2nCQimnbO+T5a5PK8lu8D/XVpUpqxfH9ws0XilE43+XQIDAQAB
+上面四个字符串为koalas-rpc中客户端和服务端使用的rsa非对称秘钥，复制使用即可
+```
+
+得到上面的四个长长的字符串，可以由server端给client端提供。其中字符串1，字符串2分别对应client的privateKey，和publicKey，字符串3和字符串4分别对应server端的privateKey，和publicKey，提供rsa双向加密的初衷是为了将非常重要的项目保护起来，不允许其他项目随意调用，但是RSA双向加密会对性能有所影响。当RSA验证失败的时候，client会抛RsaException。RSA对称加密适合给三方系统进行调用,对称加密会影响传输性能。
 
 # 实际性能压测
 8C 16G mac开发本，单机10000次请求耗时截图
