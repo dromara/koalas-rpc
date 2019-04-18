@@ -109,6 +109,8 @@ public class KoalasRsaUtil {
         String serverprivateKey2 =  getPrivateKey(map2);
         String serverpublicKey1 = getPublicKey (map1);
 
+        System.out.println ("下面四个字符串为koalas-rpc中客户端和服务端使用的rsa非对称秘钥，复制使用即可");
+
         //client
         System.out.println (clientprivateKey1);
         System.out.println (clientpublicKey2);
@@ -116,6 +118,7 @@ public class KoalasRsaUtil {
         //server
         System.out.println (serverprivateKey2);
         System.out.println (serverpublicKey1);
+        System.out.println ("上面四个字符串为koalas-rpc中客户端和服务端使用的rsa非对称秘钥，复制使用即可");
 
         String body = "你好";
 
