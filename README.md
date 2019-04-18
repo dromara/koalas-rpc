@@ -108,7 +108,7 @@ struct WmCreateAccountRespone {
 }
 ```
 
-编译器需要大家去下班对应的版本 windows和linux下不同的编译器，下载地址http://archive.apache.org/dist/thrift/0.8.0/ 下载0.8.0版本即可,0.8.0版本是很老的版本了，但是相对稳定，后续会把thirft版本升级。
+编译器需要大家去下载对应的版本 windows和linux下不同的编译器，下载地址http://archive.apache.org/dist/thrift/0.8.0/ 下载0.8.0版本即可,0.8.0版本是很老的版本了，但是相对稳定，后续会把thirft版本升级。
 
 编译上面三个文件 thrift -gen java WmCreateAccountService.thrift, thrift -gen java WmCreateAccountRequest.thrift, thrift -gen java WmCreateAccountRespone.thrift 在当前目录下会生成3个java文件 这三个文件分别是请求体，返回体，和服务类，就这么简单 Ok作为开发者而言，所有的准备工作都结束了。下面就开始进入实际开发~
 
