@@ -10,6 +10,7 @@
 </p>
 
 # 一：项目介绍
+[开发者接入](https://gitee.com/a1234567891/koalas-rpc/wikis/%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E?sort_id=1424137)
 koalas-RPC 个人作品，提供大家交流学习，有意见请私信，欢迎拍砖。客户端采用thrift协议，服务端支持netty和thrift的TThreadedSelectorServer半同步半异步线程模型，支持动态扩容，服务上下线，权重动态，可用性配置，页面流量统计等，QPS统计，TP90,TP99,TP95等丰富可视化数据，持续为个人以及中小型公司提供可靠的RPC框架技术方案。
 
 ##### 1：为什么要写这个RPC
