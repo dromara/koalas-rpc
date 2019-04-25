@@ -35,9 +35,11 @@ koalas-RPC 个人作品，提供大家交流学习，有意见请私信，欢迎
 1. 序列化篇 考察了很多个序列化组件，其中包括jdk原生，kryo、hessian、protoStuff,thrift，json等，最终选择了Thrift，原因如下 原生JDK序列化反序列化效率堪忧，其序列化内容太过全面kryo和hessian，json相对来说比原生JDK强一些，但是对跨语言支持一般，所以舍弃了，最终想在protoBuf和Thrift协议里面选择一套框架，这俩框架很相通，支持跨语言，需要静态编译等等。但是protoBuf不带RPC服务，本着提供多套服务端模式（thrift rpc，netty）的情况下，最终选择了Thrift协议。
 2. IO线程模型篇 原生socket可以模拟出简单的RPC框架，但是对于大规模并发，要求吞吐量的系统来说，也就算得上是一个demo级别的，所以BIO肯定是不考虑了，NIO的模型在序列化技术选型的时候已经说了，Thrift本身支持很多个io线程模型，同步，异步，半同步异步等（SimpleServer，TNonblockingServer，THsHaServer，TThreadedSelectorServer，TThreadPoolServer），其中吞吐量最高的肯定是半同步半异步的IO模TThreadedSelectorServer了，具体原因大家可自行google，这次不做多的阐述，选择好了模型之后，发现thrift简直就是神器一样的存在，再一想，对于服务端来说，IO模型怎么能少得了Netty啊，所以下决心也要支持Netty，但是很遗憾Netty目前没有对Thrift的序列化解析，拆包粘包的处理，但是有protoBuf，和http协议的封装，怎么办，自己在netty上写对thrift的支持呗，虽然工作量大了一些，但是一想netty不就是干这个事儿的嘛- -！
 3. 服务发现 支持集群的RPC框架里面，像dubbo，或者是其他三方框架，对服务发现都进行的封装，那么自研RPC的话，服务发现就要自己来写了，那么简单小巧容易上手的zookeeper肯定是首选了。
+![输入图片说明](https://gitee.com/uploads/images/2019/0425/175955_058b77a7_536094.png "屏幕截图.png")
 
 ##### 5：安装教程
 考拉RPC确保精简，轻量的原则，只需要zk服务器进行服务发现（后续版本服务治理可能需要Datasource），对于zookeeper的各个环境安装教程请自行google，不在本安装教程内特意说明 如果需要cat的数据大盘功能，想更方便的查看服务的调用情况，需要安装cat服务，至于cat的安装就更简单了，就是war包扔在tomcat里面运行，然后配置一些参数即可，当然你也可以不接入cat，单独的作为RPC框架来使用。 CAT接入参考：https://github.com/dianping/cat
+
 
 # 二：使用说明
 ##### 1：前期准以及依赖
