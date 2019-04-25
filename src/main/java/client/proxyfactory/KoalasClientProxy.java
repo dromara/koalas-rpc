@@ -61,7 +61,7 @@ public class KoalasClientProxy implements FactoryBean<Object>, ApplicationContex
     private String serverIpPorts;
 
     //代理对象,所有client-server类型统一代理
-    private Object loalsServiceProxy;
+    private Object koalasServiceProxy;
     //spring上下文对象
     private ApplicationContext applicationContext;
     // 同步还是异步,默认同步。
@@ -296,12 +296,12 @@ public class KoalasClientProxy implements FactoryBean<Object>, ApplicationContex
         this.async = async;
     }
 
-    public Object getLoalsServiceProxy() {
-        return loalsServiceProxy;
+    public Object getKoalasServiceProxy() {
+        return koalasServiceProxy;
     }
 
-    public void setLoalsServiceProxy(Object loalsServiceProxy) {
-        this.loalsServiceProxy = loalsServiceProxy;
+    public void setKoalasServiceProxy(Object koalasServiceProxy) {
+        this.koalasServiceProxy = koalasServiceProxy;
     }
 
     public ApplicationContext getApplicationContext() {
@@ -377,8 +377,8 @@ public class KoalasClientProxy implements FactoryBean<Object>, ApplicationContex
 
     @Override
     public Object getObject(){
-        if (getLoalsServiceProxy () == null) throw new RuntimeException ( "the Proxy can't be null" );
-        return getLoalsServiceProxy ();
+        if (getKoalasServiceProxy () == null) throw new RuntimeException ( "the Proxy can't be null" );
+        return getKoalasServiceProxy ();
     }
 
     @Override
@@ -525,7 +525,7 @@ public class KoalasClientProxy implements FactoryBean<Object>, ApplicationContex
             LocalMockInterceptor localMockInterceptor = new LocalMockInterceptor ( localMockServiceImpl );
             _interface = getIfaceInterface ();
             ProxyFactory pf = new ProxyFactory ( _interface, localMockInterceptor );
-            setLoalsServiceProxy ( pf.getProxy () );
+            setKoalasServiceProxy ( pf.getProxy ());
             return;
         }
 
@@ -541,7 +541,7 @@ public class KoalasClientProxy implements FactoryBean<Object>, ApplicationContex
         KoalsaMothodInterceptor koalsaMothodInterceptor = new KoalsaMothodInterceptor ( icluster, retryTimes, retryRequest, this,readTimeout );
         _interface = getIfaceInterface ();
 
-        loalsServiceProxy = new ProxyFactory ( _interface, koalsaMothodInterceptor ).getProxy ();
+        koalasServiceProxy = new ProxyFactory ( _interface, koalsaMothodInterceptor ).getProxy ();
 
         logger.info ( "the service【{}】is start !", serviceInterface.getName () );
     }
