@@ -4,14 +4,13 @@ import client.cluster.ILoadBalancer;
 import client.cluster.Icluster;
 import client.cluster.impl.DirectClisterImpl;
 import client.cluster.impl.RandomLoadBalancer;
-import client.cluster.impl.ZookeeperClisterImpl;
+import client.cluster.impl.ZookeeperClusterImpl;
 import client.invoker.KoalsaMothodInterceptor;
 import client.invoker.LocalMockInterceptor;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.pool2.impl.AbandonedConfig;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.apache.thrift.async.TAsyncClientManager;
-import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.protocol.TProtocolFactory;
 import org.apache.thrift.transport.TNonblockingTransport;
@@ -535,7 +534,7 @@ public class KoalasClientProxy implements FactoryBean<Object>, ApplicationContex
         if (!StringUtils.isEmpty ( serverIpPorts )) {
             icluster = new DirectClisterImpl ( serverIpPorts, iLoadBalancer == null ? new RandomLoadBalancer () : iLoadBalancer, serviceInterface.getName (), async, connTimeout, readTimeout, genericObjectPoolConfig, abandonedConfig );
         } else{
-            icluster = new ZookeeperClisterImpl ( zkPath ,iLoadBalancer == null ? new RandomLoadBalancer () : iLoadBalancer, serviceInterface.getName (),env,async,connTimeout,readTimeout,genericObjectPoolConfig,abandonedConfig);
+            icluster = new ZookeeperClusterImpl ( zkPath ,iLoadBalancer == null ? new RandomLoadBalancer () : iLoadBalancer, serviceInterface.getName (),env,async,connTimeout,readTimeout,genericObjectPoolConfig,abandonedConfig);
         }
 
         KoalsaMothodInterceptor koalsaMothodInterceptor = new KoalsaMothodInterceptor ( icluster, retryTimes, retryRequest, this,readTimeout );

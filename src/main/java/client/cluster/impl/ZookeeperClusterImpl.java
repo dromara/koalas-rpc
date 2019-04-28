@@ -20,9 +20,9 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * User: yulong.zhang
  * Date:2018年11月23日11:13:33
  */
-public class ZookeeperClisterImpl extends AbstractBaseIcluster {
+public class ZookeeperClusterImpl extends AbstractBaseIcluster {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ZookeeperClisterImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ZookeeperClusterImpl.class);
 
     private String hostAndPorts;
     private String env;
@@ -36,7 +36,7 @@ public class ZookeeperClisterImpl extends AbstractBaseIcluster {
     public Lock writeLock = lock.writeLock();
     public Lock readLock = lock.readLock();
 
-    public ZookeeperClisterImpl(String hostAndPorts, ILoadBalancer iLoadBalancer, String serviceName,String env, boolean async, int conTimeOut, int soTimeOut, GenericObjectPoolConfig genericObjectPoolConfig, AbandonedConfig abandonedConfig){
+    public ZookeeperClusterImpl(String hostAndPorts, ILoadBalancer iLoadBalancer, String serviceName, String env, boolean async, int conTimeOut, int soTimeOut, GenericObjectPoolConfig genericObjectPoolConfig, AbandonedConfig abandonedConfig){
         super(iLoadBalancer,serviceName,async,conTimeOut,soTimeOut,genericObjectPoolConfig,abandonedConfig);
         this.hostAndPorts=hostAndPorts;
         this.iLoadBalancer=iLoadBalancer;

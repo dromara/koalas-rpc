@@ -1,7 +1,7 @@
 package register;
 
 import client.cluster.RemoteServer;
-import client.cluster.impl.ZookeeperClisterImpl;
+import client.cluster.impl.ZookeeperClusterImpl;
 import com.alibaba.fastjson.JSONObject;
 import heartbeat.request.HeartBeat;
 import heartbeat.service.HeartbeatService;
@@ -42,7 +42,7 @@ public class ZookeeperClient {
     private String path;
     private String serviceName;
     private ZooKeeper zookeeper = null;
-    private ZookeeperClisterImpl zookeeperClister;
+    private ZookeeperClusterImpl zookeeperClister;
     //private Map<String, Watcher> serviceWatcher = new ConcurrentHashMap<> ();
     private CountDownLatch firstInitChildren = new CountDownLatch(1);
     //private boolean firstInitChildren = true;
@@ -59,7 +59,7 @@ public class ZookeeperClient {
         return serverList;
     }
 
-    public ZookeeperClient(String env, String path, String serviceName, ZookeeperClisterImpl zookeeperClister) {
+    public ZookeeperClient(String env, String path, String serviceName, ZookeeperClusterImpl zookeeperClister) {
         if (env == null) {
             throw new RuntimeException ( "env can't be null" );
         }
