@@ -42,7 +42,7 @@ public class ZookeeperClusterImpl extends AbstractBaseIcluster {
         this.iLoadBalancer=iLoadBalancer;
         this.serviceName=serviceName;
         this.env=env;
-        initZKclient (this.hostAndPorts,this.serviceName,this.env);
+        initZKClient (this.hostAndPorts,this.serviceName,this.env);
     }
 
     @Override
@@ -105,7 +105,7 @@ public class ZookeeperClusterImpl extends AbstractBaseIcluster {
         }
     }
 
-    private void initZKclient(String hostAndPorts,String serviceName,String env){
+    private void initZKClient(String hostAndPorts,String serviceName,String env){
         if(zookeeperClient==null){
             zookeeperClient = new ZookeeperClient ( env,hostAndPorts, serviceName,this);
             zookeeperClient.initZooKeeper ();
