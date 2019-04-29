@@ -76,9 +76,9 @@ public class KoalasClientProxy implements FactoryBean<Object>, ApplicationContex
     private int retryTimes = 3;
     private GenericObjectPoolConfig genericObjectPoolConfig;
     //最大连接数
-    private int maxTotal=100;
+    private int maxTotal=50;
     //最大闲置数
-    private int maxIdle=50;
+    private int maxIdle=20;
     //最小闲置数量
     private int minIdle=10;
     private boolean lifo = true;
