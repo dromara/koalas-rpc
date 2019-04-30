@@ -1,4 +1,3 @@
-更新于2019年04月29日，作为一个高级RPC，koalas怎么能不兼容泛化调用，五一之后将会接入泛化支持和原生thrift本地测试支持，敬请关注
  <p align="center">
   <img src="https://images.gitee.com/uploads/images/2019/0417/122151_abcd2032_536094.png" width="300">
   <br>
