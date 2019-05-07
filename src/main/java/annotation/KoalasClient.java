@@ -19,6 +19,8 @@ public @interface KoalasClient {
 
     String serverIpPorts() default "";
 
+    boolean generic() default false;
+
     int connTimeout() default KoalasClientProxy.DEFUAL_CONNTIMEOUT;
 
     int readTimeout() default KoalasClientProxy.DEFUAL_READTIMEOUT;

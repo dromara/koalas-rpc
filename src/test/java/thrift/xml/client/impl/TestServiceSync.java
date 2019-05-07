@@ -1,18 +1,28 @@
 package thrift.xml.client.impl;
 
 
+import com.alibaba.fastjson.JSON;
+import generic.GenericRequest;
+import generic.GenericService;
 import org.apache.thrift.TException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import thrift.domain.WmCreateAccountRequest;
 import thrift.domain.WmCreateAccountRespone;
 import thrift.service.WmCreateAccountService;
+
+import java.util.ArrayList;
 
 @Service("testServiceSync")
 public class TestServiceSync {
 
     @Autowired
     WmCreateAccountService.Iface wmCreateAccountService;
+
+    @Autowired
+    @Qualifier("wmCreateAccountService3")
+    GenericService.Iface wmGenericService;
 
     public void getRemoteRpc() throws TException {
         WmCreateAccountRequest request= new WmCreateAccountRequest (  );
@@ -96,6 +106,33 @@ public class TestServiceSync {
         request.setPoiFlag ( 1 );
         WmCreateAccountRespone respone = wmCreateAccountService.koaloasTest6 (  request);
         System.out.println (respone);
+    }
+
+    public void getGenericRpc() throws TException {
+        GenericRequest request = new GenericRequest (  );
+        request.setMethodName ( "getRPC" );
+
+        request.setClassType ( new ArrayList<String> (  ){{
+            add ( "thrift.domain.WmCreateAccountRequest");
+        }} );
+
+        request.setRequestObj ( new ArrayList<String> (  ){{
+            add ( "{\"accountType\":1,\"partnerId\":1,\"partnerName\":\"你好\",\"partnerType\":1,\"poiFlag\":1,\"setAccountType\":true,\"setPartnerId\":true,\"setPartnerName\":true,\"setPartnerType\":true,\"setPoiFlag\":true,\"setSource\":false,\"source\":0}");
+        }} );
+
+        String str = wmGenericService.invoke ( request );
+        System.out.println (str);
+    }
+
+    public static void main(String[] args) {
+        WmCreateAccountRequest request= new WmCreateAccountRequest (  );
+        //request.setSource ( 10 );
+        request.setAccountType ( 1 );
+        request.setPartnerId ( 1 );
+        request.setPartnerType ( 1 );
+        request.setPartnerName ( "你好" );
+        request.setPoiFlag ( 1 );
+        System.out.println (JSON.toJSONString (request));;
     }
 
 }

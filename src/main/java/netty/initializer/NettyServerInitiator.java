@@ -6,6 +6,7 @@ import netty.hanlder.KoalasDecoder;
 import netty.hanlder.KoalasEncoder;
 import netty.hanlder.KoalasHandler;
 import org.apache.thrift.TProcessor;
+import server.config.AbstractKoalsServerPublisher;
 
 import java.util.concurrent.ExecutorService;
 /**
@@ -16,27 +17,20 @@ import java.util.concurrent.ExecutorService;
  */
 public class NettyServerInitiator extends ChannelInitializer<SocketChannel> {
 
-    private TProcessor tProcessor;
-
     private ExecutorService executorService;
 
-    private String privateKey;
-    private String publicKey;
-    private String className;
+    private  AbstractKoalsServerPublisher serverPublisher;
 
-    public NettyServerInitiator(TProcessor tProcessor, ExecutorService executorService, String privateKey, String publicKey, String className) {
-        this.tProcessor = tProcessor;
+    public NettyServerInitiator(AbstractKoalsServerPublisher serverPublisher,ExecutorService executorService){
+        this.serverPublisher = serverPublisher;
         this.executorService = executorService;
-        this.privateKey = privateKey;
-        this.publicKey = publicKey;
-        this.className = className;
     }
 
     @Override
     protected void initChannel(SocketChannel ch) {
         ch.pipeline ().addLast ( "decoder",new KoalasDecoder () );
         ch.pipeline ().addLast ( "encoder",new KoalasEncoder ());
-        ch.pipeline ().addLast ( "handler",new KoalasHandler (tProcessor,executorService,privateKey,publicKey,className) );
+        ch.pipeline ().addLast ( "handler",new KoalasHandler (serverPublisher,executorService) );
     }
 
 }

@@ -169,6 +169,8 @@ public class KoalasAnnotationBean implements DisposableBean, BeanFactoryPostProc
             koalasClientProxy.setServerIpPorts ( koalasClient.serverIpPorts () );
         }
 
+        koalasClientProxy.setGeneric ( koalasClient.generic ());
+
         koalasClientProxy.setConnTimeout ( koalasClient.connTimeout () );
         koalasClientProxy.setReadTimeout ( koalasClient.readTimeout () );
         if (StringUtils.isNotEmpty ( koalasClient.localMockServiceImpl () )) {

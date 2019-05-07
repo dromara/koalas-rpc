@@ -7,6 +7,7 @@ import client.cluster.impl.RandomLoadBalancer;
 import client.cluster.impl.ZookeeperClusterImpl;
 import client.invoker.KoalsaMothodInterceptor;
 import client.invoker.LocalMockInterceptor;
+import generic.GenericService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.pool2.impl.AbandonedConfig;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
@@ -65,6 +66,8 @@ public class KoalasClientProxy implements FactoryBean<Object>, ApplicationContex
     private ApplicationContext applicationContext;
     // 同步还是异步,默认同步。
     private boolean async = false;
+    // 是否泛化调用
+    private boolean generic = false;
     //连接超时时间
     private int connTimeout=DEFUAL_CONNTIMEOUT;
     //读取超时时间
@@ -254,7 +257,12 @@ public class KoalasClientProxy implements FactoryBean<Object>, ApplicationContex
     public void setLocalMockServiceImpl(String localMockServiceImpl) {
         this.localMockServiceImpl = localMockServiceImpl;
     }
-
+    public boolean isGeneric() {
+        return generic;
+    }
+    public void setGeneric(boolean generic) {
+        this.generic = generic;
+    }
     public int getReadTimeout() {
         return readTimeout;
     }
@@ -414,7 +422,7 @@ public class KoalasClientProxy implements FactoryBean<Object>, ApplicationContex
                 }
 
                 TProtocol protocol = new KoalasBinaryProtocol ( transport );
-
+                ((KoalasBinaryProtocol) protocol).setGeneric ( generic );
                 return synConstructor.newInstance ( protocol );
 
             } catch (NoSuchMethodException e) {
@@ -452,7 +460,7 @@ public class KoalasClientProxy implements FactoryBean<Object>, ApplicationContex
             }
 
             try {
-                return asyncConstructor.newInstance ( new KoalasBinaryProtocol.Factory (), asyncClientManagerList.get (socket.hashCode () % asyncSelectorThreadCount), socket );
+                return asyncConstructor.newInstance ( new KoalasBinaryProtocol.Factory (generic), asyncClientManagerList.get (socket.hashCode () % asyncSelectorThreadCount), socket );
             } catch (InstantiationException e) {
                 logger.error ( "get InstantiationException", e );
             } catch (IllegalAccessException e) {
@@ -466,7 +474,13 @@ public class KoalasClientProxy implements FactoryBean<Object>, ApplicationContex
     }
 
     private Class<?> getAsyncIfaceInterface() {
-        Class<?>[] classes = serviceInterface.getClasses ();
+        Class<?>[] classes = null;
+
+        if(!generic){
+            classes = serviceInterface.getClasses ();
+        } else {
+            classes = GenericService.class.getClasses ();
+        }
         for (Class c : classes)
             if (c.isMemberClass () && c.isInterface () && c.getSimpleName ().equals ( ASYNC_IFACE )) {
                 return c;
@@ -475,7 +489,14 @@ public class KoalasClientProxy implements FactoryBean<Object>, ApplicationContex
     }
 
     private Class<?> getSynIfaceInterface() {
-        Class<?>[] classes = serviceInterface.getClasses ();
+
+        Class<?>[] classes = null;
+        if(!generic){
+            classes = serviceInterface.getClasses ();
+        } else {
+            classes = GenericService.class.getClasses ();
+        }
+
         for (Class c : classes)
             if (c.isMemberClass () && c.isInterface () && c.getSimpleName ().equals ( IFACE )) {
                 return c;
@@ -484,7 +505,14 @@ public class KoalasClientProxy implements FactoryBean<Object>, ApplicationContex
     }
 
     private Class<?> getSynClientClass() {
-        Class<?>[] classes = serviceInterface.getClasses ();
+
+
+        Class<?>[] classes = null;
+        if(!generic){
+            classes = serviceInterface.getClasses ();
+        } else {
+            classes = GenericService.class.getClasses ();
+        }
         for (Class c : classes)
             if (c.isMemberClass () && !c.isInterface () && c.getSimpleName ().equals ( CLIENT )) {
                 return c;
@@ -493,7 +521,12 @@ public class KoalasClientProxy implements FactoryBean<Object>, ApplicationContex
     }
 
     private Class<?> getAsyncClientClass() {
-        Class<?>[] classes = serviceInterface.getClasses ();
+        Class<?>[] classes = null;
+        if(!generic){
+            classes = serviceInterface.getClasses ();
+        } else {
+            classes = GenericService.class.getClasses ();
+        }
         for (Class c : classes)
             if (c.isMemberClass () && !c.isInterface () && c.getSimpleName ().equals ( ASYNC_CLIENT )) {
                 return c;

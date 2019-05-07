@@ -33,6 +33,16 @@ public class KoalasBinaryProtocol extends TProtocol {
     private byte[] i16rd;
     private byte[] i32rd;
     private byte[] i64rd;
+    private boolean generic;
+    public static final byte first = (byte) 0xAB;
+    public static final byte second = (byte) 0xBA;
+    public boolean isGeneric() {
+        return generic;
+    }
+
+    public void setGeneric(boolean generic) {
+        this.generic = generic;
+    }
 
     public KoalasBinaryProtocol(TTransport trans) {
         this(trans, false, true);
@@ -72,6 +82,13 @@ public class KoalasBinaryProtocol extends TProtocol {
             koalasTrace = new KoalasTrace();
         }
         koalasTrace.write ( this );
+        if(generic){
+            this.writeByte ( KoalasBinaryProtocol.first );
+            this.writeByte ( KoalasBinaryProtocol.second );
+        } else {
+            this.writeByte ( KoalasBinaryProtocol.second );
+            this.writeByte ( KoalasBinaryProtocol.first );
+        }
     }
 
     public void writeMessageEnd() {
@@ -196,6 +213,15 @@ public class KoalasBinaryProtocol extends TProtocol {
                 KoalasTrace koalasTrace = new KoalasTrace();
                 koalasTrace.read ( this );
                 setKoalasTrace(koalasTrace);
+                byte first = this.readByte ();
+                byte second = this.readByte ();
+
+                if(first== KoalasBinaryProtocol.first && second==KoalasBinaryProtocol.second){
+                    setGeneric ( true );
+                } else{
+                    setGeneric ( false );
+                }
+
                 return  tMessage;
             }
         } else if (this.strictRead_) {
@@ -205,6 +231,14 @@ public class KoalasBinaryProtocol extends TProtocol {
             KoalasTrace koalasTrace = new KoalasTrace();
             koalasTrace.read ( this );
             setKoalasTrace(koalasTrace);
+            byte first = this.readByte ();
+            byte second = this.readByte ();
+
+            if(first== KoalasBinaryProtocol.first && second==KoalasBinaryProtocol.second){
+                setGeneric ( true );
+            } else{
+                setGeneric ( false );
+            }
             return tMessage;
         }
     }
@@ -378,13 +412,22 @@ public class KoalasBinaryProtocol extends TProtocol {
         protected boolean strictRead_;
         protected boolean strictWrite_;
         protected int readLength_;
+        protected boolean generic_;
 
         public Factory() {
             this(false, true);
         }
 
+        public Factory(boolean generic) {
+            this(false, true,generic);
+        }
+
         public Factory(boolean strictRead, boolean strictWrite) {
             this(strictRead, strictWrite, 0);
+        }
+
+        public Factory(boolean strictRead, boolean strictWrite,boolean generic) {
+            this(strictRead, strictWrite, 0,generic);
         }
 
         public Factory(boolean strictRead, boolean strictWrite, int readLength) {
@@ -394,13 +437,20 @@ public class KoalasBinaryProtocol extends TProtocol {
             this.strictWrite_ = strictWrite;
             this.readLength_ = readLength;
         }
-
+        public Factory(boolean strictRead, boolean strictWrite, int readLength,boolean generic) {
+            this.strictRead_ = false;
+            this.strictWrite_ = true;
+            this.strictRead_ = strictRead;
+            this.strictWrite_ = strictWrite;
+            this.readLength_ = readLength;
+            this.generic_ = generic;
+        }
         public TProtocol getProtocol(TTransport trans) {
             KoalasBinaryProtocol proto = new KoalasBinaryProtocol (trans, this.strictRead_, this.strictWrite_);
             if (this.readLength_ != 0) {
                 proto.setReadLength(this.readLength_);
             }
-
+            proto.setGeneric ( generic_ );
             return proto;
         }
     }

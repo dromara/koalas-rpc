@@ -18,4 +18,17 @@
 	               zkPath="127.0.0.1:2181"
 				   async="false"
 				   readTimeout="50000000"/>
+
+	<koalas:client id="wmCreateAccountService3"
+				   serviceInterface="thrift.service.WmCreateAccountService"
+				   zkPath="127.0.0.1:2181"
+				   generic="true"
+				   readTimeout="50000000"/>
+
+	<koalas:client id="wmCreateAccountService4"
+				   serviceInterface="thrift.service.WmCreateAccountService"
+				   zkPath="127.0.0.1:2181"
+				   async="true"
+				   generic="true"
+				   readTimeout="50000000"/>
 </beans>

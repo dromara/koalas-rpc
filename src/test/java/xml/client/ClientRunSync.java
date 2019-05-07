@@ -17,7 +17,7 @@ public class ClientRunSync {
     @Test
     public void testRunSync(){
         long a = System.currentTimeMillis ();
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 2000; i++) {
             try {
                 testServiceSync.getRemoteRpc ();
                 testServiceSync.koaloasTest1 ();
@@ -26,6 +26,20 @@ public class ClientRunSync {
                 testServiceSync.koaloasTest4 ();
                 testServiceSync.koaloasTest5 ();
                 testServiceSync.koaloasTest6 ();
+            }catch (Exception e){
+                e.printStackTrace ();
+            }
+
+        }
+        System.out.println (System.currentTimeMillis ()-a);
+    }
+
+    @Test
+    public void testRunGenericSync(){
+        long a = System.currentTimeMillis ();
+        for (int i = 0; i < 1000; i++) {
+            try {
+                testServiceSync.getGenericRpc ();
             }catch (Exception e){
                 e.printStackTrace ();
             }

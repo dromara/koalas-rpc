@@ -1,5 +1,7 @@
 package server.config;
 
+import generic.GenericService;
+import generic.GenericServiceImpl;
 import io.netty.util.internal.SystemPropertyUtil;
 import org.apache.thrift.TProcessor;
 import org.slf4j.Logger;
@@ -170,6 +172,23 @@ public class AbstractKoalsServerPublisher {
             logger.error ( "IllegalInstantiationExceptionAccessException with Iface",e );
         } catch (InvocationTargetException e) {
             logger.error ( "InvocationTargetException with Iface",e );
+        }
+
+        return null;
+    }
+
+    public TProcessor getGenericTProcessor(){
+        Class iface = getSynIfaceInterface(GenericService.class);
+        try {
+            return getProcessorClass(GenericService.class).getDeclaredConstructor (  iface).newInstance ( new GenericServiceImpl ( serviceImpl ) );
+        } catch (NoSuchMethodException e) {
+            logger.error ( "can't find the GenericTProcessor Constructor with Iface",e );
+        } catch (IllegalAccessException e) {
+            logger.error ( "IllegalAccessException the GenericTProcessor with Iface" );
+        } catch (InstantiationException e) {
+            logger.error ( "IllegalInstantiationExceptionAccessException the GenericTProcessor with Iface",e );
+        } catch (InvocationTargetException e) {
+            logger.error ( "InvocationTargetException the GenericTProcessor with Iface",e );
         }
 
         return null;

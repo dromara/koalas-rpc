@@ -68,6 +68,7 @@ public class ThriftServer implements IkoalasServer {
             ((KoalasThreadedSelectorServer) tServer).setPrivateKey (serverPublisher.privateKey);
             ((KoalasThreadedSelectorServer) tServer).setPublicKey ( serverPublisher.publicKey );
             ((KoalasThreadedSelectorServer) tServer).setServiceName ( serverPublisher.getServiceInterface ().getName () );
+            ((KoalasThreadedSelectorServer) tServer).settGenericProcessor ( serverPublisher.getGenericTProcessor () );
             Runtime.getRuntime().addShutdownHook(new Thread(){
                 @Override
                 public void run(){

@@ -17,6 +17,7 @@
                     <xsd:attribute name="zkPath" type="xsd:string" />
                     <xsd:attribute name="serverIpPorts" type="xsd:string"/>
                     <xsd:attribute name="async" type="xsd:boolean"/>
+                    <xsd:attribute name="generic" type="xsd:boolean"/>
                     <xsd:attribute name="connTimeout" type="xsd:int"/>
                     <xsd:attribute name="readTimeout" type="xsd:int"/>
                     <xsd:attribute name="localMockServiceImpl" type="xsd:string"/>

@@ -68,6 +68,11 @@ public class KoalasBeanDefinitionParser implements BeanDefinitionParser {
                 beanDefinition.getPropertyValues ().addPropertyValue ( "serverIpPorts",serverIpPorts);
             }
 
+            String generic = element.getAttribute ( "generic" );
+            if(!StringUtils.isEmpty ( generic )){
+                beanDefinition.getPropertyValues ().addPropertyValue ( "generic",Boolean.valueOf ( generic ));
+            }
+
             String connTimeout = element.getAttribute ( "connTimeout" );
             if(!StringUtils.isEmpty ( connTimeout )){
                 beanDefinition.getPropertyValues ().addPropertyValue ( "connTimeout",Integer.valueOf ( connTimeout ));

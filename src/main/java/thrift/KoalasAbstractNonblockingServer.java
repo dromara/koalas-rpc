@@ -203,13 +203,20 @@ public abstract class KoalasAbstractNonblockingServer extends TServer {
         private String serviceName;
         private String methodName;
         private KoalasTrace koalasTrace;
+        private boolean generic;
+        private TProcessor tGenericProcessor;
         public FrameBuffer(final TNonblockingTransport trans,
                            final SelectionKey selectionKey,
-                           final AbstractSelectThread selectThread,String privateKey,String publicKey,String serviceName) {
+                           final AbstractSelectThread selectThread,
+                           String privateKey,
+                           String publicKey,
+                           String serviceName,
+                           TProcessor tGenericProcessor) {
             this(trans,selectionKey,selectThread);
             this.privateKey= privateKey;
             this.publicKey = publicKey;
             this.serviceName =serviceName;
+            this.tGenericProcessor=tGenericProcessor;
         }
 
         public FrameBuffer(final TNonblockingTransport trans,
@@ -371,7 +378,12 @@ public abstract class KoalasAbstractNonblockingServer extends TServer {
                             }
                         }
 
-                        processorFactory_.getProcessor ( inTrans ).process ( inProt, outProt );
+                        if(!generic){
+                            processorFactory_.getProcessor ( inTrans ).process ( inProt, outProt );
+                        } else {
+                            tGenericProcessor.process (  inProt, outProt  );
+                        }
+
                         if(transaction!=null)
                             transaction.setStatus ( Transaction.SUCCESS );
                     } catch (Exception e){
@@ -414,10 +426,12 @@ public abstract class KoalasAbstractNonblockingServer extends TServer {
                 KoalasMessage koalasMessage =  getKoalasTMessage ( b);
                 tMessage = koalasMessage.gettMessage ();
                 koalasTrace = koalasMessage.getKoalasTrace ();
+                generic = koalasMessage.isGeneric ();
             } else{
                 KoalasMessage koalasMessage = getTMessage ( b);
                 tMessage =koalasMessage.gettMessage ();
                 koalasTrace =koalasMessage.getKoalasTrace ();
+                generic = koalasMessage.isGeneric ();
             }
 
             methodName = tMessage.name;
@@ -452,14 +466,16 @@ public abstract class KoalasAbstractNonblockingServer extends TServer {
             TProtocol tBinaryProtocol = new KoalasBinaryProtocol ( tioStreamTransportInput );
             TMessage tMessage;
             KoalasTrace koalasTrace;
+            boolean generic;
             try {
                 tMessage= tBinaryProtocol.readMessageBegin ();
                 koalasTrace = ((KoalasBinaryProtocol) tBinaryProtocol).getKoalasTrace ();
+                generic = ((KoalasBinaryProtocol) tBinaryProtocol).isGeneric ();
             } catch (TException e) {
-                return new KoalasMessage (new TMessage(),new KoalasTrace());
+                return new KoalasMessage (new TMessage(),new KoalasTrace(),false);
 
             }
-            return new KoalasMessage(tMessage,koalasTrace);
+            return new KoalasMessage(tMessage,koalasTrace,generic);
         }
 
         private KoalasMessage getKoalasTMessage(byte[] b){
@@ -487,7 +503,7 @@ public abstract class KoalasAbstractNonblockingServer extends TServer {
                 try {
                     sign = new String ( signByte, "UTF-8" );
                 } catch (Exception e) {
-                    return new KoalasMessage(new TMessage(),new KoalasTrace());
+                    return new KoalasMessage(new TMessage(),new KoalasTrace(),false);
                 }
 
                 byte[] rsaBody = new byte[size -10-signLen];
@@ -495,34 +511,39 @@ public abstract class KoalasAbstractNonblockingServer extends TServer {
 
                 try {
                     if(!KoalasRsaUtil.verify ( rsaBody,publicKey,sign )){
-                        return new KoalasMessage(new TMessage(),new KoalasTrace());
+                        return new KoalasMessage(new TMessage(),new KoalasTrace(),false);
                     }
                     request = KoalasRsaUtil.decryptByPrivateKey (rsaBody,privateKey);
                 } catch (Exception e) {
-                    return new KoalasMessage(new TMessage(),new KoalasTrace());
+                    return new KoalasMessage(new TMessage(),new KoalasTrace(),false);
                 }
             }
             TMessage tMessage;
             KoalasTrace koalasTrace;
+            boolean generic;
             ByteArrayInputStream inputStream = new ByteArrayInputStream ( request );
             TIOStreamTransport tioStreamTransportInput = new TIOStreamTransport (  inputStream);
             try {
                 TProtocol tBinaryProtocol = new KoalasBinaryProtocol( tioStreamTransportInput );
                 tMessage= tBinaryProtocol.readMessageBegin ();
                 koalasTrace = ((KoalasBinaryProtocol) tBinaryProtocol).getKoalasTrace ();
+                generic = ((KoalasBinaryProtocol) tBinaryProtocol).isGeneric ();
+
             } catch (TException e) {
-                return new KoalasMessage(new TMessage(),new KoalasTrace());
+                return new KoalasMessage(new TMessage(),new KoalasTrace(),false);
             }
-            return new KoalasMessage(tMessage,koalasTrace);
+            return new KoalasMessage(tMessage,koalasTrace,generic);
         }
 
-        private class KoalasMessage{
+        private  class KoalasMessage{
             private TMessage tMessage;
             private KoalasTrace koalasTrace;
+            private boolean generic;
 
-            public KoalasMessage(TMessage tMessage, KoalasTrace koalasTrace) {
+            public KoalasMessage(TMessage tMessage, KoalasTrace koalasTrace, boolean generic) {
                 this.tMessage = tMessage;
                 this.koalasTrace = koalasTrace;
+                this.generic = generic;
             }
 
             public TMessage gettMessage() {
@@ -539,6 +560,14 @@ public abstract class KoalasAbstractNonblockingServer extends TServer {
 
             public void setKoalasTrace(KoalasTrace koalasTrace) {
                 this.koalasTrace = koalasTrace;
+            }
+
+            public boolean isGeneric() {
+                return generic;
+            }
+
+            public void setGeneric(boolean generic) {
+                this.generic = generic;
             }
         }
 

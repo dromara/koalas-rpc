@@ -19,6 +19,7 @@
 
 package thrift;
 
+import org.apache.thrift.TProcessor;
 import org.apache.thrift.transport.TNonblockingServerTransport;
 import org.apache.thrift.transport.TNonblockingTransport;
 import org.apache.thrift.transport.TTransportException;
@@ -154,6 +155,15 @@ public class KoalasThreadedSelectorServer extends KoalasAbstractNonblockingServe
   private String privateKey;
   private String publicKey;
   private String serviceName;
+  private TProcessor tGenericProcessor;
+
+  public TProcessor gettGenericProcessor() {
+    return tGenericProcessor;
+  }
+
+  public void settGenericProcessor(TProcessor tGenericProcessor) {
+    this.tGenericProcessor = tGenericProcessor;
+  }
 
   public String getServiceName() {
     return serviceName;
@@ -470,7 +480,7 @@ public class KoalasThreadedSelectorServer extends KoalasAbstractNonblockingServe
       try {
         clientKey = accepted.registerSelector(selector, SelectionKey.OP_READ);
 
-        FrameBuffer frameBuffer = new FrameBuffer(accepted, clientKey, SelectorThread.this,privateKey,publicKey,serviceName);
+        FrameBuffer frameBuffer = new FrameBuffer(accepted, clientKey, SelectorThread.this,privateKey,publicKey,serviceName,tGenericProcessor);
         clientKey.attach(frameBuffer);
       } catch (IOException e) {
         LOGGER.warn("Failed to register accepted connection to selector!", e);

@@ -19,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import protocol.KoalasBinaryProtocol;
 import protocol.KoalasTrace;
+import server.config.AbstractKoalsServerPublisher;
 import server.domain.ErrorType;
 import transport.TKoalasFramedTransport;
 import utils.KoalasRsaUtil;
@@ -49,12 +50,14 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
 
     private String className;
 
-    public KoalasHandler(TProcessor tprocessor, ExecutorService executorService, String privateKey, String publicKey, String className) {
-        this.tprocessor = tprocessor;
+    private AbstractKoalsServerPublisher serverPublisher;
+
+    public KoalasHandler(AbstractKoalsServerPublisher serverPublisher,ExecutorService executorService){
+        this.serverPublisher = serverPublisher;
         this.executorService = executorService;
-        this.privateKey = privateKey;
-        this.publicKey = publicKey;
-        this.className = className;
+        privateKey = serverPublisher.getPrivateKey ();
+        publicKey = serverPublisher.getPublicKey ();
+        className = serverPublisher.getServiceInterface ().getName ();
     }
 
     @Override
@@ -67,16 +70,25 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
             TMessage tMessage;
             KoalasTrace koalasTrace;
             boolean ifUserProtocol;
+            boolean generic;
             if(b[4]==TKoalasFramedTransport.first && b[5]==TKoalasFramedTransport.second){
                 ifUserProtocol = true;
                 KoalasMessage koalasMessage = getKoalasTMessage ( b);
                 tMessage = koalasMessage.gettMessage ();
                 koalasTrace = koalasMessage.getKoalasTrace ();
+                generic = koalasMessage.isGeneric ();
             }else{
                 ifUserProtocol = false;
                 KoalasMessage koalasMessage = getTMessage ( b);
                 tMessage =koalasMessage.gettMessage ();
                 koalasTrace =koalasMessage.getKoalasTrace ();
+                generic = koalasMessage.isGeneric ();
+            }
+
+            if(!generic){
+                tprocessor = serverPublisher.getTProcessor ();
+            } else{
+                tprocessor = serverPublisher.getGenericTProcessor ();
             }
 
             ByteArrayInputStream inputStream = new ByteArrayInputStream ( b );
@@ -330,13 +342,15 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
         TProtocol tBinaryProtocol = new KoalasBinaryProtocol( tioStreamTransportInput );
         TMessage tMessage=null;
         KoalasTrace koalasTrace;
+        boolean generic;
         try {
              tMessage= tBinaryProtocol.readMessageBegin ();
              koalasTrace = ((KoalasBinaryProtocol) tBinaryProtocol).getKoalasTrace ();
+             generic = ((KoalasBinaryProtocol) tBinaryProtocol).isGeneric ();
         } catch (Exception e) {
-            return new KoalasMessage(new TMessage(),new KoalasTrace());
+            return new KoalasMessage(new TMessage(),new KoalasTrace(),false);
         }
-        return new KoalasMessage(tMessage,koalasTrace);
+        return new KoalasMessage(tMessage,koalasTrace,generic);
     }
 
     private KoalasMessage getKoalasTMessage(byte[] b){
@@ -364,7 +378,7 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
             try {
                 sign = new String ( signByte, "UTF-8" );
             } catch (Exception e) {
-                return new KoalasMessage(new TMessage(),new KoalasTrace());
+                return new KoalasMessage(new TMessage(),new KoalasTrace(),false);
             }
 
             byte[] rsaBody = new byte[size -10-signLen];
@@ -372,34 +386,38 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
 
             try {
                 if(!KoalasRsaUtil.verify ( rsaBody,publicKey,sign )){
-                    return new KoalasMessage(new TMessage(),new KoalasTrace());
+                    return new KoalasMessage(new TMessage(),new KoalasTrace(),false);
                 }
                 request = KoalasRsaUtil.decryptByPrivateKey (rsaBody,privateKey);
             } catch (Exception e) {
-                return new KoalasMessage(new TMessage(),new KoalasTrace());
+                return new KoalasMessage(new TMessage(),new KoalasTrace(),false);
             }
         }
         TMessage tMessage;
         KoalasTrace koalasTrace;
+        boolean generic;
         ByteArrayInputStream inputStream = new ByteArrayInputStream ( request );
         TIOStreamTransport tioStreamTransportInput = new TIOStreamTransport (  inputStream);
         try {
             TProtocol tBinaryProtocol = new KoalasBinaryProtocol( tioStreamTransportInput );
             tMessage= tBinaryProtocol.readMessageBegin ();
             koalasTrace = ((KoalasBinaryProtocol) tBinaryProtocol).getKoalasTrace ();
+            generic = ((KoalasBinaryProtocol) tBinaryProtocol).isGeneric ();
         } catch (Exception e) {
-            return new KoalasMessage(new TMessage(),new KoalasTrace());
+            return new KoalasMessage(new TMessage(),new KoalasTrace(),false);
         }
-        return new KoalasMessage(tMessage,koalasTrace);
+        return new KoalasMessage(tMessage,koalasTrace,generic);
     }
 
     private static class KoalasMessage{
         private TMessage tMessage;
         private KoalasTrace koalasTrace;
+        private boolean generic;
 
-        public KoalasMessage(TMessage tMessage, KoalasTrace koalasTrace) {
+        public KoalasMessage(TMessage tMessage, KoalasTrace koalasTrace, boolean generic) {
             this.tMessage = tMessage;
             this.koalasTrace = koalasTrace;
+            this.generic = generic;
         }
 
         public TMessage gettMessage() {
@@ -416,6 +434,14 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
 
         public void setKoalasTrace(KoalasTrace koalasTrace) {
             this.koalasTrace = koalasTrace;
+        }
+
+        public boolean isGeneric() {
+            return generic;
+        }
+
+        public void setGeneric(boolean generic) {
+            this.generic = generic;
         }
     }
 
