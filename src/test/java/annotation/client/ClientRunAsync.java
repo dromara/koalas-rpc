@@ -25,4 +25,15 @@ public class ClientRunAsync {
          }
      }
 
+    @Test
+    public void testRunGenericAsync(){
+        for (int i = 0; i <100 ; i++) {
+            try {
+                testServiceAsync.getGenericRemoteRpc ();
+            }catch (Exception e){
+                e.printStackTrace ();
+            }
+        }
+    }
+
 }

@@ -54,7 +54,7 @@ public class KoalasClientProxy implements FactoryBean<Object>, ApplicationContex
     public static final int DEFUAL_READTIMEOUT = 30*1000;
 
     //client端service
-    private Class<?> serviceInterface;
+    private String serviceInterface;
     // 方式1：zk管理的动态集群,格式192.168.3.253:6666
     private String zkPath;
     // 方式2：指定的server列表，逗号分隔，#分隔权重,格式192.168.3.253:6666#10,192.168.3.253:6667#10
@@ -315,11 +315,11 @@ public class KoalasClientProxy implements FactoryBean<Object>, ApplicationContex
         return applicationContext;
     }
 
-    public Class<?> getServiceInterface() {
+    public String getServiceInterface() {
         return serviceInterface;
     }
 
-    public void setServiceInterface(Class<?> serviceInterface) {
+    public void setServiceInterface(String serviceInterface) {
         this.serviceInterface = serviceInterface;
     }
 
@@ -477,7 +477,11 @@ public class KoalasClientProxy implements FactoryBean<Object>, ApplicationContex
         Class<?>[] classes = null;
 
         if(!generic){
-            classes = serviceInterface.getClasses ();
+            try {
+                classes= this.getClass ().getClassLoader ().loadClass ( serviceInterface ).getClasses ();
+            } catch (ClassNotFoundException e) {
+                throw new IllegalArgumentException ( "can't find the class :" + serviceInterface );
+            }
         } else {
             classes = GenericService.class.getClasses ();
         }
@@ -492,7 +496,11 @@ public class KoalasClientProxy implements FactoryBean<Object>, ApplicationContex
 
         Class<?>[] classes = null;
         if(!generic){
-            classes = serviceInterface.getClasses ();
+            try {
+                classes= this.getClass ().getClassLoader ().loadClass ( serviceInterface ).getClasses ();
+            } catch (ClassNotFoundException e) {
+                throw new IllegalArgumentException ( "can't find the class :" + serviceInterface );
+            }
         } else {
             classes = GenericService.class.getClasses ();
         }
@@ -509,7 +517,11 @@ public class KoalasClientProxy implements FactoryBean<Object>, ApplicationContex
 
         Class<?>[] classes = null;
         if(!generic){
-            classes = serviceInterface.getClasses ();
+            try {
+                classes= this.getClass ().getClassLoader ().loadClass ( serviceInterface ).getClasses ();
+            } catch (ClassNotFoundException e) {
+                throw new IllegalArgumentException ( "can't find the class :" + serviceInterface );
+            }
         } else {
             classes = GenericService.class.getClasses ();
         }
@@ -523,7 +535,11 @@ public class KoalasClientProxy implements FactoryBean<Object>, ApplicationContex
     private Class<?> getAsyncClientClass() {
         Class<?>[] classes = null;
         if(!generic){
-            classes = serviceInterface.getClasses ();
+            try {
+                classes= this.getClass ().getClassLoader ().loadClass ( serviceInterface ).getClasses ();
+            } catch (ClassNotFoundException e) {
+                throw new IllegalArgumentException ( "can't find the class :" + serviceInterface );
+            }
         } else {
             classes = GenericService.class.getClasses ();
         }
@@ -565,9 +581,9 @@ public class KoalasClientProxy implements FactoryBean<Object>, ApplicationContex
         abandonedConfig = getAbandonedConfig ();
 
         if (!StringUtils.isEmpty ( serverIpPorts )) {
-            icluster = new DirectClisterImpl ( serverIpPorts, iLoadBalancer == null ? new RandomLoadBalancer () : iLoadBalancer, serviceInterface.getName (), async, connTimeout, readTimeout, genericObjectPoolConfig, abandonedConfig );
+            icluster = new DirectClisterImpl ( serverIpPorts, iLoadBalancer == null ? new RandomLoadBalancer () : iLoadBalancer, serviceInterface, async, connTimeout, readTimeout, genericObjectPoolConfig, abandonedConfig );
         } else{
-            icluster = new ZookeeperClusterImpl ( zkPath ,iLoadBalancer == null ? new RandomLoadBalancer () : iLoadBalancer, serviceInterface.getName (),env,async,connTimeout,readTimeout,genericObjectPoolConfig,abandonedConfig);
+            icluster = new ZookeeperClusterImpl ( zkPath ,iLoadBalancer == null ? new RandomLoadBalancer () : iLoadBalancer, serviceInterface,env,async,connTimeout,readTimeout,genericObjectPoolConfig,abandonedConfig);
         }
 
         KoalsaMothodInterceptor koalsaMothodInterceptor = new KoalsaMothodInterceptor ( icluster, retryTimes, retryRequest, this,readTimeout );
@@ -575,7 +591,7 @@ public class KoalasClientProxy implements FactoryBean<Object>, ApplicationContex
 
         koalasServiceProxy = new ProxyFactory ( _interface, koalsaMothodInterceptor ).getProxy ();
 
-        logger.info ( "the service【{}】is start !", serviceInterface.getName () );
+        logger.info ( "the service【{}】is start !", serviceInterface );
     }
 
     private AbandonedConfig getAbandonedConfig() {

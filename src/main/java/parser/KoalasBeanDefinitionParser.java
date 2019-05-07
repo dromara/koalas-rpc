@@ -52,10 +52,8 @@ public class KoalasBeanDefinitionParser implements BeanDefinitionParser {
 
         if (clazz == KoalasClientProxy.class) {
             String serviceInterface = element.getAttribute ( "serviceInterface" );
-            try {
-                beanDefinition.getPropertyValues ().addPropertyValue ( "serviceInterface",Class.forName ( serviceInterface ) );
-            } catch (ClassNotFoundException e) {
-                logger.error ( "this serviceInterface: "+serviceInterface+" is wrong",e );
+            if(!StringUtils.isEmpty ( serviceInterface )){
+                beanDefinition.getPropertyValues ().addPropertyValue ( "serviceInterface",serviceInterface );
             }
 
             String zkPath = element.getAttribute ( "zkPath" );

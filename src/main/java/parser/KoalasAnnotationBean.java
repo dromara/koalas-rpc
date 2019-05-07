@@ -148,18 +148,38 @@ public class KoalasAnnotationBean implements DisposableBean, BeanFactoryPostProc
     private Object getClientInvoke(KoalasClient koalasClient, Class<?> beanClass) {
 
         KoalasClientProxy koalasClientProxy = new KoalasClientProxy ();
+
+        boolean async;
+
         String interfaceName = beanClass.getName ();
-        if(koalasClientProxyMap.containsKey (  interfaceName)){
-            return koalasClientProxyMap.get ( interfaceName ).getObject ();
-        }
         if (interfaceName.endsWith ( "$Iface" )) {
             koalasClientProxy.setAsync ( false );
+            async=false;
         } else if (interfaceName.endsWith ( "$AsyncIface" )) {
             koalasClientProxy.setAsync ( true );
+            async=true;
         } else {
             throw new RuntimeException ( "the bean :" + beanClass + "not allow with annotation @KoalasClient" );
         }
-        koalasClientProxy.setServiceInterface ( beanClass.getDeclaringClass () );
+
+        if(StringUtils.isEmpty ( koalasClient.genericService () )){
+            if(koalasClientProxyMap.containsKey (  interfaceName)){
+                return koalasClientProxyMap.get ( interfaceName ).getObject ();
+            }
+        } else{
+            if(koalasClientProxyMap.containsKey ( "generic-".concat ( async?"async-":"sync-" ).concat (koalasClient.genericService ()) )){
+                return koalasClientProxyMap.get ( "generic-".concat ( async?"async-":"sync-" ).concat (koalasClient.genericService ())).getObject ();
+            }
+        }
+
+        if(StringUtils.isNotBlank ( koalasClient.genericService () )){
+            koalasClientProxy.setGeneric ( true );
+            koalasClientProxy.setServiceInterface (koalasClient.genericService ());
+        } else{
+            koalasClientProxy.setGeneric ( false );
+            koalasClientProxy.setServiceInterface ( beanClass.getDeclaringClass ().getName () );
+        }
+
 
         if (StringUtils.isNotEmpty ( koalasClient.zkPath () )) {
             koalasClientProxy.setZkPath ( koalasClient.zkPath () );
@@ -168,8 +188,6 @@ public class KoalasAnnotationBean implements DisposableBean, BeanFactoryPostProc
         if (StringUtils.isNotEmpty ( koalasClient.serverIpPorts () )) {
             koalasClientProxy.setServerIpPorts ( koalasClient.serverIpPorts () );
         }
-
-        koalasClientProxy.setGeneric ( koalasClient.generic ());
 
         koalasClientProxy.setConnTimeout ( koalasClient.connTimeout () );
         koalasClientProxy.setReadTimeout ( koalasClient.readTimeout () );
@@ -210,7 +228,12 @@ public class KoalasAnnotationBean implements DisposableBean, BeanFactoryPostProc
             koalasClientProxy.setPublicKey (koalasClient.publicKey ()  );
         }
         koalasClientProxy.afterPropertiesSet ();
-        koalasClientProxyMap.put ( interfaceName, koalasClientProxy);
+        if(StringUtils.isEmpty ( koalasClient.genericService () )){
+            koalasClientProxyMap.put ( interfaceName, koalasClientProxy);
+        } else{
+            koalasClientProxyMap.put ( "generic-".concat ( async?"async-":"sync-" ).concat (koalasClient.genericService ()),koalasClientProxy );
+        }
+
         return koalasClientProxy.getObject ();
     }
 

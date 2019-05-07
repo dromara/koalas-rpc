@@ -19,7 +19,7 @@ public @interface KoalasClient {
 
     String serverIpPorts() default "";
 
-    boolean generic() default false;
+    String genericService() default "";
 
     int connTimeout() default KoalasClientProxy.DEFUAL_CONNTIMEOUT;
 
