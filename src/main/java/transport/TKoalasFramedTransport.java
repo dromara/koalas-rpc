@@ -1,7 +1,7 @@
 package transport;
 
-import ex.OutMaxLengthException;
-import ex.RSAException;
+import exceptions.OutMaxLengthException;
+import exceptions.RSAException;
 import org.apache.thrift.TByteArrayOutputStream;
 import org.apache.thrift.transport.TMemoryInputTransport;
 import org.apache.thrift.transport.TTransport;
