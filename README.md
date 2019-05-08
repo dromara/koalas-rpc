@@ -467,6 +467,100 @@ public class WmCreateAccountServiceNettyImpl implements WmCreateAccountService.I
 ```
 就这么简单即可。
 
+**3. 泛化调用**
+
+为什么需要泛化调用？
+1：有一个通用压测平台，想去压测不同的server。那么现在就有一个问题了，不可能让压测平台服务端去依赖所有的下游服务，这样依赖会很繁杂，这时候如果说只配置serviceName,request模型和request请求json就可以进行远程调用，那么将大大的减少头疼的依赖。
+2：假设php同事对java代码不熟悉，不可能让他们去依赖spring，一共一套简单的api来使用是很有必要的。
+3：上游服务不想依赖下游服务的数据模型。
+
+对于泛化调用来说，dubbo已经提供，soft-rpc也有提供。当然koalas-rpc也不会例外，并且支持xml，注解和java api的使用方式。下面几个例子来说明一下使用方式。更多demo去源码中查看，作者已经写好，开箱即用。
+
+xml使用方式
+
+```
+<koalas:client id="wmCreateAccountService3"
+				   serviceInterface="thrift.service.WmCreateAccountService"
+				   zkPath="127.0.0.1:2181"
+				   generic="true"
+				   readTimeout="50000000"/>
+```
+
+```
+@Autowired
+@Qualifier("wmCreateAccountService3")
+GenericService.Iface wmGenericService;
+
+public void getGenericRpc() throws TException {
+        GenericRequest request = new GenericRequest (  );
+        request.setMethodName ( "getRPC" );
+
+        request.setClassType ( new ArrayList<String> (  ){{
+            add ( "thrift.domain.WmCreateAccountRequest");
+        }} );
+
+        request.setRequestObj ( new ArrayList<String> (  ){{
+            add ( "{\"accountType\":1,\"partnerId\":1,\"partnerName\":\"你好\",\"partnerType\":1,\"poiFlag\":1,\"source\":0}");
+        }} );
+
+        String str = wmGenericService.invoke ( request );
+        System.out.println (str);
+    }
+```
+简单说明一下，GenericService.Iface是通用服务，有三个参数，第一个是方法名称，第二个是请求体类型集合，第三个是请求体内容。直接调用即可，返回值是server端的json类型，使用json工具为阿里巴巴的Fast-json
+
+注解使用方式
+```
+ @KoalasClient(zkPath = "127.0.0.1:2181",readTimeout = 5000*1000,genericService = "thrift.service.WmCreateAccountService")
+ GenericService.Iface genericService;
+ 
+ public void getGenericRemoteRpc() throws TException {
+        GenericRequest request = new GenericRequest (  );
+        request.setMethodName ( "getRPC" );
+
+        request.setClassType ( new ArrayList<String> (  ){{
+            add ( "thrift.domain.WmCreateAccountRequest");
+        }} );
+
+        request.setRequestObj ( new ArrayList<String> (  ){{
+            add ( "{\"accountType\":1,\"partnerId\":1,\"partnerName\":\"你好\",\"partnerType\":1,\"poiFlag\":1,\"setAccountType\":true,\"setPartnerId\":true,\"setPartnerName\":true,\"setPartnerType\":true,\"setPoiFlag\":true,\"setSource\":false,\"source\":0}");
+        }} );
+
+        String str = genericService.invoke ( request );
+        System.out.println (str);
+    }
+    
+```
+唯一区别的是注解要指定genericService，当genericService不为空时，默认开启泛化调用
+当然，java api方式也是支持的。
+
+```
+        KoalasClientProxy koalasClientProxy = new KoalasClientProxy();
+        koalasClientProxy.setServiceInterface ( "thrift.service.WmCreateAccountService" );
+        koalasClientProxy.setZkPath ("127.0.0.1:2181"  );
+        koalasClientProxy.setGeneric ( true );
+        koalasClientProxy.setReadTimeout ( 50000000 );
+        koalasClientProxy.afterPropertiesSet ();
+        GenericService.Iface genericService = (GenericService.Iface) koalasClientProxy.getObject ();
+        GenericRequest request = new GenericRequest (  );
+        request.setMethodName ( "getRPC" );
+
+        request.setClassType ( new ArrayList<String> (  ){{
+            add ( "thrift.domain.WmCreateAccountRequest");
+        }} );
+
+        request.setRequestObj ( new ArrayList<String> (  ){{
+            add ( "{\"accountType\":1,\"partnerId\":1,\"partnerName\":\"你好\",\"partnerType\":1,\"poiFlag\":1,\"setAccountType\":true,\"setPartnerId\":true,\"setPartnerName\":true,\"setPartnerType\":true,\"setPoiFlag\":true,\"setSource\":false,\"source\":0}");
+        }} );
+
+        String str = genericService.invoke ( request );
+        System.out.println (str);
+        koalasClientProxy.destroy ();
+```
+
+特别注意的是KoalasClientProxy对象非常非常重，一定要在服务关闭的时候执行koalasClientProxy.destroy ();方法，并且需要带应用程序中缓存该对象，千万不要每次使用都要创建，这样会极大的浪费资源，每个服务对应一个KoalasClientProxy，同步和异步也是不同的对象，这些使用者需要注意。
+
+
 # 三：参数配置文档
 
 **1：客户端**
@@ -477,6 +571,9 @@ serviceInterface | thrift生成的接口类| Y
 zkPath | zk的服务地址，集群中间逗号分隔| Y
 serverIpPorts | 不实用zk发现直接连接服务器server，格式ip:端口#权重。多个逗号分隔 | N
 async | 是否异步 | N，默认false同步
+generic | 是否泛化调用（xml配置中使用） | N，默认false
+genericService | 泛化调用的serviceName（注解配置中使用）使用方法参照代码中demo | N，默认false
+cat | 是否开启CAT数据大盘，需要配置CAT服务，即可查看详细调用情况） | N，默认false
 connTimeout | 连接超时 | N，默认3000ms
 readTimeout | 读取超时 | N，默认5000ms，按照服务端指定时间适当调整
 localMockServiceImpl | 本地测试的实现 | N
@@ -498,9 +595,9 @@ testOnReturn | TCP长连接池，参照Apache Pool参数 | false
 testWhileIdle | TCP长连接池，参照Apache Pool参数 | true
 iLoadBalancer | 负载略侧，默认随机 | N
 env | 环境 | N,默认dev
-removeAbandonedOnBorrow | TCP长连接池，参照Apache Pool参数 | row 1 col 2
-removeAbandonedOnMaintenance | TCP长连接池，参照Apache Pool参数 | row 1 col 2
-removeAbandonedTimeout| TCP长连接池，参照Apache Pool参数 | row 1 col 2
+removeAbandonedOnBorrow | TCP长连接池，参照Apache Pool参数 | true
+removeAbandonedOnMaintenance | TCP长连接池，参照Apache Pool参数 | true
+removeAbandonedTimeout| TCP长连接池，参照Apache Pool参数 | 30000ms
 maxLength_ | 允许发送最大字节数 | N,10 * 1024 * 1024
 cores | selecter核心数量 | N，默认当前cpu数量 
 asyncSelectorThreadCount | 异步请求时线程数量 | N，默认当前CPU核心数量*2
@@ -515,6 +612,7 @@ serviceImpl | 服务端实现| Y
 serviceInterface | thrift自动生成的类| Y
 port | 暴露的服务端口| Y
 zkpath | 服务端的zk路径| Y
+cat | （是否开启CAT数据大盘，需要配置CAT服务，即可查看详细调用情况） | N，默认false
 bossThreadCount | 处理连接线程| N,当前CPU核心数
 workThreadCount | 读取线程|N，当前CPU核心数*2
 koalasThreadCount | 业务线程数| 256
@@ -574,6 +672,7 @@ MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCD0CHPP/sJeYUw0/H0+KwhAP/6cEqnV/HY7q/lA8Ef
 10w次请求，大约耗时12s，平均qps在8000左右，在集群环境下会有不错的性能表现
 
 # 数据大盘展示
+开启数据大盘，需要设置客户端或者服务端的cat参数为true，默认为false。
 koalas2.0已经接入了cat服务，cat服务支持qps统计，可用率，tp90line,tp99line,丰富自定义监控报警等，接入效果图
 ![输入图片说明](https://images.gitee.com/uploads/images/2019/0401/144340_c34bf1e0_536094.png "屏幕截图.png")
 丰富的可视参数，流量统计，日，周，月报表展示等。
