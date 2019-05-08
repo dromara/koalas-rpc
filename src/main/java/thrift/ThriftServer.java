@@ -97,9 +97,9 @@ public class ThriftServer implements IkoalasServer {
             }
 
          } catch (TTransportException e) {
-            logger.error ( "thrift server init faid service:" + serverPublisher.serviceInterface.getName (),e );
+            logger.error ( "thrift server init failed service:" + serverPublisher.serviceInterface.getName (),e );
             stop();
-            throw new IllegalArgumentException("thrift server init faid service:" + serverPublisher.serviceInterface.getName ());
+            throw new IllegalArgumentException("thrift server init failed service:" + serverPublisher.serviceInterface.getName ());
         }
         logger.info("thrift server init success server={}",serverPublisher);
     }

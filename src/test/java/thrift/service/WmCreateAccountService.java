@@ -876,14 +876,19 @@ public class WmCreateAccountService {
         super("getRPC");
       }
 
-      protected getRPC_args getEmptyArgsInstance() {
+      public getRPC_args getEmptyArgsInstance() {
         return new getRPC_args();
       }
 
-      protected getRPC_result getResult(I iface, getRPC_args args) throws org.apache.thrift.TException {
+      public getRPC_result getResult(I iface, getRPC_args args) throws org.apache.thrift.TException {
         getRPC_result result = new getRPC_result();
         result.success = iface.getRPC(args.wmCreateAccountRequest);
         return result;
+      }
+
+      @Override
+      protected boolean isOneway() {
+        return false;
       }
     }
 
@@ -892,14 +897,19 @@ public class WmCreateAccountService {
         super("koaloasTest1");
       }
 
-      protected koaloasTest1_args getEmptyArgsInstance() {
+      public koaloasTest1_args getEmptyArgsInstance() {
         return new koaloasTest1_args();
       }
 
-      protected koaloasTest1_result getResult(I iface, koaloasTest1_args args) throws org.apache.thrift.TException {
+      public koaloasTest1_result getResult(I iface, koaloasTest1_args args) throws org.apache.thrift.TException {
         koaloasTest1_result result = new koaloasTest1_result();
         result.success = iface.koaloasTest1(args.wmCreateAccountRequest);
         return result;
+      }
+
+      @Override
+      protected boolean isOneway() {
+        return false;
       }
     }
 
@@ -908,14 +918,19 @@ public class WmCreateAccountService {
         super("koaloasTest2");
       }
 
-      protected koaloasTest2_args getEmptyArgsInstance() {
+      public koaloasTest2_args getEmptyArgsInstance() {
         return new koaloasTest2_args();
       }
 
-      protected koaloasTest2_result getResult(I iface, koaloasTest2_args args) throws org.apache.thrift.TException {
+      public koaloasTest2_result getResult(I iface, koaloasTest2_args args) throws org.apache.thrift.TException {
         koaloasTest2_result result = new koaloasTest2_result();
         result.success = iface.koaloasTest2(args.wmCreateAccountRequest);
         return result;
+      }
+
+      @Override
+      protected boolean isOneway() {
+        return false;
       }
     }
 
@@ -924,14 +939,19 @@ public class WmCreateAccountService {
         super("koaloasTest3");
       }
 
-      protected koaloasTest3_args getEmptyArgsInstance() {
+      public koaloasTest3_args getEmptyArgsInstance() {
         return new koaloasTest3_args();
       }
 
-      protected koaloasTest3_result getResult(I iface, koaloasTest3_args args) throws org.apache.thrift.TException {
+      public koaloasTest3_result getResult(I iface, koaloasTest3_args args) throws org.apache.thrift.TException {
         koaloasTest3_result result = new koaloasTest3_result();
         result.success = iface.koaloasTest3(args.wmCreateAccountRequest);
         return result;
+      }
+
+      @Override
+      protected boolean isOneway() {
+        return false;
       }
     }
 
@@ -940,14 +960,19 @@ public class WmCreateAccountService {
         super("koaloasTest4");
       }
 
-      protected koaloasTest4_args getEmptyArgsInstance() {
+      public koaloasTest4_args getEmptyArgsInstance() {
         return new koaloasTest4_args();
       }
 
-      protected koaloasTest4_result getResult(I iface, koaloasTest4_args args) throws org.apache.thrift.TException {
+      public koaloasTest4_result getResult(I iface, koaloasTest4_args args) throws org.apache.thrift.TException {
         koaloasTest4_result result = new koaloasTest4_result();
         result.success = iface.koaloasTest4(args.wmCreateAccountRequest);
         return result;
+      }
+
+      @Override
+      protected boolean isOneway() {
+        return false;
       }
     }
 
@@ -956,14 +981,19 @@ public class WmCreateAccountService {
         super("koaloasTest5");
       }
 
-      protected koaloasTest5_args getEmptyArgsInstance() {
+      public koaloasTest5_args getEmptyArgsInstance() {
         return new koaloasTest5_args();
       }
 
-      protected koaloasTest5_result getResult(I iface, koaloasTest5_args args) throws org.apache.thrift.TException {
+      public koaloasTest5_result getResult(I iface, koaloasTest5_args args) throws org.apache.thrift.TException {
         koaloasTest5_result result = new koaloasTest5_result();
         result.success = iface.koaloasTest5(args.wmCreateAccountRequest);
         return result;
+      }
+
+      @Override
+      protected boolean isOneway() {
+        return false;
       }
     }
 
@@ -972,14 +1002,18 @@ public class WmCreateAccountService {
         super("koaloasTest6");
       }
 
-      protected koaloasTest6_args getEmptyArgsInstance() {
+      public koaloasTest6_args getEmptyArgsInstance() {
         return new koaloasTest6_args();
       }
 
-      protected koaloasTest6_result getResult(I iface, koaloasTest6_args args) throws org.apache.thrift.TException {
+      public koaloasTest6_result getResult(I iface, koaloasTest6_args args) throws org.apache.thrift.TException {
         koaloasTest6_result result = new koaloasTest6_result();
         result.success = iface.koaloasTest6(args.wmCreateAccountRequest);
         return result;
+      }
+      @Override
+      protected boolean isOneway() {
+        return false;
       }
     }
 
@@ -988,14 +1022,18 @@ public class WmCreateAccountService {
         super("koaloasTest7");
       }
 
-      protected koaloasTest7_args getEmptyArgsInstance() {
+      public koaloasTest7_args getEmptyArgsInstance() {
         return new koaloasTest7_args();
       }
 
-      protected koaloasTest7_result getResult(I iface, koaloasTest7_args args) throws org.apache.thrift.TException {
+      public koaloasTest7_result getResult(I iface, koaloasTest7_args args) throws org.apache.thrift.TException {
         koaloasTest7_result result = new koaloasTest7_result();
         result.success = iface.koaloasTest7(args.wmCreateAccountRequest);
         return result;
+      }
+      @Override
+      protected boolean isOneway() {
+        return false;
       }
     }
 
@@ -1004,14 +1042,18 @@ public class WmCreateAccountService {
         super("koaloasTest8");
       }
 
-      protected koaloasTest8_args getEmptyArgsInstance() {
+      public koaloasTest8_args getEmptyArgsInstance() {
         return new koaloasTest8_args();
       }
 
-      protected koaloasTest8_result getResult(I iface, koaloasTest8_args args) throws org.apache.thrift.TException {
+      public koaloasTest8_result getResult(I iface, koaloasTest8_args args) throws org.apache.thrift.TException {
         koaloasTest8_result result = new koaloasTest8_result();
         result.success = iface.koaloasTest8(args.wmCreateAccountRequest);
         return result;
+      }
+      @Override
+      protected boolean isOneway() {
+        return false;
       }
     }
 
@@ -1020,14 +1062,18 @@ public class WmCreateAccountService {
         super("koaloasTest9");
       }
 
-      protected koaloasTest9_args getEmptyArgsInstance() {
+      public koaloasTest9_args getEmptyArgsInstance() {
         return new koaloasTest9_args();
       }
 
-      protected koaloasTest9_result getResult(I iface, koaloasTest9_args args) throws org.apache.thrift.TException {
+      public koaloasTest9_result getResult(I iface, koaloasTest9_args args) throws org.apache.thrift.TException {
         koaloasTest9_result result = new koaloasTest9_result();
         result.success = iface.koaloasTest9(args.wmCreateAccountRequest);
         return result;
+      }
+      @Override
+      protected boolean isOneway() {
+        return false;
       }
     }
 
@@ -1036,14 +1082,18 @@ public class WmCreateAccountService {
         super("koaloasTest10");
       }
 
-      protected koaloasTest10_args getEmptyArgsInstance() {
+      public koaloasTest10_args getEmptyArgsInstance() {
         return new koaloasTest10_args();
       }
 
-      protected koaloasTest10_result getResult(I iface, koaloasTest10_args args) throws org.apache.thrift.TException {
+      public koaloasTest10_result getResult(I iface, koaloasTest10_args args) throws org.apache.thrift.TException {
         koaloasTest10_result result = new koaloasTest10_result();
         result.success = iface.koaloasTest10(args.wmCreateAccountRequest);
         return result;
+      }
+      @Override
+      protected boolean isOneway() {
+        return false;
       }
     }
 
@@ -1052,14 +1102,18 @@ public class WmCreateAccountService {
         super("koaloasTest11");
       }
 
-      protected koaloasTest11_args getEmptyArgsInstance() {
+      public koaloasTest11_args getEmptyArgsInstance() {
         return new koaloasTest11_args();
       }
 
-      protected koaloasTest11_result getResult(I iface, koaloasTest11_args args) throws org.apache.thrift.TException {
+      public koaloasTest11_result getResult(I iface, koaloasTest11_args args) throws org.apache.thrift.TException {
         koaloasTest11_result result = new koaloasTest11_result();
         result.success = iface.koaloasTest11(args.wmCreateAccountRequest);
         return result;
+      }
+      @Override
+      protected boolean isOneway() {
+        return false;
       }
     }
 
@@ -1068,14 +1122,19 @@ public class WmCreateAccountService {
         super("koaloasTest12");
       }
 
-      protected koaloasTest12_args getEmptyArgsInstance() {
+      public koaloasTest12_args getEmptyArgsInstance() {
         return new koaloasTest12_args();
       }
 
-      protected koaloasTest12_result getResult(I iface, koaloasTest12_args args) throws org.apache.thrift.TException {
+      public koaloasTest12_result getResult(I iface, koaloasTest12_args args) throws org.apache.thrift.TException {
         koaloasTest12_result result = new koaloasTest12_result();
         result.success = iface.koaloasTest12(args.wmCreateAccountRequest);
         return result;
+      }
+
+      @Override
+      protected boolean isOneway() {
+        return false;
       }
     }
 
