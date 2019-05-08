@@ -35,9 +35,9 @@ public class ReleaseResourcesKoalasAsyncCallBack<T> implements AsyncMethodCallba
         Method m;
         Object o;
         try {
+            serverObject.getGenericObjectPool ().returnObject ( socket );
             m = t.getClass ().getDeclaredMethod ( "getResult" );
             o = m.invoke ( t );
-            serverObject.getGenericObjectPool ().returnObject ( socket );
             if (asyncMethodCallback != null)
                 if (asyncMethodCallback instanceof KoalasAsyncCallBack) {
                     ((KoalasAsyncCallBack) asyncMethodCallback).onCompleteWithoutReflect ( o );
@@ -54,19 +54,8 @@ public class ReleaseResourcesKoalasAsyncCallBack<T> implements AsyncMethodCallba
                         asyncMethodCallback.onComplete ( t );
                     }
                 }
-                try {
-                    serverObject.getGenericObjectPool ().returnObject ( socket );
-                    return;
-                } catch (Exception e1) {
-                    logger.error ( "onComplete invalidateObject object error !", e );
-                }
             } else{
                 asyncMethodCallback.onError ( e );
-            }
-            try {
-                serverObject.getGenericObjectPool ().invalidateObject ( socket );
-            } catch (Exception e1) {
-                logger.error ( "onComplete invalidateObject object error !", e );
             }
         }
     }
