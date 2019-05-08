@@ -117,7 +117,7 @@ public class TestServiceSync {
         }} );
 
         request.setRequestObj ( new ArrayList<String> (  ){{
-            add ( "{\"accountType\":1,\"partnerId\":1,\"partnerName\":\"你好\",\"partnerType\":1,\"poiFlag\":1,\"setAccountType\":true,\"setPartnerId\":true,\"setPartnerName\":true,\"setPartnerType\":true,\"setPoiFlag\":true,\"setSource\":false,\"source\":0}");
+            add ( "{\"accountType\":1,\"partnerId\":1,\"partnerName\":\"你好\",\"partnerType\":1,\"poiFlag\":1,\"source\":0}");
         }} );
 
         String str = wmGenericService.invoke ( request );
