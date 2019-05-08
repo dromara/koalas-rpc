@@ -45,6 +45,7 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
     private boolean retryRequest;
     private KoalasClientProxy koalasClientProxy;
     private int asyncTimeOut;
+    private boolean cat;
 
     public KoalsaMothodInterceptor(Icluster icluster, int retryTimes, boolean retryRequest, KoalasClientProxy koalasClientProxy, int asyncTimeOut) {
         this.icluster = icluster;
@@ -52,6 +53,7 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
         this.retryRequest = retryRequest;
         this.koalasClientProxy = koalasClientProxy;
         this.asyncTimeOut = asyncTimeOut;
+        this.cat=koalasClientProxy.isCat ();
     }
 
     @Override
@@ -83,38 +85,43 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
         boolean serviceTop =false;
 
         Transaction transaction=null;
-        if(TraceThreadContext.get () ==null){
-            serviceTop=true;
-            transaction = Cat.newTransaction("Service", method.getDeclaringClass ().getName ().concat ( "." ).concat ( methodName ).concat ( ".top" ));
 
-            MessageTree tree = Cat.getManager().getThreadLocalMessageTree();
-            String messageId = tree.getMessageId();
+        if(cat){
+            if(TraceThreadContext.get () ==null){
+                serviceTop=true;
+                transaction = Cat.newTransaction("Service", method.getDeclaringClass ().getName ().concat ( "." ).concat ( methodName ).concat ( ".top" ));
 
-            if (messageId == null) {
-                messageId = Cat.createMessageId();
-                tree.setMessageId(messageId);
+                MessageTree tree = Cat.getManager().getThreadLocalMessageTree();
+                String messageId = tree.getMessageId();
+
+                if (messageId == null) {
+                    messageId = Cat.createMessageId();
+                    tree.setMessageId(messageId);
+                }
+
+                String childId = Cat.getProducer().createRpcServerId("default");
+
+                String root = tree.getRootMessageId();
+
+                if (root == null) {
+                    root = messageId;
+                }
+                Cat.logEvent(CatConstants.TYPE_REMOTE_CALL, "", Event.SUCCESS, childId);
+
+                KoalasTrace koalasTrace = new KoalasTrace (  );
+                koalasTrace.setChildId (childId  );
+                koalasTrace.setParentId (  messageId);
+                koalasTrace.setRootId ( root );
+                TraceThreadContext.set (koalasTrace);
+            } else{
+                KoalasTrace currentKoalasTrace = TraceThreadContext.get ();
+                String child_Id = Cat.getProducer().createRpcServerId("default");
+                Cat.logEvent(CatConstants.TYPE_REMOTE_CALL, "", Event.SUCCESS, child_Id);
+                currentKoalasTrace.setChildId ( child_Id );
             }
-
-            String childId = Cat.getProducer().createRpcServerId("default");
-
-            String root = tree.getRootMessageId();
-
-            if (root == null) {
-                root = messageId;
-            }
-            Cat.logEvent(CatConstants.TYPE_REMOTE_CALL, "", Event.SUCCESS, childId);
-
-            KoalasTrace koalasTrace = new KoalasTrace (  );
-            koalasTrace.setChildId (childId  );
-            koalasTrace.setParentId (  messageId);
-            koalasTrace.setRootId ( root );
-            TraceThreadContext.set (koalasTrace);
-        } else{
-            KoalasTrace currentKoalasTrace = TraceThreadContext.get ();
-            String child_Id = Cat.getProducer().createRpcServerId("default");
-            Cat.logEvent(CatConstants.TYPE_REMOTE_CALL, "", Event.SUCCESS, child_Id);
-            currentKoalasTrace.setChildId ( child_Id );
         }
+
+
         try {
             TTransport socket = null;
             int currTryTimes = 0;
@@ -131,7 +138,7 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
                     if (socket != null)
                         genericObjectPool.returnObject ( socket );
                     LOG.error ( e.getMessage (), e );
-                    if(transaction!=null)
+                    if(transaction!=null && cat)
                         transaction.setStatus ( e );
                     throw new IllegalStateException("borrowObject error :" + koalasClientProxy.getServiceInterface ());
                 }
@@ -162,7 +169,7 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
                         genericObjectPool.returnObject ( socket );
 
                     }
-                    if(transaction!=null)
+                    if(transaction!=null&& cat)
                         transaction.setStatus ( Transaction.SUCCESS );
                     return o;
                 } catch (Exception e) {
@@ -186,7 +193,7 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
                             if (socket != null) {
                                 genericObjectPool.returnObject ( socket );
                             }
-                            if(transaction!=null)
+                            if(transaction!=null&& cat)
                                 transaction.setStatus ( cause );
                             throw new IllegalStateException("rsa error with service" + serverObject.getRemoteServer ().toString ()+koalasClientProxy.getServiceInterface ());
                         }
@@ -196,7 +203,7 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
                             if (socket != null) {
                                 genericObjectPool.returnObject ( socket );
                             }
-                            if(transaction!=null)
+                            if(transaction!=null&& cat)
                                 transaction.setStatus ( cause );
                             throw new IllegalStateException("this client is not rsa support,please get the privateKey and publickey with server" + serverObject.getRemoteServer ().toString ()+koalasClientProxy.getServiceInterface ());
                         }
@@ -206,7 +213,7 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
                             if (socket != null) {
                                 genericObjectPool.returnObject ( socket );
                             }
-                            if(transaction!=null)
+                            if(transaction!=null&& cat)
                                 transaction.setStatus ( cause );
                             throw new IllegalStateException("this server is error please take the error log with server" + serverObject.getRemoteServer ()+koalasClientProxy.getServiceInterface ());
                         }
@@ -224,7 +231,7 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
                         if (socket != null) {
                             genericObjectPool.returnObject ( socket );
                         }
-                        if(transaction!=null)
+                        if(transaction!=null&& cat)
                             transaction.setStatus ( cause );
                         throw new IllegalStateException("this client privateKey or publicKey is error,please check it!" + serverObject.getRemoteServer ()+ koalasClientProxy.getServiceInterface ());
                     }
@@ -234,7 +241,7 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
                         if (socket != null) {
                             genericObjectPool.returnObject ( socket );
                         }
-                        if(transaction!=null)
+                        if(transaction!=null&& cat)
                             transaction.setStatus ( cause );
                         throw new IllegalStateException("to big content!" + serverObject.getRemoteServer ()+ koalasClientProxy.getServiceInterface ());
                     }
@@ -262,7 +269,7 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
                                 ifreturn = true;
                             } catch (Exception e1) {
                                 LOG.error ( "invalidateObject error ,", e );
-                                if(transaction!=null)
+                                if(transaction!=null&& cat)
                                     transaction.setStatus ( e1 );
                                 throw new IllegalStateException("SocketTimeout and invalidateObject error" + serverObject.getRemoteServer () + koalasClientProxy.getServiceInterface ());
                             }
@@ -279,12 +286,12 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
                                     genericObjectPool.invalidateObject ( socket );
                                 } catch (Exception e1) {
                                     LOG.error ( "invalidateObject error", e );
-                                    if(transaction!=null)
+                                    if(transaction!=null&& cat)
                                     transaction.setStatus ( e1 );
                                     throw new IllegalStateException("TTransportException and invalidateObject error" + serverObject.getRemoteServer () + koalasClientProxy.getServiceInterface ());
                                 }
                             }
-                            if(transaction!=null)
+                            if(transaction!=null&& cat)
                             transaction.setStatus ( cause );
                             throw new IllegalStateException("the remote server error!" + serverObject.getRemoteServer () + koalasClientProxy.getServiceInterface ());
                         }
@@ -300,19 +307,19 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
                     if (socket != null && !ifreturn)
                         genericObjectPool.returnObject ( socket );
                     LOG.error ( "invoke server error,server ip -【{}】,port -【{}】--serverName【{}】", serverObject.getRemoteServer ().getIp (), serverObject.getRemoteServer ().getPort (),koalasClientProxy.getServiceInterface ()  );
-                    if(transaction!=null)
+                    if(transaction!=null&& cat)
                     transaction.setStatus ( cause );
                     throw e;
                 }
             }
             IllegalStateException finallyException = new IllegalStateException("error!retry time out of:" + retryTimes + "!!! " + koalasClientProxy.getServiceInterface ());
-            if(transaction!=null)
-            transaction.setStatus ( finallyException );
+            if(transaction!=null&& cat)
+                  transaction.setStatus ( finallyException );
             throw finallyException;
         } finally {
-            if(transaction!=null)
+            if(transaction!=null&& cat)
                 transaction.complete ();
-            if(serviceTop)
+            if(serviceTop && cat)
                 TraceThreadContext.remove ();
         }
     }

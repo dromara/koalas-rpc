@@ -9,7 +9,7 @@ import thrift.service.WmCreateAccountService;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@KoalasServer ( port = 8801,zkpath="127.0.0.1:2181")
+@KoalasServer ( port = 8801,zkpath="127.0.0.1:2181",cat = true)
 public class WmCreateAccountServiceNettyImpl implements WmCreateAccountService.Iface {
     private AtomicInteger atomicInteger = new AtomicInteger ( 0 );
     @Override

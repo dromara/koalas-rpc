@@ -157,6 +157,16 @@ public class KoalasThreadedSelectorServer extends KoalasAbstractNonblockingServe
   private String serviceName;
   private TProcessor tGenericProcessor;
 
+  private boolean cat;
+
+  public boolean isCat() {
+    return cat;
+  }
+
+  public void setCat(boolean cat) {
+    this.cat = cat;
+  }
+
   public TProcessor gettGenericProcessor() {
     return tGenericProcessor;
   }
@@ -480,7 +490,7 @@ public class KoalasThreadedSelectorServer extends KoalasAbstractNonblockingServe
       try {
         clientKey = accepted.registerSelector(selector, SelectionKey.OP_READ);
 
-        FrameBuffer frameBuffer = new FrameBuffer(accepted, clientKey, SelectorThread.this,privateKey,publicKey,serviceName,tGenericProcessor);
+        FrameBuffer frameBuffer = new FrameBuffer(accepted, clientKey, SelectorThread.this,privateKey,publicKey,serviceName,tGenericProcessor,cat);
         clientKey.attach(frameBuffer);
       } catch (IOException e) {
         LOGGER.warn("Failed to register accepted connection to selector!", e);

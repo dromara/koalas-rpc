@@ -18,6 +18,7 @@
                     <xsd:attribute name="serverIpPorts" type="xsd:string"/>
                     <xsd:attribute name="async" type="xsd:boolean"/>
                     <xsd:attribute name="generic" type="xsd:boolean"/>
+                    <xsd:attribute name="cat" type="xsd:boolean"/>
                     <xsd:attribute name="connTimeout" type="xsd:int"/>
                     <xsd:attribute name="readTimeout" type="xsd:int"/>
                     <xsd:attribute name="localMockServiceImpl" type="xsd:string"/>
@@ -61,6 +62,7 @@
                     <xsd:attribute name="serviceImpl" type="xsd:string" use="required" />
                     <xsd:attribute name="port" type="xsd:int" use="required" />
                     <xsd:attribute name="zkpath" type="xsd:string"/>
+                    <xsd:attribute name="cat" type="xsd:boolean"/>
                     <xsd:attribute name="bossThreadCount" type="xsd:int"/>
                     <xsd:attribute name="workThreadCount" type="xsd:int"/>
                     <xsd:attribute name="koalasThreadCount" type="xsd:int"/>

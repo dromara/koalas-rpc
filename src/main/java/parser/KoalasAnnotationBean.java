@@ -189,6 +189,8 @@ public class KoalasAnnotationBean implements DisposableBean, BeanFactoryPostProc
             koalasClientProxy.setServerIpPorts ( koalasClient.serverIpPorts () );
         }
 
+        koalasClientProxy.setCat ( koalasClient.cat () );
+
         koalasClientProxy.setConnTimeout ( koalasClient.connTimeout () );
         koalasClientProxy.setReadTimeout ( koalasClient.readTimeout () );
         if (StringUtils.isNotEmpty ( koalasClient.localMockServiceImpl () )) {
@@ -256,6 +258,8 @@ public class KoalasAnnotationBean implements DisposableBean, BeanFactoryPostProc
             if(!StringUtils.isEmpty ( koalasServer.zkpath () )){
                 koalasServerPublisher.setZkpath ( koalasServer.zkpath () );
             }
+
+            koalasServerPublisher.setCat (koalasServer.cat ()  );
 
             if(koalasServer.bossThreadCount () !=0){
                 koalasServerPublisher.setBossThreadCount ( koalasServer.bossThreadCount () );

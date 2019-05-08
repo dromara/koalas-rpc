@@ -52,12 +52,15 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
 
     private AbstractKoalsServerPublisher serverPublisher;
 
+    private boolean cat;
+
     public KoalasHandler(AbstractKoalsServerPublisher serverPublisher,ExecutorService executorService){
         this.serverPublisher = serverPublisher;
         this.executorService = executorService;
         privateKey = serverPublisher.getPrivateKey ();
         publicKey = serverPublisher.getPublicKey ();
         className = serverPublisher.getServiceInterface ().getName ();
+        cat=serverPublisher.isCat ();
     }
 
     @Override
@@ -145,7 +148,7 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
             TProtocol in =tProtocolFactory.getProtocol ( inTransport );
             TProtocol out =tProtocolFactory.getProtocol ( outTransport );
             try {
-                executorService.execute ( new NettyRunable (  ctx,in,out,outputStream,tprocessor,b,privateKey,publicKey,className,tMessage.name,koalasTrace));
+                executorService.execute ( new NettyRunable (  ctx,in,out,outputStream,tprocessor,b,privateKey,publicKey,className,tMessage.name,koalasTrace,cat));
             } catch (RejectedExecutionException e){
                 logger.error ( e.getMessage ()+ErrorType.THREAD,e );
                 handlerException(b,ctx,e,ErrorType.THREAD,privateKey,publicKey);
@@ -166,8 +169,9 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
         private String className;
         private String methodName;
         private KoalasTrace koalasTrace;
+        private boolean cat;
 
-        public NettyRunable(ChannelHandlerContext ctx, TProtocol in, TProtocol out, ByteArrayOutputStream outputStream, TProcessor tprocessor, byte[] b, String privateKey, String publicKey, String className, String methodName, KoalasTrace koalasTrace) {
+        public NettyRunable(ChannelHandlerContext ctx, TProtocol in, TProtocol out, ByteArrayOutputStream outputStream, TProcessor tprocessor, byte[] b, String privateKey, String publicKey, String className, String methodName, KoalasTrace koalasTrace,boolean cat) {
             this.ctx = ctx;
             this.in = in;
             this.out = out;
@@ -179,12 +183,13 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
             this.className = className;
             this.methodName = methodName;
             this.koalasTrace = koalasTrace;
+            this.cat= cat;
         }
 
         @Override
         public void run() {
             Transaction transaction=null;
-            if(StringUtils.isNotEmpty ( methodName )){
+            if(StringUtils.isNotEmpty ( methodName ) && cat){
                 transaction = Cat.newTransaction("Service", className.concat ( "." ).concat ( methodName ));
                 if(koalasTrace.getRootId ()!= null){
                     String rootId = koalasTrace.getRootId ();
@@ -206,15 +211,15 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
             try {
                 tprocessor.process ( in,out );
                 ctx.writeAndFlush (outputStream);
-                if(transaction!=null)
+                if(transaction!=null && cat)
                     transaction.setStatus ( Transaction.SUCCESS );
             } catch (Exception e) {
-                if(transaction!=null)
+                if(transaction!=null && cat)
                     transaction.setStatus ( e );
                 logger.error ( e.getMessage () + ErrorType.APPLICATION,e );
                 handlerException(this.b,ctx,e,ErrorType.APPLICATION,privateKey,publicKey);
             }finally {
-                if(transaction!=null){
+                if(transaction!=null && cat){
                     transaction.complete ();
                     if(koalasTrace.getRootId ()!= null){
                         TraceThreadContext.remove ();

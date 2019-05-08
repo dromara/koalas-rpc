@@ -24,6 +24,6 @@
 				   serviceInterface="thrift.service.WmCreateAccountService"
 				   serviceImpl="wmCreateAccountServiceImpl"
 				   port="8002"
-				   zkpath="127.0.0.1:2181"/>
+				   zkpath="127.0.0.1:2181" cat="true"/>
 
 </beans>

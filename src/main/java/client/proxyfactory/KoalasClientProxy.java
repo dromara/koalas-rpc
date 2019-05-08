@@ -110,10 +110,15 @@ public class KoalasClientProxy implements FactoryBean<Object>, ApplicationContex
     private static int cores = Runtime.getRuntime().availableProcessors();
     private int asyncSelectorThreadCount = cores * 2;
     private static List<TAsyncClientManager> asyncClientManagerList = null;
-
     private String privateKey;
     private String publicKey;
-
+    private boolean cat=false;
+    public boolean isCat() {
+        return cat;
+    }
+    public void setCat(boolean cat) {
+        this.cat = cat;
+    }
     public String getPrivateKey() {
         return privateKey;
     }

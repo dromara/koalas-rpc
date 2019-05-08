@@ -71,6 +71,11 @@ public class KoalasBeanDefinitionParser implements BeanDefinitionParser {
                 beanDefinition.getPropertyValues ().addPropertyValue ( "generic",Boolean.valueOf ( generic ));
             }
 
+            String cat = element.getAttribute ( "cat" );
+            if(!StringUtils.isEmpty ( cat )){
+                beanDefinition.getPropertyValues ().addPropertyValue ( "cat",Boolean.valueOf ( cat ));
+            }
+
             String connTimeout = element.getAttribute ( "connTimeout" );
             if(!StringUtils.isEmpty ( connTimeout )){
                 beanDefinition.getPropertyValues ().addPropertyValue ( "connTimeout",Integer.valueOf ( connTimeout ));
@@ -215,6 +220,12 @@ public class KoalasBeanDefinitionParser implements BeanDefinitionParser {
             if(!StringUtils.isEmpty ( zkpath )){
                 beanDefinition.getPropertyValues ().addPropertyValue ( "zkpath",zkpath);
             }
+
+            String cat = element.getAttribute ( "cat" );
+            if(!StringUtils.isEmpty ( cat )){
+                beanDefinition.getPropertyValues ().addPropertyValue ( "cat",Boolean.valueOf ( cat ));
+            }
+
             String bossThreadCount = element.getAttribute ( "bossThreadCount" );
             if(!StringUtils.isEmpty ( bossThreadCount )){
                 beanDefinition.getPropertyValues ().addPropertyValue ( "bossThreadCount",Integer.valueOf ( bossThreadCount ));

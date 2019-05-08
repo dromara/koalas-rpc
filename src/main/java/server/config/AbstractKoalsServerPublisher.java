@@ -55,6 +55,15 @@ public class AbstractKoalsServerPublisher {
 
     public ApplicationContext applicationContext;
     public IkoalasServer ikoalasServer;
+    public boolean cat=false;
+
+    public boolean isCat() {
+        return cat;
+    }
+
+    public void setCat(boolean cat) {
+        this.cat = cat;
+    }
 
     public Object getServiceImpl() {
         return serviceImpl;

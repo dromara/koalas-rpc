@@ -205,18 +205,21 @@ public abstract class KoalasAbstractNonblockingServer extends TServer {
         private KoalasTrace koalasTrace;
         private boolean generic;
         private TProcessor tGenericProcessor;
+        private boolean cat;
         public FrameBuffer(final TNonblockingTransport trans,
                            final SelectionKey selectionKey,
                            final AbstractSelectThread selectThread,
                            String privateKey,
                            String publicKey,
                            String serviceName,
-                           TProcessor tGenericProcessor) {
+                           TProcessor tGenericProcessor,
+                           boolean cat) {
             this(trans,selectionKey,selectThread);
             this.privateKey= privateKey;
             this.publicKey = publicKey;
             this.serviceName =serviceName;
             this.tGenericProcessor=tGenericProcessor;
+            this.cat =cat;
         }
 
         public FrameBuffer(final TNonblockingTransport trans,
@@ -358,7 +361,7 @@ public abstract class KoalasAbstractNonblockingServer extends TServer {
                 } else{
                     Transaction transaction=null;
                     try {
-                        if(StringUtils.isNotEmpty ( methodName )){
+                        if(StringUtils.isNotEmpty ( methodName ) && cat){
                             transaction = Cat.newTransaction("Service", serviceName.concat ( "." ).concat ( methodName ));
                             if(koalasTrace.getRootId ()!= null){
                                 String rootId = koalasTrace.getRootId ();
@@ -384,16 +387,16 @@ public abstract class KoalasAbstractNonblockingServer extends TServer {
                             tGenericProcessor.process (  inProt, outProt  );
                         }
 
-                        if(transaction!=null)
+                        if(transaction!=null && cat)
                             transaction.setStatus ( Transaction.SUCCESS );
                     } catch (Exception e){
-                        if(transaction!=null)
+                        if(transaction!=null && cat)
                             transaction.setStatus ( e );
                         throw  e;
                     } finally {
-                        if(transaction!=null)
+                        if(transaction!=null && cat)
                             transaction.complete ();
-                        if(koalasTrace.getRootId ()!= null){
+                        if(koalasTrace.getRootId ()!= null && cat){
                             TraceThreadContext.remove ();
                         }
                     }

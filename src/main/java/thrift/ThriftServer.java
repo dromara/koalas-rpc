@@ -2,7 +2,6 @@ package thrift;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.thrift.TProcessor;
-import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocolFactory;
 import org.apache.thrift.server.TServer;
 import org.apache.thrift.transport.TNonblockingServerSocket;
@@ -69,6 +68,7 @@ public class ThriftServer implements IkoalasServer {
             ((KoalasThreadedSelectorServer) tServer).setPublicKey ( serverPublisher.publicKey );
             ((KoalasThreadedSelectorServer) tServer).setServiceName ( serverPublisher.getServiceInterface ().getName () );
             ((KoalasThreadedSelectorServer) tServer).settGenericProcessor ( serverPublisher.getGenericTProcessor () );
+            ((KoalasThreadedSelectorServer) tServer).setCat ( serverPublisher.isCat () );
             Runtime.getRuntime().addShutdownHook(new Thread(){
                 @Override
                 public void run(){

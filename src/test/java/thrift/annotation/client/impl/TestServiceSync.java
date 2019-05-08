@@ -16,7 +16,7 @@ import java.util.ArrayList;
 @Service("testServiceSync")
 public class TestServiceSync {
 
-    @KoalasClient(zkPath = "127.0.0.1:2181",readTimeout = 5000*1000)
+    @KoalasClient(zkPath = "127.0.0.1:2181",readTimeout = 5000*1000,cat = true)
     WmCreateAccountService.Iface wmCreateAccountService;
 
     @KoalasClient(zkPath = "127.0.0.1:2181",readTimeout = 5000*1000,genericService = "thrift.service.WmCreateAccountService")

@@ -21,6 +21,8 @@ public @interface KoalasClient {
 
     String genericService() default "";
 
+    boolean cat() default false;
+
     int connTimeout() default KoalasClientProxy.DEFUAL_CONNTIMEOUT;
 
     int readTimeout() default KoalasClientProxy.DEFUAL_READTIMEOUT;

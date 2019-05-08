@@ -14,6 +14,7 @@ import java.lang.annotation.*;
 public @interface KoalasServer {
     int port();
     String zkpath() default "";
+    boolean cat() default false;
     int bossThreadCount() default 0;
     int workThreadCount() default  0;
     int koalasThreadCount() default 0;
