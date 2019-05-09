@@ -17,7 +17,7 @@ public class WmCreateAccountServiceImpl implements WmCreateAccountService.Iface 
         WmCreateAccountRespone wmCreateAccountRespone = new WmCreateAccountRespone ();
         wmCreateAccountRespone.setCode ( 1 );
         wmCreateAccountRespone.setMessage ( "你好" );
-        if(new Random (  ).nextInt ( 5 )>100){
+        if(new Random (  ).nextInt ( 5 )>-1){
             throw new RuntimeException ( "测试错误" );
         }
         System.out.println ( "getRPC  start ...." + wmCreateAccountRequest + "------" + atomicInteger.incrementAndGet () );

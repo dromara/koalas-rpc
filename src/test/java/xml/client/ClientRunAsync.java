@@ -16,7 +16,7 @@ public class ClientRunAsync {
 
      @Test
      public void testRunAsync(){
-         for (int i = 0; i <100 ; i++) {
+         for (int i = 0; i <10000 ; i++) {
              try {
                  testServiceAsync.getRemoteRpc ();
              }catch (Exception e){
