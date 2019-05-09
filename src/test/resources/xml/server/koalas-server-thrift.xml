@@ -25,5 +25,6 @@
                    serviceImpl="wmCreateAccountServiceImpl"
                    port="8001"
                    serverType="thrift"
-                   zkpath="127.0.0.1:2181"/>
+                   zkpath="127.0.0.1:2181"
+                   cat="true"/>
 </beans>

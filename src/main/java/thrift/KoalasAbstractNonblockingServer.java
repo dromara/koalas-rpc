@@ -521,7 +521,7 @@ public abstract class KoalasAbstractNonblockingServer extends TServer {
 
         }
 
-            private TTransport getInputTransport() {
+        private TTransport getInputTransport() {
 
             byte[] body = buffer_.array ();
 
@@ -533,19 +533,22 @@ public abstract class KoalasAbstractNonblockingServer extends TServer {
             System.arraycopy ( body, 0, b, 4, body.length );
             TMessage tMessage;
             KoalasTrace koalasTrace;
+            String genericMethodName;
             if(b[4]==TKoalasFramedTransport.first && b[5]==TKoalasFramedTransport.second){
                 KoalasMessage koalasMessage =  getKoalasTMessage ( b);
                 tMessage = koalasMessage.gettMessage ();
                 koalasTrace = koalasMessage.getKoalasTrace ();
                 generic = koalasMessage.isGeneric ();
+                genericMethodName=koalasMessage.getGenericMethodName ();
             } else{
                 KoalasMessage koalasMessage = getTMessage ( b);
                 tMessage =koalasMessage.gettMessage ();
                 koalasTrace =koalasMessage.getKoalasTrace ();
                 generic = koalasMessage.isGeneric ();
+                genericMethodName=koalasMessage.getGenericMethodName ();
             }
 
-            methodName = tMessage.name;
+            methodName = generic? genericMethodName:tMessage.name;
             this.koalasTrace = koalasTrace;
             if(this.privateKey != null && this.publicKey!=null){
                 if(b[8] != (byte) 1 || !(b[4]==TKoalasFramedTransport.first && b[5]==TKoalasFramedTransport.second)){
@@ -574,19 +577,23 @@ public abstract class KoalasAbstractNonblockingServer extends TServer {
             System.arraycopy (  b,4,buff,0,buff.length);
             ByteArrayInputStream inputStream = new ByteArrayInputStream ( buff );
             TIOStreamTransport tioStreamTransportInput = new TIOStreamTransport (  inputStream);
-            TProtocol tBinaryProtocol = new KoalasBinaryProtocol ( tioStreamTransportInput );
+            TProtocol tBinaryProtocol = new KoalasBinaryProtocol ( tioStreamTransportInput,true );
             TMessage tMessage;
             KoalasTrace koalasTrace;
+            String genericMethodName;
+
             boolean generic;
             try {
                 tMessage= tBinaryProtocol.readMessageBegin ();
                 koalasTrace = ((KoalasBinaryProtocol) tBinaryProtocol).getKoalasTrace ();
                 generic = ((KoalasBinaryProtocol) tBinaryProtocol).isGeneric ();
+                genericMethodName = ((KoalasBinaryProtocol) tBinaryProtocol).getGenericMethodName ();
+
             } catch (TException e) {
-                return new KoalasMessage (new TMessage(),new KoalasTrace(),false);
+                return new KoalasMessage (new TMessage(),new KoalasTrace(),false,StringUtils.EMPTY);
 
             }
-            return new KoalasMessage(tMessage,koalasTrace,generic);
+            return new KoalasMessage(tMessage,koalasTrace,generic,genericMethodName);
         }
 
         private KoalasMessage getKoalasTMessage(byte[] b){
@@ -614,7 +621,7 @@ public abstract class KoalasAbstractNonblockingServer extends TServer {
                 try {
                     sign = new String ( signByte, "UTF-8" );
                 } catch (Exception e) {
-                    return new KoalasMessage(new TMessage(),new KoalasTrace(),false);
+                    return new KoalasMessage(new TMessage(),new KoalasTrace(),false,StringUtils.EMPTY);
                 }
 
                 byte[] rsaBody = new byte[size -10-signLen];
@@ -622,39 +629,51 @@ public abstract class KoalasAbstractNonblockingServer extends TServer {
 
                 try {
                     if(!KoalasRsaUtil.verify ( rsaBody,publicKey,sign )){
-                        return new KoalasMessage(new TMessage(),new KoalasTrace(),false);
+                        return new KoalasMessage(new TMessage(),new KoalasTrace(),false,StringUtils.EMPTY);
                     }
                     request = KoalasRsaUtil.decryptByPrivateKey (rsaBody,privateKey);
                 } catch (Exception e) {
-                    return new KoalasMessage(new TMessage(),new KoalasTrace(),false);
+                    return new KoalasMessage(new TMessage(),new KoalasTrace(),false,StringUtils.EMPTY);
                 }
             }
             TMessage tMessage;
             KoalasTrace koalasTrace;
             boolean generic;
+            String genericMethodName;
             ByteArrayInputStream inputStream = new ByteArrayInputStream ( request );
             TIOStreamTransport tioStreamTransportInput = new TIOStreamTransport (  inputStream);
             try {
-                TProtocol tBinaryProtocol = new KoalasBinaryProtocol( tioStreamTransportInput );
+                TProtocol tBinaryProtocol = new KoalasBinaryProtocol( tioStreamTransportInput,true );
                 tMessage= tBinaryProtocol.readMessageBegin ();
                 koalasTrace = ((KoalasBinaryProtocol) tBinaryProtocol).getKoalasTrace ();
                 generic = ((KoalasBinaryProtocol) tBinaryProtocol).isGeneric ();
-
+                genericMethodName = ((KoalasBinaryProtocol) tBinaryProtocol).getGenericMethodName ();
             } catch (TException e) {
-                return new KoalasMessage(new TMessage(),new KoalasTrace(),false);
+                return new KoalasMessage(new TMessage(),new KoalasTrace(),false,StringUtils.EMPTY);
             }
-            return new KoalasMessage(tMessage,koalasTrace,generic);
+            return new KoalasMessage(tMessage,koalasTrace,generic,genericMethodName);
         }
 
         private  class KoalasMessage{
             private TMessage tMessage;
             private KoalasTrace koalasTrace;
             private boolean generic;
+            private String genericMethodName;
 
-            public KoalasMessage(TMessage tMessage, KoalasTrace koalasTrace, boolean generic) {
+            public KoalasMessage(TMessage tMessage, KoalasTrace koalasTrace, boolean generic,String genericMethodName) {
                 this.tMessage = tMessage;
                 this.koalasTrace = koalasTrace;
                 this.generic = generic;
+                this.genericMethodName=genericMethodName;
+
+            }
+
+            public String getGenericMethodName() {
+                return genericMethodName;
+            }
+
+            public void setGenericMethodName(String genericMethodName) {
+                this.genericMethodName = genericMethodName;
             }
 
             public TMessage gettMessage() {
