@@ -312,7 +312,7 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
                     throw e;
                 }
             }
-            IllegalStateException finallyException = new IllegalStateException("error!retry time out of:" + retryTimes + "!!! " + koalasClientProxy.getServiceInterface ());
+            IllegalStateException finallyException = new IllegalStateException("error!retry time-out of:" + retryTimes + "!!! " + koalasClientProxy.getServiceInterface ());
             if(transaction!=null&& cat)
                   transaction.setStatus ( finallyException );
             throw finallyException;
