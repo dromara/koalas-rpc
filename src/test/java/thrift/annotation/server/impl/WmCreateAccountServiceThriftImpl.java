@@ -16,7 +16,7 @@ public class WmCreateAccountServiceThriftImpl implements WmCreateAccountService.
     public WmCreateAccountRespone getRPC(WmCreateAccountRequest wmCreateAccountRequest) throws TException {
         WmCreateAccountRespone wmCreateAccountRespone = new WmCreateAccountRespone ();
         wmCreateAccountRespone.setCode ( 1 );
-        wmCreateAccountRespone.setMessage ( "你好啊,thrift" );
+        wmCreateAccountRespone.setMessage ( "你好啊,我是thrift实现的注解服务端" );
         if(new Random (  ).nextInt ( 5 )>100){
             try {
                 Thread.sleep ( 5000 );
@@ -34,7 +34,7 @@ public class WmCreateAccountServiceThriftImpl implements WmCreateAccountService.
         WmCreateAccountRespone wmCreateAccountRespone = new WmCreateAccountRespone ();
         wmCreateAccountRespone.setCode ( 1 );
         wmCreateAccountRespone.setMessage ( "koalasTest1" );
-        System.out.println ( "getRPC  start ...." + wmCreateAccountRequest + "------" + atomicInteger.incrementAndGet () );
+        System.out.println ( "koaloasTest1 ...." + wmCreateAccountRequest + "------" + atomicInteger.incrementAndGet () );
 
         return wmCreateAccountRespone;
     }
@@ -44,7 +44,7 @@ public class WmCreateAccountServiceThriftImpl implements WmCreateAccountService.
         WmCreateAccountRespone wmCreateAccountRespone = new WmCreateAccountRespone ();
         wmCreateAccountRespone.setCode ( 1 );
         wmCreateAccountRespone.setMessage ( "koalasTest2" );
-        System.out.println ( "getRPC  start ...." + wmCreateAccountRequest + "------" + atomicInteger.incrementAndGet () );
+        System.out.println ( "koaloasTest2 ...." + wmCreateAccountRequest + "------" + atomicInteger.incrementAndGet () );
 
         return wmCreateAccountRespone;
     }
@@ -54,7 +54,7 @@ public class WmCreateAccountServiceThriftImpl implements WmCreateAccountService.
         WmCreateAccountRespone wmCreateAccountRespone = new WmCreateAccountRespone ();
         wmCreateAccountRespone.setCode ( 1 );
         wmCreateAccountRespone.setMessage ( "koalasTest3" );
-        System.out.println ( "getRPC  start ...." + wmCreateAccountRequest + "------" + atomicInteger.incrementAndGet () );
+        System.out.println ( "koaloasTest3 ...." + wmCreateAccountRequest + "------" + atomicInteger.incrementAndGet () );
 
         return wmCreateAccountRespone;
     }
@@ -64,7 +64,7 @@ public class WmCreateAccountServiceThriftImpl implements WmCreateAccountService.
         WmCreateAccountRespone wmCreateAccountRespone = new WmCreateAccountRespone ();
         wmCreateAccountRespone.setCode ( 1 );
         wmCreateAccountRespone.setMessage ( "koalasTest4" );
-        System.out.println ( "getRPC  start ...." + wmCreateAccountRequest + "------" + atomicInteger.incrementAndGet () );
+        System.out.println ( "koaloasTest4 ...." + wmCreateAccountRequest + "------" + atomicInteger.incrementAndGet () );
 
         return wmCreateAccountRespone;
     }
@@ -74,7 +74,7 @@ public class WmCreateAccountServiceThriftImpl implements WmCreateAccountService.
         WmCreateAccountRespone wmCreateAccountRespone = new WmCreateAccountRespone ();
         wmCreateAccountRespone.setCode ( 1 );
         wmCreateAccountRespone.setMessage ( "koalasTest5" );
-        System.out.println ( "getRPC  start ...." + wmCreateAccountRequest + "------" + atomicInteger.incrementAndGet () );
+        System.out.println ( "koaloasTest5 ...." + wmCreateAccountRequest + "------" + atomicInteger.incrementAndGet () );
 
         return wmCreateAccountRespone;
     }
@@ -84,7 +84,7 @@ public class WmCreateAccountServiceThriftImpl implements WmCreateAccountService.
         WmCreateAccountRespone wmCreateAccountRespone = new WmCreateAccountRespone ();
         wmCreateAccountRespone.setCode ( 1 );
         wmCreateAccountRespone.setMessage ( "koalasTest6" );
-        System.out.println ( "getRPC  start ...." + wmCreateAccountRequest + "------" + atomicInteger.incrementAndGet () );
+        System.out.println ( "koaloasTest6 ...." + wmCreateAccountRequest + "------" + atomicInteger.incrementAndGet () );
 
         return wmCreateAccountRespone;
     }
@@ -94,7 +94,7 @@ public class WmCreateAccountServiceThriftImpl implements WmCreateAccountService.
         WmCreateAccountRespone wmCreateAccountRespone = new WmCreateAccountRespone ();
         wmCreateAccountRespone.setCode ( 1 );
         wmCreateAccountRespone.setMessage ( "koalasTest7" );
-        System.out.println ( "getRPC  start ...." + wmCreateAccountRequest + "------" + atomicInteger.incrementAndGet () );
+        System.out.println ( "koaloasTest7 ...." + wmCreateAccountRequest + "------" + atomicInteger.incrementAndGet () );
 
         return wmCreateAccountRespone;
     }
@@ -104,7 +104,7 @@ public class WmCreateAccountServiceThriftImpl implements WmCreateAccountService.
         WmCreateAccountRespone wmCreateAccountRespone = new WmCreateAccountRespone ();
         wmCreateAccountRespone.setCode ( 1 );
         wmCreateAccountRespone.setMessage ( "koalasTest8" );
-        System.out.println ( "getRPC  start ...." + wmCreateAccountRequest + "------" + atomicInteger.incrementAndGet () );
+        System.out.println ( "koaloasTest8 ...." + wmCreateAccountRequest + "------" + atomicInteger.incrementAndGet () );
 
         return wmCreateAccountRespone;
     }
@@ -114,7 +114,7 @@ public class WmCreateAccountServiceThriftImpl implements WmCreateAccountService.
         WmCreateAccountRespone wmCreateAccountRespone = new WmCreateAccountRespone ();
         wmCreateAccountRespone.setCode ( 1 );
         wmCreateAccountRespone.setMessage ( "koalasTest9" );
-        System.out.println ( "getRPC  start ...." + wmCreateAccountRequest + "------" + atomicInteger.incrementAndGet () );
+        System.out.println ( "koaloasTest9 ...." + wmCreateAccountRequest + "------" + atomicInteger.incrementAndGet () );
 
         return wmCreateAccountRespone;
     }
@@ -124,7 +124,7 @@ public class WmCreateAccountServiceThriftImpl implements WmCreateAccountService.
         WmCreateAccountRespone wmCreateAccountRespone = new WmCreateAccountRespone ();
         wmCreateAccountRespone.setCode ( 1 );
         wmCreateAccountRespone.setMessage ( "koalasTest10" );
-        System.out.println ( "getRPC  start ...." + wmCreateAccountRequest + "------" + atomicInteger.incrementAndGet () );
+        System.out.println ( "koaloasTest10 ...." + wmCreateAccountRequest + "------" + atomicInteger.incrementAndGet () );
 
         return wmCreateAccountRespone;
     }
@@ -134,7 +134,7 @@ public class WmCreateAccountServiceThriftImpl implements WmCreateAccountService.
         WmCreateAccountRespone wmCreateAccountRespone = new WmCreateAccountRespone ();
         wmCreateAccountRespone.setCode ( 1 );
         wmCreateAccountRespone.setMessage ( "koalasTest11" );
-        System.out.println ( "getRPC  start ...." + wmCreateAccountRequest + "------" + atomicInteger.incrementAndGet () );
+        System.out.println ( "koaloasTest11 ...." + wmCreateAccountRequest + "------" + atomicInteger.incrementAndGet () );
 
         return wmCreateAccountRespone;
     }
@@ -144,7 +144,7 @@ public class WmCreateAccountServiceThriftImpl implements WmCreateAccountService.
         WmCreateAccountRespone wmCreateAccountRespone = new WmCreateAccountRespone ();
         wmCreateAccountRespone.setCode ( 1 );
         wmCreateAccountRespone.setMessage ( "koalasTest12" );
-        System.out.println ( "getRPC  start ...." + wmCreateAccountRequest + "------" + atomicInteger.incrementAndGet () );
+        System.out.println ( "koaloasTest12 ...." + wmCreateAccountRequest + "------" + atomicInteger.incrementAndGet () );
 
         return wmCreateAccountRespone;
     }

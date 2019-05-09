@@ -30,7 +30,7 @@ public class TestServiceAsync {
         request.setAccountType ( 1 );
         request.setPartnerId ( 1 );
         request.setPartnerType ( 1 );
-        request.setPartnerName ( "你好啊" );
+        request.setPartnerName ( "你好啊-我是xml实现的服务端" );
         request.setPoiFlag ( 1 );
         wmCreateAccountService.getRPC ( request ,koalasAsyncCallBack);
         Future<WmCreateAccountRespone> future= koalasAsyncCallBack.getFuture ();
@@ -51,7 +51,7 @@ public class TestServiceAsync {
         request.setAccountType ( 1 );
         request.setPartnerId ( 1 );
         request.setPartnerType ( 1 );
-        request.setPartnerName ( "你好啊koaloasTest1" );
+        request.setPartnerName ( "你好啊-我是xml实现的服务端koaloasTest1" );
         request.setPoiFlag ( 1 );
         wmCreateAccountService.koaloasTest1 ( request ,koalasAsyncCallBack);
         Future<WmCreateAccountRespone> future= koalasAsyncCallBack.getFuture ();
@@ -71,7 +71,7 @@ public class TestServiceAsync {
         request.setAccountType ( 1 );
         request.setPartnerId ( 1 );
         request.setPartnerType ( 1 );
-        request.setPartnerName ( "你好啊koaloasTest2" );
+        request.setPartnerName ( "你好啊-我是xml实现的服务端koaloasTest2" );
         request.setPoiFlag ( 1 );
         wmCreateAccountService.koaloasTest2 ( request ,koalasAsyncCallBack);
         Future<WmCreateAccountRespone> future= koalasAsyncCallBack.getFuture ();
@@ -91,7 +91,7 @@ public class TestServiceAsync {
         request.setAccountType ( 1 );
         request.setPartnerId ( 1 );
         request.setPartnerType ( 1 );
-        request.setPartnerName ( "你好啊koaloasTest3" );
+        request.setPartnerName ( "你好啊-我是xml实现的服务端koaloasTest3" );
         request.setPoiFlag ( 1 );
         wmCreateAccountService.koaloasTest3 ( request ,koalasAsyncCallBack);
         Future<WmCreateAccountRespone> future= koalasAsyncCallBack.getFuture ();
@@ -111,7 +111,7 @@ public class TestServiceAsync {
         request.setAccountType ( 1 );
         request.setPartnerId ( 1 );
         request.setPartnerType ( 1 );
-        request.setPartnerName ( "你好啊koaloasTest3" );
+        request.setPartnerName ( "你好啊-我是xml实现的服务端koaloasTest4" );
         request.setPoiFlag ( 1 );
         wmCreateAccountService.koaloasTest4 ( request ,koalasAsyncCallBack);
         Future<WmCreateAccountRespone> future= koalasAsyncCallBack.getFuture ();
@@ -132,7 +132,7 @@ public class TestServiceAsync {
         request.setAccountType ( 1 );
         request.setPartnerId ( 1 );
         request.setPartnerType ( 1 );
-        request.setPartnerName ( "你好啊koaloasTest3" );
+        request.setPartnerName ( "你好啊-我是xml实现的服务端koaloasTest5" );
         request.setPoiFlag ( 1 );
         wmCreateAccountService.koaloasTest5 ( request ,koalasAsyncCallBack);
         Future<WmCreateAccountRespone> future= koalasAsyncCallBack.getFuture ();
@@ -153,7 +153,7 @@ public class TestServiceAsync {
         request.setAccountType ( 1 );
         request.setPartnerId ( 1 );
         request.setPartnerType ( 1 );
-        request.setPartnerName ( "你好啊koaloasTest3" );
+        request.setPartnerName ( "你好啊-我是xml实现的服务端koaloasTest6" );
         request.setPoiFlag ( 1 );
         wmCreateAccountService.koaloasTest6 ( request ,koalasAsyncCallBack);
         Future<WmCreateAccountRespone> future= koalasAsyncCallBack.getFuture ();

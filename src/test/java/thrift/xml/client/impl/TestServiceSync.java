@@ -30,7 +30,7 @@ public class TestServiceSync {
         request.setAccountType ( 1 );
         request.setPartnerId ( 1 );
         request.setPartnerType ( 1 );
-        request.setPartnerName ( "你好" );
+        request.setPartnerName ( "你好啊-我是xml实现的服务端getRemoteRpc-异步" );
         request.setPoiFlag ( 1 );
         WmCreateAccountRespone respone = wmCreateAccountService.getRPC (  request);
         System.out.println (respone);
@@ -42,7 +42,7 @@ public class TestServiceSync {
         request.setAccountType ( 1 );
         request.setPartnerId ( 1 );
         request.setPartnerType ( 1 );
-        request.setPartnerName ( "你好" );
+        request.setPartnerName ( "你好啊-我是xml实现的服务端koaloasTest1-异步" );
         request.setPoiFlag ( 1 );
         WmCreateAccountRespone respone = wmCreateAccountService.koaloasTest1 (  request);
         System.out.println (respone);
@@ -54,7 +54,7 @@ public class TestServiceSync {
         request.setAccountType ( 1 );
         request.setPartnerId ( 1 );
         request.setPartnerType ( 1 );
-        request.setPartnerName ( "你好" );
+        request.setPartnerName ( "你好啊-我是xml实现的服务端koaloasTest2-异步" );
         request.setPoiFlag ( 1 );
         WmCreateAccountRespone respone = wmCreateAccountService.koaloasTest2 (  request);
         System.out.println (respone);
@@ -66,7 +66,7 @@ public class TestServiceSync {
         request.setAccountType ( 1 );
         request.setPartnerId ( 1 );
         request.setPartnerType ( 1 );
-        request.setPartnerName ( "你好" );
+        request.setPartnerName ( "你好啊-我是xml实现的服务端koaloasTest3-异步" );
         request.setPoiFlag ( 1 );
         WmCreateAccountRespone respone = wmCreateAccountService.koaloasTest3 (  request);
         System.out.println (respone);
@@ -78,7 +78,7 @@ public class TestServiceSync {
         request.setAccountType ( 1 );
         request.setPartnerId ( 1 );
         request.setPartnerType ( 1 );
-        request.setPartnerName ( "你好" );
+        request.setPartnerName ( "你好啊-我是xml实现的服务端koaloasTest4-异步" );
         request.setPoiFlag ( 1 );
         WmCreateAccountRespone respone = wmCreateAccountService.koaloasTest4 (  request);
         System.out.println (respone);
@@ -90,7 +90,7 @@ public class TestServiceSync {
         request.setAccountType ( 1 );
         request.setPartnerId ( 1 );
         request.setPartnerType ( 1 );
-        request.setPartnerName ( "你好" );
+        request.setPartnerName ( "你好啊-我是xml实现的服务端koaloasTest5-异步" );
         request.setPoiFlag ( 1 );
         WmCreateAccountRespone respone = wmCreateAccountService.koaloasTest5 (  request);
         System.out.println (respone);
@@ -102,7 +102,7 @@ public class TestServiceSync {
         request.setAccountType ( 1 );
         request.setPartnerId ( 1 );
         request.setPartnerType ( 1 );
-        request.setPartnerName ( "你好" );
+        request.setPartnerName ( "你好啊-我是xml实现的服务端koaloasTest6-异步" );
         request.setPoiFlag ( 1 );
         WmCreateAccountRespone respone = wmCreateAccountService.koaloasTest6 (  request);
         System.out.println (respone);

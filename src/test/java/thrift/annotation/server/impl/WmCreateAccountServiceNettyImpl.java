@@ -16,7 +16,7 @@ public class WmCreateAccountServiceNettyImpl implements WmCreateAccountService.I
     public WmCreateAccountRespone getRPC(WmCreateAccountRequest wmCreateAccountRequest) throws TException {
         WmCreateAccountRespone wmCreateAccountRespone = new WmCreateAccountRespone ();
         wmCreateAccountRespone.setCode ( 1 );
-        wmCreateAccountRespone.setMessage ( "你好啊" );
+        wmCreateAccountRespone.setMessage ( "你好啊-我是netty实现的注解服务端" );
         if(new Random (  ).nextInt ( 5 )>100){
             try {
                 Thread.sleep ( 5000 );
@@ -33,7 +33,7 @@ public class WmCreateAccountServiceNettyImpl implements WmCreateAccountService.I
     public WmCreateAccountRespone koaloasTest1(WmCreateAccountRequest wmCreateAccountRequest) throws TException {
         WmCreateAccountRespone wmCreateAccountRespone = new WmCreateAccountRespone ();
         wmCreateAccountRespone.setCode ( 1 );
-        wmCreateAccountRespone.setMessage ( "koalasTest1" );
+        wmCreateAccountRespone.setMessage ( "message-koalasTest1" );
         System.out.println ( "getRPC  start ...." + wmCreateAccountRequest + "------" + atomicInteger.incrementAndGet () );
 
         return wmCreateAccountRespone;
@@ -43,7 +43,7 @@ public class WmCreateAccountServiceNettyImpl implements WmCreateAccountService.I
     public WmCreateAccountRespone koaloasTest2(WmCreateAccountRequest wmCreateAccountRequest) throws TException {
         WmCreateAccountRespone wmCreateAccountRespone = new WmCreateAccountRespone ();
         wmCreateAccountRespone.setCode ( 1 );
-        wmCreateAccountRespone.setMessage ( "koalasTest2" );
+        wmCreateAccountRespone.setMessage ( "message-koalasTest2" );
         System.out.println ( "getRPC  start ...." + wmCreateAccountRequest + "------" + atomicInteger.incrementAndGet () );
 
         return wmCreateAccountRespone;
@@ -53,7 +53,7 @@ public class WmCreateAccountServiceNettyImpl implements WmCreateAccountService.I
     public WmCreateAccountRespone koaloasTest3(WmCreateAccountRequest wmCreateAccountRequest) throws TException {
         WmCreateAccountRespone wmCreateAccountRespone = new WmCreateAccountRespone ();
         wmCreateAccountRespone.setCode ( 1 );
-        wmCreateAccountRespone.setMessage ( "koalasTest3" );
+        wmCreateAccountRespone.setMessage ( "message-koalasTest3" );
         System.out.println ( "getRPC  start ...." + wmCreateAccountRequest + "------" + atomicInteger.incrementAndGet () );
 
         return wmCreateAccountRespone;
@@ -63,7 +63,7 @@ public class WmCreateAccountServiceNettyImpl implements WmCreateAccountService.I
     public WmCreateAccountRespone koaloasTest4(WmCreateAccountRequest wmCreateAccountRequest) throws TException {
         WmCreateAccountRespone wmCreateAccountRespone = new WmCreateAccountRespone ();
         wmCreateAccountRespone.setCode ( 1 );
-        wmCreateAccountRespone.setMessage ( "koalasTest4" );
+        wmCreateAccountRespone.setMessage ( "message-koalasTest4" );
         System.out.println ( "getRPC  start ...." + wmCreateAccountRequest + "------" + atomicInteger.incrementAndGet () );
 
         return wmCreateAccountRespone;
@@ -73,7 +73,7 @@ public class WmCreateAccountServiceNettyImpl implements WmCreateAccountService.I
     public WmCreateAccountRespone koaloasTest5(WmCreateAccountRequest wmCreateAccountRequest) throws TException {
         WmCreateAccountRespone wmCreateAccountRespone = new WmCreateAccountRespone ();
         wmCreateAccountRespone.setCode ( 1 );
-        wmCreateAccountRespone.setMessage ( "koalasTest5" );
+        wmCreateAccountRespone.setMessage ( "message-koalasTest5" );
         System.out.println ( "getRPC  start ...." + wmCreateAccountRequest + "------" + atomicInteger.incrementAndGet () );
 
         return wmCreateAccountRespone;
@@ -83,7 +83,7 @@ public class WmCreateAccountServiceNettyImpl implements WmCreateAccountService.I
     public WmCreateAccountRespone koaloasTest6(WmCreateAccountRequest wmCreateAccountRequest) throws TException {
         WmCreateAccountRespone wmCreateAccountRespone = new WmCreateAccountRespone ();
         wmCreateAccountRespone.setCode ( 1 );
-        wmCreateAccountRespone.setMessage ( "koalasTest6" );
+        wmCreateAccountRespone.setMessage ( "message-koalasTest6" );
         System.out.println ( "getRPC  start ...." + wmCreateAccountRequest + "------" + atomicInteger.incrementAndGet () );
 
         return wmCreateAccountRespone;
@@ -93,7 +93,7 @@ public class WmCreateAccountServiceNettyImpl implements WmCreateAccountService.I
     public WmCreateAccountRespone koaloasTest7(WmCreateAccountRequest wmCreateAccountRequest) throws TException {
         WmCreateAccountRespone wmCreateAccountRespone = new WmCreateAccountRespone ();
         wmCreateAccountRespone.setCode ( 1 );
-        wmCreateAccountRespone.setMessage ( "koalasTest7" );
+        wmCreateAccountRespone.setMessage ( "message-koalasTest7" );
         System.out.println ( "getRPC  start ...." + wmCreateAccountRequest + "------" + atomicInteger.incrementAndGet () );
 
         return wmCreateAccountRespone;
@@ -103,7 +103,7 @@ public class WmCreateAccountServiceNettyImpl implements WmCreateAccountService.I
     public WmCreateAccountRespone koaloasTest8(WmCreateAccountRequest wmCreateAccountRequest) throws TException {
         WmCreateAccountRespone wmCreateAccountRespone = new WmCreateAccountRespone ();
         wmCreateAccountRespone.setCode ( 1 );
-        wmCreateAccountRespone.setMessage ( "koalasTest8" );
+        wmCreateAccountRespone.setMessage ( "message-koalasTest8" );
         System.out.println ( "getRPC  start ...." + wmCreateAccountRequest + "------" + atomicInteger.incrementAndGet () );
 
         return wmCreateAccountRespone;
@@ -113,7 +113,7 @@ public class WmCreateAccountServiceNettyImpl implements WmCreateAccountService.I
     public WmCreateAccountRespone koaloasTest9(WmCreateAccountRequest wmCreateAccountRequest) throws TException {
         WmCreateAccountRespone wmCreateAccountRespone = new WmCreateAccountRespone ();
         wmCreateAccountRespone.setCode ( 1 );
-        wmCreateAccountRespone.setMessage ( "koalasTest9" );
+        wmCreateAccountRespone.setMessage ( "message-koalasTest9" );
         System.out.println ( "getRPC  start ...." + wmCreateAccountRequest + "------" + atomicInteger.incrementAndGet () );
 
         return wmCreateAccountRespone;
@@ -123,7 +123,7 @@ public class WmCreateAccountServiceNettyImpl implements WmCreateAccountService.I
     public WmCreateAccountRespone koaloasTest10(WmCreateAccountRequest wmCreateAccountRequest) throws TException {
         WmCreateAccountRespone wmCreateAccountRespone = new WmCreateAccountRespone ();
         wmCreateAccountRespone.setCode ( 1 );
-        wmCreateAccountRespone.setMessage ( "koalasTest10" );
+        wmCreateAccountRespone.setMessage ( "message-koalasTest10" );
         System.out.println ( "getRPC  start ...." + wmCreateAccountRequest + "------" + atomicInteger.incrementAndGet () );
 
         return wmCreateAccountRespone;
@@ -133,7 +133,7 @@ public class WmCreateAccountServiceNettyImpl implements WmCreateAccountService.I
     public WmCreateAccountRespone koaloasTest11(WmCreateAccountRequest wmCreateAccountRequest) throws TException {
         WmCreateAccountRespone wmCreateAccountRespone = new WmCreateAccountRespone ();
         wmCreateAccountRespone.setCode ( 1 );
-        wmCreateAccountRespone.setMessage ( "koalasTest11" );
+        wmCreateAccountRespone.setMessage ( "message-koalasTest11" );
         System.out.println ( "getRPC  start ...." + wmCreateAccountRequest + "------" + atomicInteger.incrementAndGet () );
 
         return wmCreateAccountRespone;
@@ -143,7 +143,7 @@ public class WmCreateAccountServiceNettyImpl implements WmCreateAccountService.I
     public WmCreateAccountRespone koaloasTest12(WmCreateAccountRequest wmCreateAccountRequest) throws TException {
         WmCreateAccountRespone wmCreateAccountRespone = new WmCreateAccountRespone ();
         wmCreateAccountRespone.setCode ( 1 );
-        wmCreateAccountRespone.setMessage ( "koalasTest12" );
+        wmCreateAccountRespone.setMessage ( "message-koalasTest12" );
         System.out.println ( "getRPC  start ...." + wmCreateAccountRequest + "------" + atomicInteger.incrementAndGet () );
 
         return wmCreateAccountRespone;

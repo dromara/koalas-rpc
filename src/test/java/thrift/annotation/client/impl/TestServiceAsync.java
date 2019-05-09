@@ -30,15 +30,13 @@ public class TestServiceAsync {
         request.setAccountType ( 1 );
         request.setPartnerId ( 1 );
         request.setPartnerType ( 1 );
-        request.setPartnerName ( "你好啊-我是注解实现的" );
+        request.setPartnerName ( "你好啊-我是注解实现的-异步方法" );
         request.setPoiFlag ( 1 );
         wmCreateAccountService.getRPC ( request ,koalasAsyncCallBack);
         Future<WmCreateAccountRespone> future= koalasAsyncCallBack.getFuture ();
         try {
             System.out.println (future.get ());
-        } catch (InterruptedException e) {
-            e.printStackTrace ();
-        } catch (ExecutionException e) {
+        } catch (Exception e) {
             e.printStackTrace ();
         }
     }
@@ -54,16 +52,14 @@ public class TestServiceAsync {
         }} );
 
         request.setRequestObj ( new ArrayList<String> (  ){{
-            add ( "{\"accountType\":1,\"partnerId\":1,\"partnerName\":\"你好\",\"partnerType\":1,\"poiFlag\":1,\"setAccountType\":true,\"setPartnerId\":true,\"setPartnerName\":true,\"setPartnerType\":true,\"setPoiFlag\":true,\"setSource\":false,\"source\":0}");
+            add ( "{\"accountType\":1,\"partnerId\":1,\"partnerName\":\"你好\",\"partnerType\":1,\"poiFlag\":1,\"source\":0}");
         }} );
 
         genericService.invoke ( request,koalasAsyncCallBack );
         Future<String> future= koalasAsyncCallBack.getFuture ();
         try {
             System.out.println (future.get ());
-        } catch (InterruptedException e) {
-            e.printStackTrace ();
-        } catch (ExecutionException e) {
+        } catch (Exception e) {
             e.printStackTrace ();
         }
     }

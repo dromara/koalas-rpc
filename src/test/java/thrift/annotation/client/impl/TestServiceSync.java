@@ -28,7 +28,7 @@ public class TestServiceSync {
         request.setAccountType ( 1 );
         request.setPartnerId ( 1 );
         request.setPartnerType ( 1 );
-        request.setPartnerName ( "你好啊-我是注解实现的" );
+        request.setPartnerName ( "你好啊-我是注解实现的同步方法" );
         request.setPoiFlag ( 1 );
         WmCreateAccountRespone respone = wmCreateAccountService.getRPC (  request);
         System.out.println (respone);
