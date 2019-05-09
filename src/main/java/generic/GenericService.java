@@ -26,7 +26,12 @@ import java.nio.ByteBuffer;
 import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+/**
+ * Copyright (C) 2018
+ * All rights reserved
+ * User: yulong.zhang
+ * Date:2019年05月09日12:24:59
+ */
 public class GenericService {
 
   public interface Iface {

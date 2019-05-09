@@ -11,7 +11,12 @@ import org.springframework.aop.support.AopUtils;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Copyright (C) 2018
+ * All rights reserved
+ * User: yulong.zhang
+ * Date:2019年05月09日12:24:59
+ */
 public class GenericServiceImpl implements GenericService.Iface {
     private final static Logger logger = LoggerFactory.getLogger ( GenericServiceImpl.class );
 
