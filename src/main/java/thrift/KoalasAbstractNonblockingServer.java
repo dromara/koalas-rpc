@@ -26,27 +26,30 @@ import exceptions.RSAException;
 import heartbeat.impl.HeartbeatServiceImpl;
 import heartbeat.service.HeartbeatService;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.thrift.TApplicationException;
 import org.apache.thrift.TByteArrayOutputStream;
 import org.apache.thrift.TException;
 import org.apache.thrift.TProcessor;
-import org.apache.thrift.protocol.TMessage;
-import org.apache.thrift.protocol.TProtocol;
+import org.apache.thrift.protocol.*;
 import org.apache.thrift.server.TServer;
 import org.apache.thrift.transport.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import protocol.KoalasBinaryProtocol;
 import protocol.KoalasTrace;
+import server.domain.ErrorType;
 import transport.TKoalasFramedTransport;
 import utils.KoalasRsaUtil;
 import utils.TraceThreadContext;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.spi.SelectorProvider;
+import java.text.MessageFormat;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
@@ -381,10 +384,20 @@ public abstract class KoalasAbstractNonblockingServer extends TServer {
                             }
                         }
 
-                        if(!generic){
-                            processorFactory_.getProcessor ( inTrans ).process ( inProt, outProt );
-                        } else {
-                            tGenericProcessor.process (  inProt, outProt  );
+                        try {
+                            if(!generic){
+                                processorFactory_.getProcessor ( inTrans ).process ( inProt, outProt );
+                            } else {
+                                tGenericProcessor.process (  inProt, outProt  );
+                            }
+                        } catch (Exception e){
+                            byte[] _body = buffer_.array ();
+                            byte[] len = new byte[4];
+                            encodeFrameSize ( _body.length, len );
+                            byte[] _b = new byte[_body.length + 4];
+                            System.arraycopy ( len, 0, _b, 0, 4 );
+                            System.arraycopy ( _body, 0, _b, 4, _body.length );
+                            handlerException(_b,e,ErrorType.APPLICATION,privateKey,publicKey);
                         }
 
                         if(transaction!=null && cat)
@@ -413,7 +426,102 @@ public abstract class KoalasAbstractNonblockingServer extends TServer {
             requestSelectInterestChange ();
         }
 
-        private TTransport getInputTransport() {
+        public void handlerException(byte[] b, Exception e, ErrorType type, String privateKey, String publicKey) throws TException {
+
+            String value = MessageFormat.format("thrift server error，the error message is: {0}",e.getMessage ());
+            boolean ifUserProtocol;
+            if(b[4]==TKoalasFramedTransport.first && b[5]==TKoalasFramedTransport.second){
+                ifUserProtocol = true;
+            }else{
+                ifUserProtocol = false;
+            }
+
+            ByteArrayInputStream inputStream = new ByteArrayInputStream ( b );
+            response_ = new TByteArrayOutputStream (  );
+
+            TIOStreamTransport tioStreamTransportInput = new TIOStreamTransport (  inputStream);
+            TIOStreamTransport tioStreamTransportOutput = new TIOStreamTransport (  response_);
+
+            TKoalasFramedTransport inTransport = new TKoalasFramedTransport( tioStreamTransportInput );
+            TKoalasFramedTransport outTransport = new TKoalasFramedTransport ( tioStreamTransportOutput,16384000,ifUserProtocol );
+
+            TProtocolFactory tProtocolFactory =new KoalasBinaryProtocol.Factory();
+
+            TProtocol in =tProtocolFactory.getProtocol ( inTransport );
+            TProtocol out =tProtocolFactory.getProtocol ( outTransport );
+
+            if(ifUserProtocol){
+                //rsa support
+                if(b[8]==(byte)1){
+                    if(!(e instanceof RSAException)){
+                        //in
+                        inTransport.setPrivateKey ( privateKey );
+                        inTransport.setPublicKey ( publicKey );
+
+                        //out
+                        outTransport.setRsa ( (byte) 1 );
+                        outTransport.setPrivateKey (privateKey );
+                        outTransport.setPublicKey ( publicKey );
+                    } else{
+                        try {
+                            TMessage tMessage =  new TMessage("", TMessageType.EXCEPTION, -1);
+                            TApplicationException exception = new TApplicationException(9999,"【rsa error】:" + value);
+                            out.writeMessageBegin ( tMessage );
+                            exception.write (out  );
+                            out.writeMessageEnd();
+                            out.getTransport ().flush ();
+                            return;
+                        } catch (Exception e2){
+                            LOGGER.error ( e2.getMessage (),e2);
+                            throw  e2;
+                        }
+                    }
+                } else{
+                    if(e instanceof RSAException){
+                        try {
+                            TMessage tMessage =  new TMessage("", TMessageType.EXCEPTION, -1);
+                            TApplicationException exception = new TApplicationException(6699,"【rsa error】:" + value);
+                            out.writeMessageBegin ( tMessage );
+                            exception.write (out  );
+                            out.writeMessageEnd();
+                            out.getTransport ().flush ();
+                            return;
+                        } catch (Exception e2){
+                            LOGGER.error ( e2.getMessage (),e2);
+                            throw  e2;
+                        }
+                    }
+                }
+            }
+
+            try {
+                TMessage message  = in.readMessageBegin ();
+                TProtocolUtil.skip(in, TType.STRUCT);
+                in.readMessageEnd();
+
+                TApplicationException tApplicationException=null;
+                switch (type){
+                    case THREAD:
+                        tApplicationException = new TApplicationException(6666,value);
+                        break;
+                    case APPLICATION:
+                        tApplicationException = new TApplicationException(TApplicationException.INTERNAL_ERROR,value);
+                        break;
+                }
+
+                out.writeMessageBegin(new TMessage(message.name, TMessageType.EXCEPTION, message.seqid));
+                tApplicationException.write (out  );
+                out.writeMessageEnd();
+                out.getTransport ().flush ();
+                LOGGER.info ( "handlerException:" + tApplicationException.getType () + value );
+            } catch (Exception e1) {
+                LOGGER.error ( "unknown Exception:" + type + value,e1 );
+                throw  e1;
+            }
+
+        }
+
+            private TTransport getInputTransport() {
 
             byte[] body = buffer_.array ();
 

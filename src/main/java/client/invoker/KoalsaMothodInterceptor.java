@@ -209,13 +209,13 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
                         }
 
                         if (((TApplicationException) cause).getType () == TApplicationException.INTERNAL_ERROR) {
-                            LOG.error ( "this server is error please take the error log with server--{}--serverName【{}】the remote server error message data【{}】", serverObject.getRemoteServer (),koalasClientProxy.getServiceInterface (),((TApplicationException) cause).getMessage () );
+                            LOG.error ( "this server is error, server--{}--serverName【{}】,the remote server error message data【{}】", serverObject.getRemoteServer (),koalasClientProxy.getServiceInterface (),((TApplicationException) cause).getMessage () );
                             if (socket != null) {
                                 genericObjectPool.returnObject ( socket );
                             }
                             if(transaction!=null&& cat)
                                 transaction.setStatus ( cause );
-                            throw new IllegalStateException("this server is error please take the error log with server" + serverObject.getRemoteServer ()+koalasClientProxy.getServiceInterface ());
+                            throw new IllegalStateException("this server is error serviceName:" + serverObject.getRemoteServer ()+koalasClientProxy.getServiceInterface () + ",error message:" + ((TApplicationException) cause).getMessage ());
                         }
 
                         if (((TApplicationException) cause).getType () == TApplicationException.MISSING_RESULT) {
