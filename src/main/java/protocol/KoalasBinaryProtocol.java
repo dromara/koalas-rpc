@@ -7,6 +7,8 @@ package protocol;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
+
+import generic.GenericRequest;
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.*;
 import org.apache.thrift.transport.TTransport;
@@ -36,16 +38,33 @@ public class KoalasBinaryProtocol extends TProtocol {
     private boolean generic;
     public static final byte first = (byte) 0xAB;
     public static final byte second = (byte) 0xBA;
+    private boolean readGenericMethod=false;
+    public boolean isReadGenericMethod() {
+        return readGenericMethod;
+    }
+    public void setReadGenericMethod(boolean readGenericMethod) {
+        this.readGenericMethod = readGenericMethod;
+    }
+    public String getGenericMethodName() {
+        return genericMethodName;
+    }
+    public void setGenericMethodName(String genericMethodName) {
+        this.genericMethodName = genericMethodName;
+    }
+    private String genericMethodName;
     public boolean isGeneric() {
         return generic;
     }
-
     public void setGeneric(boolean generic) {
         this.generic = generic;
     }
-
     public KoalasBinaryProtocol(TTransport trans) {
         this(trans, false, true);
+    }
+
+    public KoalasBinaryProtocol(TTransport trans,boolean readGenericMethod) {
+        this(trans, false, true);
+        setReadGenericMethod(readGenericMethod);
     }
 
     public KoalasBinaryProtocol(TTransport trans, boolean strictRead, boolean strictWrite) {
@@ -218,6 +237,12 @@ public class KoalasBinaryProtocol extends TProtocol {
 
                 if(first== KoalasBinaryProtocol.first && second==KoalasBinaryProtocol.second){
                     setGeneric ( true );
+                    if(readGenericMethod){
+                        this.readFieldBegin ();
+                        GenericRequest genericRequest = new GenericRequest();
+                        genericRequest.read ( this );
+                        setGenericMethodName (genericRequest.getMethodName ().concat ( ".generic" ));
+                    }
                 } else{
                     setGeneric ( false );
                 }
@@ -236,6 +261,12 @@ public class KoalasBinaryProtocol extends TProtocol {
 
             if(first== KoalasBinaryProtocol.first && second==KoalasBinaryProtocol.second){
                 setGeneric ( true );
+                if(readGenericMethod){
+                    this.readFieldBegin ();
+                    GenericRequest genericRequest = new GenericRequest();
+                    genericRequest.read ( this );
+                    setGenericMethodName (genericRequest.getMethodName ().concat ( ".generic" ));
+                }
             } else{
                 setGeneric ( false );
             }
