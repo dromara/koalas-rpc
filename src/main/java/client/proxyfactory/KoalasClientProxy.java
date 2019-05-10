@@ -478,79 +478,117 @@ public class KoalasClientProxy implements FactoryBean<Object>, ApplicationContex
         return null;
     }
 
+    private Class<?> genericAsyncIface;
+    private Class<?> asyncIface;
+
     private Class<?> getAsyncIfaceInterface() {
         Class<?>[] classes = null;
 
         if(!generic){
+            if(asyncIface!=null) return asyncIface;
             try {
                 classes= this.getClass ().getClassLoader ().loadClass ( serviceInterface ).getClasses ();
             } catch (ClassNotFoundException e) {
                 throw new IllegalArgumentException ( "can't find the class :" + serviceInterface );
             }
         } else {
+            if(genericAsyncIface!=null) return genericAsyncIface;
             classes = GenericService.class.getClasses ();
         }
         for (Class c : classes)
             if (c.isMemberClass () && c.isInterface () && c.getSimpleName ().equals ( ASYNC_IFACE )) {
+                if(!generic){
+                    asyncIface = c;
+                }else{
+                    genericAsyncIface = c;
+                }
                 return c;
             }
         throw new IllegalArgumentException ( "can't find the interface AsyncIface,please make the service with thrift tools!" );
     }
 
+
+    private Class<?> genericSynIface;
+    private Class<?> synIface;
+
     private Class<?> getSynIfaceInterface() {
 
         Class<?>[] classes = null;
         if(!generic){
+            if(synIface!=null) return synIface;
             try {
                 classes= this.getClass ().getClassLoader ().loadClass ( serviceInterface ).getClasses ();
             } catch (ClassNotFoundException e) {
                 throw new IllegalArgumentException ( "can't find the class :" + serviceInterface );
             }
         } else {
+            if(genericSynIface!=null) return genericSynIface;
             classes = GenericService.class.getClasses ();
         }
 
         for (Class c : classes)
             if (c.isMemberClass () && c.isInterface () && c.getSimpleName ().equals ( IFACE )) {
-                return c;
+                if(!generic){
+                    synIface = c;
+                }else{
+                    genericSynIface = c;
+                }
+            return c;
             }
         throw new IllegalArgumentException ( "can't find the interface Iface,please make the service with thrift tools" );
     }
 
+    private Class<?> genericSynClient;
+    private Class<?> synClient;
+
     private Class<?> getSynClientClass() {
-
-
         Class<?>[] classes = null;
         if(!generic){
+            if(synClient != null) return synClient;
             try {
                 classes= this.getClass ().getClassLoader ().loadClass ( serviceInterface ).getClasses ();
             } catch (ClassNotFoundException e) {
                 throw new IllegalArgumentException ( "can't find the class :" + serviceInterface );
             }
         } else {
+            if(genericSynClient != null) return genericSynClient;
             classes = GenericService.class.getClasses ();
         }
         for (Class c : classes)
             if (c.isMemberClass () && !c.isInterface () && c.getSimpleName ().equals ( CLIENT )) {
+                if(!generic){
+                    synClient=c;
+                }else{
+                    genericSynClient=c;
+                }
                 return c;
             }
         throw new IllegalArgumentException ( "serviceInterface must contain Sub Class of Client" );
     }
 
+    private Class<?> genericAsyncClient;
+    private Class<?> asyncClient;
     private Class<?> getAsyncClientClass() {
         Class<?>[] classes = null;
         if(!generic){
             try {
+                if(asyncClient!=null) return asyncClient;
                 classes= this.getClass ().getClassLoader ().loadClass ( serviceInterface ).getClasses ();
             } catch (ClassNotFoundException e) {
                 throw new IllegalArgumentException ( "can't find the class :" + serviceInterface );
             }
         } else {
+            if(genericAsyncClient!=null) return genericAsyncClient;
             classes = GenericService.class.getClasses ();
         }
         for (Class c : classes)
             if (c.isMemberClass () && !c.isInterface () && c.getSimpleName ().equals ( ASYNC_CLIENT )) {
-                return c;
+              if(!generic){
+                  genericAsyncClient=c;
+              }else{
+                  asyncClient=c;
+              }
+              return c;
             }
         throw new IllegalArgumentException ( "serviceInterface must contain Sub Class of AsyncClient" );
     }

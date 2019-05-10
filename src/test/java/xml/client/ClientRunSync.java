@@ -17,7 +17,7 @@ public class ClientRunSync {
     @Test
     public void testRunSync(){
         long a = System.currentTimeMillis ();
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 100000; i++) {
             try {
                 testServiceSync.getRemoteRpc ();
             }catch (Exception e){
@@ -72,7 +72,7 @@ public class ClientRunSync {
 
         @Override
         public void run() {
-            for (int i = 0; i < 10000; i++) {
+            for (int i = 0; i < 100000; i++) {
                 try {
                     testServiceSync.getRemoteRpc ();
                 }catch (Exception e){
@@ -89,7 +89,7 @@ public class ClientRunSync {
     @Test
     public void testRunGenericSync(){
         long a = System.currentTimeMillis ();
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 100000; i++) {
             try {
                 testServiceSync.getGenericRpc ();
             }catch (Exception e){
