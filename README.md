@@ -52,6 +52,19 @@ maven依赖
         <version>Koalas-1.0-SNAPSHOT</version>
     </dependency>
 ```
+关于私服的引用问题，记得全局文件不要把全局的依赖都代理掉，因为这么做只能从aliyun的私服上下载项目，由于koalas-rpc中的Cat依赖只在美团点评的私有仓库中存在，这么做会下载依赖失败，所以不要暴力的设置下面的代理做法。
+
+```
+    <mirror>
+        <id>nexus-aliyun</id>
+        <mirrorOf>*</mirrorOf>
+        <name>Nexus aliyun</name>
+        <url>http://maven.aliyun.com/nexus/content/groups/public</url>
+    </mirror>
+```
+正确的做法是将代理去掉，直接按照作者在pom.xml文件中给定的依赖仓库地址就可以了。
+
+
 首先需要编写自己的thrift idl文件了，这里多说一句，在群里的小伙伴曾经说过idl文件编写不熟悉，有可能出错 这里顺带说一嘴，thrift的ldl文件和写java的请求体和service几乎没有任何区别，熟能生巧，上手之后非常简单 这里推荐几篇thrift的文章，有兴趣可以看一看 https://blog.csdn.net/lk10207160511/article/details/50450541， https://blog.csdn.net/hrn1216/article/details/51306395 下面截图为测试的thrift文件
 
 ```
