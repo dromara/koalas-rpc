@@ -81,7 +81,7 @@ public class ZookeeperClient {
 
         if (zookeeper == null) {
             try {
-                zookeeper = new ZooKeeper ( path, SESSION_TIMEOUT, new ClientInitWatcher ( c ) );
+                zookeeper = new ZooKeeper ( path, SESSION_TIMEOUT, new ClinetInitWatcher ( c ) );
             } catch (IOException e) {
                 LOG.error ( "zk server faild service:" + env + "-" + serviceName, e );
             }
@@ -332,11 +332,11 @@ public class ZookeeperClient {
     }
 
 
-    private class ClientInitWatcher implements Watcher {
+    private class ClinetInitWatcher implements Watcher {
 
         private CountDownLatch countDownLatch;
 
-        public ClientInitWatcher(CountDownLatch countDownLatch) {
+        public ClinetInitWatcher(CountDownLatch countDownLatch) {
             this.countDownLatch = countDownLatch;
         }
 

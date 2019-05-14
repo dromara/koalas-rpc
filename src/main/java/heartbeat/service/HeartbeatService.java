@@ -6,8 +6,6 @@
  */
 package heartbeat.service;
 
-import org.apache.thrift.TBase;
-import org.apache.thrift.TException;
 import org.apache.thrift.scheme.IScheme;
 import org.apache.thrift.scheme.SchemeFactory;
 import org.apache.thrift.scheme.StandardScheme;
@@ -171,25 +169,7 @@ public class HeartbeatService {
         super("getHeartBeat");
       }
 
-      @Override
-      protected boolean isOneway() {
-        return false;
-      }
-
-      @Override
-      public TBase getResult(I iface, getHeartBeat_args args) throws TException {
-        getHeartBeat_result args1 = new getHeartBeat_result();
-
-        args1.success = iface.getHeartBeat(args.heartBeat);
-        return args1;
-      }
-
-      @Override
-      public getHeartBeat_args getEmptyArgsInstance() {
-        return  new getHeartBeat_args();
-      }
-
-      /*  protected getHeartBeat_args getEmptyArgsInstance() {
+      protected getHeartBeat_args getEmptyArgsInstance() {
         return new getHeartBeat_args();
       }
 
@@ -197,7 +177,7 @@ public class HeartbeatService {
         getHeartBeat_result result = new getHeartBeat_result();
         result.success = iface.getHeartBeat(args.heartBeat);
         return result;
-      }*/
+      }
     }
 
   }

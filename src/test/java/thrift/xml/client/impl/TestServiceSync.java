@@ -18,7 +18,6 @@ import java.util.ArrayList;
 public class TestServiceSync {
 
     @Autowired
-            @Qualifier("wmCreateAccountService2")
     WmCreateAccountService.Iface wmCreateAccountService;
 
     @Autowired
