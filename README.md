@@ -572,6 +572,47 @@ public void getGenericRpc() throws TException {
 
 特别注意的是KoalasClientProxy对象非常非常重，一定要在服务关闭的时候执行koalasClientProxy.destroy ();方法，并且需要带应用程序中缓存该对象，千万不要每次使用都要创建，这样会极大的浪费资源，每个服务对应一个KoalasClientProxy，同步和异步也是不同的对象，这些使用者需要注意。
 
+**4. 原生调用支持**
+koalas-rpc在原生基础上封装了自定义协议和特定的传输类型，看过源码的朋友一定觉得处理非常非常麻烦，但是在自定义协议的过程中koalas-rpc也同时支持原生的thrift请求，可以在本地做测试等等。请求调用demo：
+
+```
+package xml.client;
+
+import org.apache.thrift.TException;
+import org.apache.thrift.protocol.TBinaryProtocol;
+import org.apache.thrift.protocol.TProtocol;
+import org.apache.thrift.transport.TFramedTransport;
+import org.apache.thrift.transport.TSocket;
+import org.apache.thrift.transport.TTransport;
+import thrift.domain.WmCreateAccountRequest;
+import thrift.domain.WmCreateAccountRespone;
+import thrift.service.WmCreateAccountService;
+
+public class ThriftNative {
+    public static final String SERVER_IP = "localhost";
+    public static final int SERVER_PORT = 8001;
+    public static final int TIMEOUT = 3000000;
+
+    public static void main(String[] args) throws TException {
+        TTransport transport = new TFramedTransport (new TSocket (SERVER_IP, SERVER_PORT, TIMEOUT));
+        TProtocol protocol = new TBinaryProtocol (transport);
+        WmCreateAccountService.Client client = new WmCreateAccountService.Client(protocol);
+        transport.open();
+
+        WmCreateAccountRequest request= new WmCreateAccountRequest (  );
+        //request.setSource ( 10 );
+        request.setAccountType ( 1 );
+        request.setPartnerId ( 1 );
+        request.setPartnerType ( 1 );
+        request.setPartnerName ( "你好啊-我是ThriftNative实现的服务端getRemoteRpc" );
+        request.setPoiFlag ( 1 );
+
+        WmCreateAccountRespone respone=client.getRPC (request  );
+        System.out.println (respone);
+
+    }
+}
+```
 
 # 三：参数配置文档
 
