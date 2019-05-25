@@ -573,6 +573,7 @@ public void getGenericRpc() throws TException {
 特别注意的是KoalasClientProxy对象非常非常重，一定要在服务关闭的时候执行koalasClientProxy.destroy ();方法，并且需要带应用程序中缓存该对象，千万不要每次使用都要创建，这样会极大的浪费资源，每个服务对应一个KoalasClientProxy，同步和异步也是不同的对象，这些使用者需要注意。
 
 **4. 原生调用支持**
+
 koalas-rpc在原生基础上封装了自定义协议和特定的传输类型，看过源码的朋友一定觉得处理非常非常麻烦，但是在自定义协议的过程中koalas-rpc也同时支持原生的thrift请求，可以在本地做测试等等。请求调用demo：
 
 ```
