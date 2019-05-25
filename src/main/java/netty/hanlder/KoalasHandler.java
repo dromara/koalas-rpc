@@ -79,6 +79,7 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
             boolean ifUserProtocol;
             boolean generic;
             String genericMethodName;
+            boolean thriftNative;
             if(b[4]==TKoalasFramedTransport.first && b[5]==TKoalasFramedTransport.second){
                 ifUserProtocol = true;
                 KoalasMessage koalasMessage = getKoalasTMessage ( b);
@@ -86,6 +87,7 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
                 koalasTrace = koalasMessage.getKoalasTrace ();
                 generic = koalasMessage.isGeneric ();
                 genericMethodName=koalasMessage.getGenericMethodName ();
+                thriftNative = koalasMessage.isThriftNative ();
             }else{
                 ifUserProtocol = false;
                 KoalasMessage koalasMessage = getTMessage ( b);
@@ -93,6 +95,7 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
                 koalasTrace =koalasMessage.getKoalasTrace ();
                 generic = koalasMessage.isGeneric ();
                 genericMethodName=koalasMessage.getGenericMethodName ();
+                thriftNative = koalasMessage.isThriftNative ();
             }
             TProcessor localTprocessor;
             if(!generic){
@@ -113,7 +116,7 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
             if(this.privateKey != null && this.publicKey!=null){
                 if(b[8] != (byte) 1 || !(b[4]==TKoalasFramedTransport.first && b[5]==TKoalasFramedTransport.second)){
                     logger.error ("rsa error the client is not ras support!");
-                    handlerException(b,ctx,new RSAException ( "rsa error" ),ErrorType.APPLICATION,privateKey,publicKey);
+                    handlerException(b,ctx,new RSAException ( "rsa error" ),ErrorType.APPLICATION,privateKey,publicKey,thriftNative);
                     return;
                 }
             }
@@ -125,6 +128,7 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
                     TProcessor tprocessorheartbeat = new HeartbeatService.Processor<> (new HeartbeatServiceImpl () );
                     outTransport.setHeartbeat ( (byte) 2 );
                     TProtocolFactory tProtocolFactory =new KoalasBinaryProtocol.Factory();
+                    ((KoalasBinaryProtocol.Factory) tProtocolFactory).setThriftNative ( thriftNative );
                     TProtocol in =tProtocolFactory.getProtocol ( inTransport );
                     TProtocol out =tProtocolFactory.getProtocol ( outTransport );
                     try {
@@ -133,7 +137,7 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
                         return;
                     } catch (Exception e){
                         logger.error ( "heartbeat error e" );
-                        handlerException(b,ctx,e,ErrorType.APPLICATION,privateKey,publicKey);
+                        handlerException(b,ctx,e,ErrorType.APPLICATION,privateKey,publicKey,thriftNative);
                         return;
                     }
                 }
@@ -151,7 +155,7 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
                 }
             }
             TProtocolFactory  tProtocolFactory =new KoalasBinaryProtocol.Factory (  );
-
+            ((KoalasBinaryProtocol.Factory) tProtocolFactory).setThriftNative ( thriftNative );
             TProtocol in =tProtocolFactory.getProtocol ( inTransport );
             TProtocol out =tProtocolFactory.getProtocol ( outTransport );
 
@@ -161,7 +165,7 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
                 executorService.execute ( new NettyRunable (  ctx,in,out,outputStream,localTprocessor,b,privateKey,publicKey,className,methodName,koalasTrace,cat));
             } catch (RejectedExecutionException e){
                 logger.error ( e.getMessage ()+ErrorType.THREAD,e );
-                handlerException(b,ctx,e,ErrorType.THREAD,privateKey,publicKey);
+                handlerException(b,ctx,e,ErrorType.THREAD,privateKey,publicKey,thriftNative);
             }
         }
 
@@ -180,6 +184,7 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
         private String methodName;
         private KoalasTrace koalasTrace;
         private boolean cat;
+        private boolean thriftNative;
 
         public NettyRunable(ChannelHandlerContext ctx, TProtocol in, TProtocol out, ByteArrayOutputStream outputStream, TProcessor tprocessor, byte[] b, String privateKey, String publicKey, String className, String methodName, KoalasTrace koalasTrace, boolean cat) {
             this.ctx = ctx;
@@ -216,6 +221,22 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
                     currentKoalasTrace.setRootId ( rootId );
                     //CurrentKoalasTrace.setChildId ( child_Id );
                     TraceThreadContext.set (currentKoalasTrace);
+                } else{
+                    MessageTree tree = Cat.getManager().getThreadLocalMessageTree();
+                    String messageId = tree.getMessageId();
+                    if (messageId == null) {
+                        messageId = Cat.createMessageId();
+                        tree.setMessageId(messageId);
+                    }
+                    String root = tree.getRootMessageId();
+
+                    if (root == null) {
+                        root = messageId;
+                    }
+                    KoalasTrace koalasTrace = new KoalasTrace (  );
+                    koalasTrace.setParentId (  messageId);
+                    koalasTrace.setRootId ( root );
+                    TraceThreadContext.set (koalasTrace);
                 }
             }
             try {
@@ -227,7 +248,7 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
                 if(transaction!=null && cat)
                     transaction.setStatus ( e );
                 logger.error ( e.getMessage () + ErrorType.APPLICATION,e );
-                handlerException(this.b,ctx,e,ErrorType.APPLICATION,privateKey,publicKey);
+                handlerException(this.b,ctx,e,ErrorType.APPLICATION,privateKey,publicKey,thriftNative);
             }finally {
                 if(transaction!=null && cat){
                     transaction.complete ();
@@ -240,7 +261,7 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
 
     }
 
-    public static void handlerException(byte[] b, ChannelHandlerContext ctx, Exception e, ErrorType type, String privateKey, String publicKey){
+    public static void handlerException(byte[] b, ChannelHandlerContext ctx, Exception e, ErrorType type, String privateKey, String publicKey,boolean thriftNative){
 
         String clientIP = getClientIP(ctx);
 
@@ -263,7 +284,7 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
         TKoalasFramedTransport outTransport = new TKoalasFramedTransport ( tioStreamTransportOutput,16384000,ifUserProtocol );
 
         TProtocolFactory tProtocolFactory =new KoalasBinaryProtocol.Factory();
-
+        ((KoalasBinaryProtocol.Factory) tProtocolFactory).setThriftNative (thriftNative );
         TProtocol in =tProtocolFactory.getProtocol ( inTransport );
         TProtocol out =tProtocolFactory.getProtocol ( outTransport );
 
@@ -359,16 +380,17 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
         KoalasTrace koalasTrace;
         String genericMethodName;
         boolean generic;
+        boolean thriftNative;
         try {
              tMessage= tBinaryProtocol.readMessageBegin ();
              koalasTrace = ((KoalasBinaryProtocol) tBinaryProtocol).getKoalasTrace ();
              generic = ((KoalasBinaryProtocol) tBinaryProtocol).isGeneric ();
              genericMethodName = ((KoalasBinaryProtocol) tBinaryProtocol).getGenericMethodName ();
-
+             thriftNative = ((KoalasBinaryProtocol) tBinaryProtocol).isThriftNative ();
         } catch (Exception e) {
-            return new KoalasMessage(new TMessage(),new KoalasTrace (),false,StringUtils.EMPTY);
+            return new KoalasMessage(new TMessage(),new KoalasTrace (),false,StringUtils.EMPTY,false);
         }
-        return new KoalasMessage(tMessage,koalasTrace,generic,genericMethodName);
+        return new KoalasMessage(tMessage,koalasTrace,generic,genericMethodName,thriftNative);
     }
 
     private KoalasMessage getKoalasTMessage(byte[] b){
@@ -396,7 +418,7 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
             try {
                 sign = new String ( signByte, "UTF-8" );
             } catch (Exception e) {
-                return new KoalasMessage(new TMessage(),new KoalasTrace (),false,StringUtils.EMPTY);
+                return new KoalasMessage(new TMessage(),new KoalasTrace (),false,StringUtils.EMPTY,false);
             }
 
             byte[] rsaBody = new byte[size -10-signLen];
@@ -404,17 +426,18 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
 
             try {
                 if(!KoalasRsaUtil.verify ( rsaBody,publicKey,sign )){
-                    return new KoalasMessage(new TMessage(),new KoalasTrace (),false,StringUtils.EMPTY);
+                    return new KoalasMessage(new TMessage(),new KoalasTrace (),false,StringUtils.EMPTY,false);
                 }
                 request = KoalasRsaUtil.decryptByPrivateKey (rsaBody,privateKey);
             } catch (Exception e) {
-                return new KoalasMessage(new TMessage(),new KoalasTrace (),false,StringUtils.EMPTY);
+                return new KoalasMessage(new TMessage(),new KoalasTrace (),false,StringUtils.EMPTY,false);
             }
         }
         TMessage tMessage;
         KoalasTrace koalasTrace;
         boolean generic;
         String genericMethodName;
+        boolean thriftNative;
         ByteArrayInputStream inputStream = new ByteArrayInputStream ( request );
         TIOStreamTransport tioStreamTransportInput = new TIOStreamTransport (  inputStream);
         try {
@@ -423,10 +446,11 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
             koalasTrace = ((KoalasBinaryProtocol) tBinaryProtocol).getKoalasTrace ();
             generic = ((KoalasBinaryProtocol) tBinaryProtocol).isGeneric ();
             genericMethodName = ((KoalasBinaryProtocol) tBinaryProtocol).getGenericMethodName ();
+            thriftNative = ((KoalasBinaryProtocol) tBinaryProtocol).isThriftNative ();
         } catch (Exception e) {
-            return new KoalasMessage(new TMessage(),new KoalasTrace (),false,StringUtils.EMPTY);
+            return new KoalasMessage(new TMessage(),new KoalasTrace (),false,StringUtils.EMPTY,false);
         }
-        return new KoalasMessage(tMessage,koalasTrace,generic,genericMethodName);
+        return new KoalasMessage(tMessage,koalasTrace,generic,genericMethodName,thriftNative);
     }
 
     private static class KoalasMessage{
@@ -434,13 +458,24 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
         private KoalasTrace koalasTrace;
         private boolean generic;
         private String genericMethodName;
+        private boolean thriftNative;
 
-        public KoalasMessage(TMessage tMessage, KoalasTrace koalasTrace, boolean generic, String genericMethodName) {
+        public KoalasMessage(TMessage tMessage, KoalasTrace koalasTrace, boolean generic, String genericMethodName, boolean thriftNative) {
             this.tMessage = tMessage;
             this.koalasTrace = koalasTrace;
             this.generic = generic;
-            this.genericMethodName=genericMethodName;
+            this.genericMethodName = genericMethodName;
+            this.thriftNative = thriftNative;
         }
+
+        public boolean isThriftNative() {
+            return thriftNative;
+        }
+
+        public void setThriftNative(boolean thriftNative) {
+            this.thriftNative = thriftNative;
+        }
+
         public String getGenericMethodName() {
             return genericMethodName;
         }

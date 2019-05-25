@@ -36,6 +36,7 @@ public class KoalasBinaryProtocol extends TProtocol {
     private byte[] i32rd;
     private byte[] i64rd;
     private boolean generic;
+    private boolean thriftNative=false;
     public static final byte first = (byte) 0xAB;
     public static final byte second = (byte) 0xBA;
     private boolean readGenericMethod=false;
@@ -58,6 +59,15 @@ public class KoalasBinaryProtocol extends TProtocol {
     public void setGeneric(boolean generic) {
         this.generic = generic;
     }
+
+    public boolean isThriftNative() {
+        return thriftNative;
+    }
+
+    public void setThriftNative(boolean thriftNative) {
+        this.thriftNative = thriftNative;
+    }
+
     public KoalasBinaryProtocol(TTransport trans) {
         this(trans, false, true);
     }
@@ -96,18 +106,22 @@ public class KoalasBinaryProtocol extends TProtocol {
             this.writeI32(message.seqid);
         }
 
-        KoalasTrace koalasTrace= TraceThreadContext.get ();
-        if(koalasTrace==null){
-            koalasTrace = new KoalasTrace();
+        if(!thriftNative){
+            if(generic){
+                this.writeByte ( KoalasBinaryProtocol.first );
+                this.writeByte ( KoalasBinaryProtocol.second );
+            } else {
+                this.writeByte ( KoalasBinaryProtocol.second );
+                this.writeByte ( KoalasBinaryProtocol.first );
+            }
+
+            KoalasTrace koalasTrace= TraceThreadContext.get ();
+            if(koalasTrace==null){
+                koalasTrace = new KoalasTrace();
+            }
+            koalasTrace.write ( this );
         }
-        koalasTrace.write ( this );
-        if(generic){
-            this.writeByte ( KoalasBinaryProtocol.first );
-            this.writeByte ( KoalasBinaryProtocol.second );
-        } else {
-            this.writeByte ( KoalasBinaryProtocol.second );
-            this.writeByte ( KoalasBinaryProtocol.first );
-        }
+
     }
 
     public void writeMessageEnd() {
@@ -229,22 +243,34 @@ public class KoalasBinaryProtocol extends TProtocol {
                 throw new TProtocolException(4, "Bad version in readMessageBegin");
             } else {
                 TMessage tMessage = new TMessage(this.readString(), (byte)(size & 255), this.readI32());
-                KoalasTrace koalasTrace = new KoalasTrace();
-                koalasTrace.read ( this );
-                setKoalasTrace(koalasTrace);
-                byte first = this.readByte ();
-                byte second = this.readByte ();
 
-                if(first== KoalasBinaryProtocol.first && second==KoalasBinaryProtocol.second){
-                    setGeneric ( true );
-                    if(readGenericMethod){
-                        this.readFieldBegin ();
-                        GenericRequest genericRequest = new GenericRequest();
-                        genericRequest.read ( this );
-                        setGenericMethodName (genericRequest.getMethodName ().concat ( ".generic" ));
+                if(!thriftNative){
+                    byte first = this.readByte ();
+                    byte second = this.readByte ();
+
+                    if ((first == KoalasBinaryProtocol.first && second == KoalasBinaryProtocol.second) ||
+                            (first == KoalasBinaryProtocol.second && second == KoalasBinaryProtocol.first)
+                            ) {
+                        KoalasTrace koalasTrace = new KoalasTrace();
+                        koalasTrace.read ( this );
+                        setKoalasTrace(koalasTrace);
+                        if(first== KoalasBinaryProtocol.first && second==KoalasBinaryProtocol.second){
+                            setGeneric ( true );
+                            if(readGenericMethod){
+                                this.readFieldBegin ();
+                                GenericRequest genericRequest = new GenericRequest();
+                                genericRequest.read ( this );
+                                setGenericMethodName (genericRequest.getMethodName ().concat ( ".generic" ));
+                            }
+                        } else{
+                            setGeneric ( false );
+                        }
+                        setThriftNative ( false );
+                    } else{
+                        setKoalasTrace(new KoalasTrace());
+                        setGeneric ( false );
+                        setThriftNative ( true );
                     }
-                } else{
-                    setGeneric ( false );
                 }
 
                 return  tMessage;
@@ -253,11 +279,11 @@ public class KoalasBinaryProtocol extends TProtocol {
             throw new TProtocolException(4, "Missing version in readMessageBegin, old client?");
         } else {
             TMessage tMessage =new TMessage(this.readStringBody(size), this.readByte(), this.readI32());
+            byte first = this.readByte ();
+            byte second = this.readByte ();
             KoalasTrace koalasTrace = new KoalasTrace();
             koalasTrace.read ( this );
             setKoalasTrace(koalasTrace);
-            byte first = this.readByte ();
-            byte second = this.readByte ();
 
             if(first== KoalasBinaryProtocol.first && second==KoalasBinaryProtocol.second){
                 setGeneric ( true );
@@ -444,6 +470,8 @@ public class KoalasBinaryProtocol extends TProtocol {
         protected boolean strictWrite_;
         protected int readLength_;
         protected boolean generic_;
+        protected boolean thriftNative;
+
 
         public Factory() {
             this(false, true);
@@ -476,12 +504,22 @@ public class KoalasBinaryProtocol extends TProtocol {
             this.readLength_ = readLength;
             this.generic_ = generic;
         }
+
+        public boolean isThriftNative() {
+            return thriftNative;
+        }
+
+        public void setThriftNative(boolean thriftNative) {
+            this.thriftNative = thriftNative;
+        }
+
         public TProtocol getProtocol(TTransport trans) {
             KoalasBinaryProtocol proto = new KoalasBinaryProtocol (trans, this.strictRead_, this.strictWrite_);
             if (this.readLength_ != 0) {
                 proto.setReadLength(this.readLength_);
             }
             proto.setGeneric ( generic_ );
+            proto.setThriftNative ( this.thriftNative );
             return proto;
         }
     }
