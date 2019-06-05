@@ -15,6 +15,7 @@ import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.apache.thrift.TApplicationException;
+import org.apache.thrift.TBase;
 import org.apache.thrift.async.AsyncMethodCallback;
 import org.apache.thrift.async.TAsyncClient;
 import org.apache.thrift.transport.TSocket;
@@ -57,7 +58,7 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
     }
 
     @Override
-    public Object invoke(MethodInvocation invocation) throws InvocationTargetException, IllegalAccessException {
+    public Object invoke(MethodInvocation invocation) throws Throwable {
 
         Method method = invocation.getMethod ();
         String methodName = method.getName ();
@@ -304,12 +305,22 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
                         }
                     }
 
+                    if(cause instanceof TBase){
+                        LOG.warn ( "user exception--{}, {}--serverName【{}】",cause.getClass ().getName (), serverObject.getRemoteServer (),koalasClientProxy.getServiceInterface ());
+                        if (socket != null) {
+                            genericObjectPool.returnObject ( socket );
+                        }
+                        if(transaction!=null&& cat)
+                            transaction.setStatus ( cause );
+                        throw cause;
+                    }
+
                     if (socket != null && !ifreturn)
                         genericObjectPool.returnObject ( socket );
                     LOG.error ( "invoke server error,server ip -【{}】,port -【{}】--serverName【{}】", serverObject.getRemoteServer ().getIp (), serverObject.getRemoteServer ().getPort (),koalasClientProxy.getServiceInterface ()  );
                     if(transaction!=null&& cat)
                     transaction.setStatus ( cause );
-                    throw e;
+                    throw cause;
                 }
             }
             IllegalStateException finallyException = new IllegalStateException("error!retry time-out of:" + retryTimes + "!!! " + koalasClientProxy.getServiceInterface ());

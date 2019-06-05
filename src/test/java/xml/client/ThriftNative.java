@@ -6,9 +6,7 @@ import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.transport.TFramedTransport;
 import org.apache.thrift.transport.TSocket;
 import org.apache.thrift.transport.TTransport;
-import org.apache.thrift.transport.TTransportException;
-import thrift.domain.WmCreateAccountRequest;
-import thrift.domain.WmCreateAccountRespone;
+import thrift.domain.*;
 import thrift.service.WmCreateAccountService;
 
 public class ThriftNative {
@@ -16,7 +14,7 @@ public class ThriftNative {
     public static final int SERVER_PORT = 8001;
     public static final int TIMEOUT = 3000000;
 
-    public static void main(String[] args) throws TException {
+    public static void main(String[] args) throws TException, KoalasRpcException, KoalasRpcException2, KoalasRpcException1 {
         TTransport transport = new TFramedTransport (new TSocket (SERVER_IP, SERVER_PORT, TIMEOUT));
         TProtocol protocol = new TBinaryProtocol (transport);
         WmCreateAccountService.Client client = new WmCreateAccountService.Client(protocol);

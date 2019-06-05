@@ -55,7 +55,11 @@ public class ReleaseResourcesKoalasAsyncCallBack<T> implements AsyncMethodCallba
                     }
                 }
             } else{
-                asyncMethodCallback.onError ( e );
+                if(e instanceof InvocationTargetException && e.getCause ()!=null){
+                    asyncMethodCallback.onError ( (Exception) e.getCause () );
+                }else{
+                    asyncMethodCallback.onError(e);
+                }
             }
         }
     }

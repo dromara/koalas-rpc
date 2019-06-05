@@ -2,8 +2,7 @@ package thrift.annotation.server.impl;
 
 import annotation.KoalasServer;
 import org.apache.thrift.TException;
-import thrift.domain.WmCreateAccountRequest;
-import thrift.domain.WmCreateAccountRespone;
+import thrift.domain.*;
 import thrift.service.WmCreateAccountService;
 
 import java.util.Random;
@@ -12,17 +11,24 @@ import java.util.concurrent.atomic.AtomicInteger;
 @KoalasServer ( port = 8802,zkpath="127.0.0.1:2181",serverType = "thrift")
 public class WmCreateAccountServiceThriftImpl implements WmCreateAccountService.Iface {
     private AtomicInteger atomicInteger = new AtomicInteger ( 0 );
+
+
     @Override
-    public WmCreateAccountRespone getRPC(WmCreateAccountRequest wmCreateAccountRequest) throws TException {
+    public WmCreateAccountRespone getRPC(WmCreateAccountRequest wmCreateAccountRequest) throws KoalasRpcException, KoalasRpcException1, KoalasRpcException2, TException {
         WmCreateAccountRespone wmCreateAccountRespone = new WmCreateAccountRespone ();
         wmCreateAccountRespone.setCode ( 1 );
-        wmCreateAccountRespone.setMessage ( "你好啊,我是thrift实现的注解服务端" );
-        if(new Random (  ).nextInt ( 5 )>100){
-            try {
-                Thread.sleep ( 5000 );
-            } catch (InterruptedException e) {
-                e.printStackTrace ();
-            }
+        wmCreateAccountRespone.setMessage ( "你好" );
+        /*if(new Random (  ).nextInt ( 5 )>-1){
+            throw new RuntimeException ( "测试错误" );
+        }*/
+        if(wmCreateAccountRequest.getPartnerId ()==1){
+            throw  new KoalasRpcException(1,"123");
+        }
+        if(wmCreateAccountRequest.getPartnerId ()==2){
+            throw  new KoalasRpcException1(2,"456");
+        }
+        if(wmCreateAccountRequest.getPartnerId ()==3){
+            throw  new KoalasRpcException2(3,"789");
         }
         System.out.println ( "getRPC  start ...." + wmCreateAccountRequest + "------" + atomicInteger.incrementAndGet () );
 

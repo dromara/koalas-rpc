@@ -8,8 +8,7 @@ import org.apache.thrift.TException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import thrift.domain.WmCreateAccountRequest;
-import thrift.domain.WmCreateAccountRespone;
+import thrift.domain.*;
 import thrift.service.WmCreateAccountService;
 
 import java.util.ArrayList;
@@ -24,11 +23,11 @@ public class TestServiceSync {
     @Qualifier("wmCreateAccountService3")
     GenericService.Iface wmGenericService;
 
-    public void getRemoteRpc() throws TException {
+    public void getRemoteRpc() throws TException, KoalasRpcException, KoalasRpcException2, KoalasRpcException1 {
         WmCreateAccountRequest request= new WmCreateAccountRequest (  );
         //request.setSource ( 10 );
         request.setAccountType ( 1 );
-        request.setPartnerId ( 1 );
+        request.setPartnerId (1 );
         request.setPartnerType ( 1 );
         request.setPartnerName ( "你好啊-我是xml实现的服务端getRemoteRpc-异步" );
         request.setPoiFlag ( 1 );
