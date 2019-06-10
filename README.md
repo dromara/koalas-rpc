@@ -67,6 +67,37 @@ maven依赖
 
 首先需要编写自己的thrift idl文件了，这里多说一句，在群里的小伙伴曾经说过idl文件编写不熟悉，有可能出错 这里顺带说一嘴，thrift的ldl文件和写java的请求体和service几乎没有任何区别，熟能生巧，上手之后非常简单 这里推荐几篇thrift的文章，有兴趣可以看一看 https://blog.csdn.net/lk10207160511/article/details/50450541， https://blog.csdn.net/hrn1216/article/details/51306395 下面截图为测试的thrift文件
 
+##### 更新于2019年06月10日，如果大家实在不乐意手写idl文件，那么作者给大家提供了一个简单的插件。链接: https://pan.baidu.com/s/1d_Raox39zSdFrMGw--VUsQ 提取码: y7yu ,下载之后在src/test/java下面写自己的普通java接口对象，然后一键生成thrfit文件和便后之后的文件（前提条件是需要使用者把thrift编译环境设置到path中，否则不能正常运行），使用方式如下：写好了自己的接口文件之后直接运行ThriftFileBuilderTest测试类中方法。
+
+```
+@Test
+	public void testToOutputstream() throws Exception {
+
+		String baseDir = "src/test/java";
+		Class clazz = ICommonUserService.class;
+		String outPutFile =baseDir.concat ( "/" ).concat (clazz.getPackage ().getName ().replaceAll ( "\\.","/" )).concat ( "/" );
+		outPutFile=outPutFile.concat ( clazz.getSimpleName () ).concat ( "/" );
+		outPutFile=outPutFile.concat ( clazz.getSimpleName ()+".thrift" );
+
+		File file = new File (  outPutFile);
+		if (file.getParentFile() != null && !file.getParentFile().exists()) {
+			file.getParentFile().mkdirs();
+			file.createNewFile ();
+		}
+
+		this.fileBuilder.setSourceDir(baseDir);
+
+		FileOutputStream fileOutputStream= new FileOutputStream(file);
+		this.fileBuilder.buildToOutputStream(clazz,fileOutputStream);
+
+		excuteThriftCommand(file.getAbsolutePath ());
+	}
+```
+只需要修改clazz的接口就可以了，执行过后在当前包下会生成一个thrift文件和编译过后的class文件，直接使用即可。
+![输入图片说明](https://images.gitee.com/uploads/images/2019/0610/102621_7f45f330_536094.png "屏幕截图.png")
+test0包是作者的测试包名，改成自己实际的包名就可以了。最后说明的是作者还是推荐自己练习写idl文件，熟练过后就可以不依赖这个工具了。
+
+
 ```
 namespace java thrift.service
 
