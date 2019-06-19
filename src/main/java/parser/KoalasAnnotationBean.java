@@ -18,6 +18,7 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.core.Ordered;
 import org.springframework.util.ClassUtils;
 import server.KoalasServerPublisher;
+import utils.KoalasAopUtil;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -281,7 +282,12 @@ public class KoalasAnnotationBean implements DisposableBean, BeanFactoryPostProc
                 koalasServerPublisher.setPublicKey (koalasServer.publicKey ()  );
             }
             Class<?> serviceinterface=null;
-            Class<?>[] serviceinterfaces =  bean.getClass ().getInterfaces ();
+
+            Object targetBean = KoalasAopUtil.getTarget (bean);
+            if(targetBean==null){
+                throw new BeanInitializationException ( "bean :" +bean.getClass ().getName () + "getTarget class error");
+            }
+            Class<?>[] serviceinterfaces =  targetBean.getClass ().getInterfaces ();
             for(Class<?> clazz1:serviceinterfaces ){
                 if(clazz1.getName ().endsWith ("$Iface")){
                     serviceinterface = clazz1.getDeclaringClass ();
