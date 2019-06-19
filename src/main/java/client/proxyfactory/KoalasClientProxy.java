@@ -109,7 +109,7 @@ public class KoalasClientProxy implements FactoryBean<Object>, ApplicationContex
     private int maxLength_ = DEFUAL_MAXLENGTH;
     private static int cores = Runtime.getRuntime().availableProcessors();
     private int asyncSelectorThreadCount = cores * 2;
-    private static List<TAsyncClientManager> asyncClientManagerList = null;
+    private static volatile List<TAsyncClientManager> asyncClientManagerList = null;
     private String privateKey;
     private String publicKey;
     private boolean cat=false;
