@@ -196,7 +196,7 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
                             }
                             if(transaction!=null&& cat)
                                 transaction.setStatus ( cause );
-                            throw new IllegalStateException("rsa error with service" + serverObject.getRemoteServer ().toString ()+koalasClientProxy.getServiceInterface ());
+                            throw new RSAException ("rsa error with service" + serverObject.getRemoteServer ().toString ()+koalasClientProxy.getServiceInterface ());
                         }
 
                         if (((TApplicationException) cause).getType () == 6699) {
@@ -206,7 +206,7 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
                             }
                             if(transaction!=null&& cat)
                                 transaction.setStatus ( cause );
-                            throw new IllegalStateException("this client is not rsa support,please get the privateKey and publickey with server" + serverObject.getRemoteServer ().toString ()+koalasClientProxy.getServiceInterface ());
+                            throw new RSAException("this client is not rsa support,please get the privateKey and publickey with server" + serverObject.getRemoteServer ().toString ()+koalasClientProxy.getServiceInterface ());
                         }
 
                         if (((TApplicationException) cause).getType () == TApplicationException.INTERNAL_ERROR) {
@@ -216,7 +216,7 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
                             }
                             if(transaction!=null&& cat)
                                 transaction.setStatus ( cause );
-                            throw new IllegalStateException("this server is error serviceName:" + serverObject.getRemoteServer ()+koalasClientProxy.getServiceInterface () + ",error message:" + ((TApplicationException) cause).getMessage ());
+                            throw new TApplicationException("this server is error serviceName:" + serverObject.getRemoteServer ()+koalasClientProxy.getServiceInterface () + ",error message:" + ((TApplicationException) cause).getMessage ());
                         }
 
                         if (((TApplicationException) cause).getType () == TApplicationException.MISSING_RESULT) {
@@ -234,7 +234,7 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
                         }
                         if(transaction!=null&& cat)
                             transaction.setStatus ( cause );
-                        throw new IllegalStateException("this client privateKey or publicKey is error,please check it!" + serverObject.getRemoteServer ()+ koalasClientProxy.getServiceInterface ());
+                        throw new RSAException("this client privateKey or publicKey is error,please check it!" + serverObject.getRemoteServer ()+ koalasClientProxy.getServiceInterface ());
                     }
 
                     if(cause instanceof OutMaxLengthException){
@@ -244,7 +244,7 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
                         }
                         if(transaction!=null&& cat)
                             transaction.setStatus ( cause );
-                        throw new IllegalStateException("to big content!" + serverObject.getRemoteServer ()+ koalasClientProxy.getServiceInterface ());
+                        throw new OutMaxLengthException("to big content!" + serverObject.getRemoteServer ()+ koalasClientProxy.getServiceInterface ());
                     }
 
                     if (cause.getCause () != null && cause.getCause () instanceof ConnectException) {
@@ -294,7 +294,7 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
                             }
                             if(transaction!=null&& cat)
                             transaction.setStatus ( cause );
-                            throw new IllegalStateException("the remote server error!" + serverObject.getRemoteServer () + koalasClientProxy.getServiceInterface ());
+                            throw new TTransportException("the remote server is shutdown!" + serverObject.getRemoteServer () + koalasClientProxy.getServiceInterface ());
                         }
                         if(cause.getCause ()!=null && cause.getCause () instanceof SocketException){
                             if(genericObjectPool.isClosed ()){
