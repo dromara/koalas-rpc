@@ -27,7 +27,7 @@ public class TestServiceSync {
         WmCreateAccountRequest request= new WmCreateAccountRequest (  );
         //request.setSource ( 10 );
         request.setAccountType ( 1 );
-        request.setPartnerId (1 );
+        request.setPartnerId (6 );
         request.setPartnerType ( 1 );
         request.setPartnerName ( "你好啊-我是xml实现的服务端getRemoteRpc-异步" );
         request.setPoiFlag ( 1 );

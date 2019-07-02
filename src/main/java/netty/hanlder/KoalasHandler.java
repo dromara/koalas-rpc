@@ -115,7 +115,7 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
 
             if(this.privateKey != null && this.publicKey!=null){
                 if(b[8] != (byte) 1 || !(b[4]==TKoalasFramedTransport.first && b[5]==TKoalasFramedTransport.second)){
-                    logger.error ("rsa error the client is not ras support!");
+                    logger.error ("rsa error the client is not ras support!  className={}");
                     handlerException(b,ctx,new RSAException ( "rsa error" ),ErrorType.APPLICATION,privateKey,publicKey,thriftNative);
                     return;
                 }
@@ -136,7 +136,7 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
                         ctx.writeAndFlush ( outputStream );
                         return;
                     } catch (Exception e){
-                        logger.error ( "heartbeat error e" );
+                        logger.error ( "heartbeat error e,className:{}",className );
                         handlerException(b,ctx,e,ErrorType.APPLICATION,privateKey,publicKey,thriftNative);
                         return;
                     }
@@ -164,7 +164,7 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
             try {
                 executorService.execute ( new NettyRunable (  ctx,in,out,outputStream,localTprocessor,b,privateKey,publicKey,className,methodName,koalasTrace,cat));
             } catch (RejectedExecutionException e){
-                logger.error ( e.getMessage ()+ErrorType.THREAD,e );
+                logger.error ( e.getMessage ()+ErrorType.THREAD+",className:" +className,e );
                 handlerException(b,ctx,e,ErrorType.THREAD,privateKey,publicKey,thriftNative);
             }
         }
@@ -247,7 +247,7 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
             } catch (Exception e) {
                 if(transaction!=null && cat)
                     transaction.setStatus ( e );
-                logger.error ( e.getMessage () + ErrorType.APPLICATION,e );
+                logger.error ( e.getMessage () + ErrorType.APPLICATION+",className:"+className,e );
                 handlerException(this.b,ctx,e,ErrorType.APPLICATION,privateKey,publicKey,thriftNative);
             }finally {
                 if(transaction!=null && cat){

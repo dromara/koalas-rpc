@@ -236,68 +236,51 @@ public class KoalasBinaryProtocol extends TProtocol {
     }
 
     public TMessage readMessageBegin() throws TException {
+        TMessage tMessage;
         int size = this.readI32();
         if (size < 0) {
             int version = size & -65536;
             if (version != -2147418112) {
                 throw new TProtocolException(4, "Bad version in readMessageBegin");
             } else {
-                TMessage tMessage = new TMessage(this.readString(), (byte)(size & 255), this.readI32());
-
-                if(!thriftNative){
-                    byte first = this.readByte ();
-                    byte second = this.readByte ();
-
-                    if ((first == KoalasBinaryProtocol.first && second == KoalasBinaryProtocol.second) ||
-                            (first == KoalasBinaryProtocol.second && second == KoalasBinaryProtocol.first)
-                            ) {
-                        KoalasTrace koalasTrace = new KoalasTrace();
-                        koalasTrace.read ( this );
-                        setKoalasTrace(koalasTrace);
-                        if(first== KoalasBinaryProtocol.first && second==KoalasBinaryProtocol.second){
-                            setGeneric ( true );
-                            if(readGenericMethod){
-                                this.readFieldBegin ();
-                                GenericRequest genericRequest = new GenericRequest();
-                                genericRequest.read ( this );
-                                setGenericMethodName (genericRequest.getMethodName ().concat ( ".generic" ));
-                            }
-                        } else{
-                            setGeneric ( false );
-                        }
-                        setThriftNative ( false );
-                    } else{
-                        setKoalasTrace(new KoalasTrace());
-                        setGeneric ( false );
-                        setThriftNative ( true );
-                    }
-                }
-
-                return  tMessage;
+                 tMessage = new TMessage(this.readString(), (byte)(size & 255), this.readI32());
             }
         } else if (this.strictRead_) {
             throw new TProtocolException(4, "Missing version in readMessageBegin, old client?");
         } else {
-            TMessage tMessage =new TMessage(this.readStringBody(size), this.readByte(), this.readI32());
+            tMessage =new TMessage(this.readStringBody(size), this.readByte(), this.readI32());
+        }
+
+        if(!thriftNative){
             byte first = this.readByte ();
             byte second = this.readByte ();
-            KoalasTrace koalasTrace = new KoalasTrace();
-            koalasTrace.read ( this );
-            setKoalasTrace(koalasTrace);
 
-            if(first== KoalasBinaryProtocol.first && second==KoalasBinaryProtocol.second){
-                setGeneric ( true );
-                if(readGenericMethod){
-                    this.readFieldBegin ();
-                    GenericRequest genericRequest = new GenericRequest();
-                    genericRequest.read ( this );
-                    setGenericMethodName (genericRequest.getMethodName ().concat ( ".generic" ));
+            if ((first == KoalasBinaryProtocol.first && second == KoalasBinaryProtocol.second) ||
+                    (first == KoalasBinaryProtocol.second && second == KoalasBinaryProtocol.first)
+                    ) {
+                KoalasTrace koalasTrace = new KoalasTrace();
+                koalasTrace.read ( this );
+                setKoalasTrace(koalasTrace);
+                if(first== KoalasBinaryProtocol.first && second==KoalasBinaryProtocol.second){
+                    setGeneric ( true );
+                    if(readGenericMethod){
+                        this.readFieldBegin ();
+                        GenericRequest genericRequest = new GenericRequest();
+                        genericRequest.read ( this );
+                        setGenericMethodName (genericRequest.getMethodName ().concat ( ".generic" ));
+                    }
+                } else{
+                    setGeneric ( false );
                 }
+                setThriftNative ( false );
             } else{
+                setKoalasTrace(new KoalasTrace());
                 setGeneric ( false );
+                setThriftNative ( true );
             }
-            return tMessage;
         }
+        return  tMessage;
+
     }
 
     public void readMessageEnd() {
