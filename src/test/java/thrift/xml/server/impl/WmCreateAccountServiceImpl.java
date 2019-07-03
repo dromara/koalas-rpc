@@ -1,10 +1,13 @@
 package thrift.xml.server.impl;
 
 import org.apache.thrift.TException;
+import org.springframework.jdbc.UncategorizedSQLException;
 import org.springframework.stereotype.Service;
 import thrift.domain.*;
 import thrift.service.WmCreateAccountService;
 
+import java.net.ConnectException;
+import java.sql.SQLException;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -14,13 +17,10 @@ public class WmCreateAccountServiceImpl implements WmCreateAccountService.Iface 
 
 
     @Override
-    public WmCreateAccountRespone getRPC(WmCreateAccountRequest wmCreateAccountRequest) throws KoalasRpcException, KoalasRpcException1, KoalasRpcException2, TException {
+    public WmCreateAccountRespone getRPC(WmCreateAccountRequest wmCreateAccountRequest) throws  KoalasRpcException, KoalasRpcException1, KoalasRpcException2, TException {
         WmCreateAccountRespone wmCreateAccountRespone = new WmCreateAccountRespone ();
         wmCreateAccountRespone.setCode ( 1 );
         wmCreateAccountRespone.setMessage ( "你好" );
-        /*if(new Random (  ).nextInt ( 5 )>-1){
-            throw new RuntimeException ( "测试错误" );
-        }*/
         if(wmCreateAccountRequest.getPartnerId ()==1){
             throw  new KoalasRpcException(1,"123");
         }
@@ -29,6 +29,15 @@ public class WmCreateAccountServiceImpl implements WmCreateAccountService.Iface 
         }
         if(wmCreateAccountRequest.getPartnerId ()==3){
             throw  new KoalasRpcException2(3,"789");
+        }
+        if(wmCreateAccountRequest.getPartnerId ()==4){
+            throw  new UncategorizedSQLException ("123","select * from xxx1",new SQLException ("456"));
+        }
+        if(wmCreateAccountRequest.getPartnerId ()==5){
+            throw  new UncategorizedSQLException ("123","select * from xxx2",new SQLException ("456"));
+        }
+        if(wmCreateAccountRequest.getPartnerId ()==6){
+            throw  new TException ("123",new Exception ("456"));
         }
         System.out.println ( "getRPC  start ...." + wmCreateAccountRequest + "------" + atomicInteger.incrementAndGet () );
 

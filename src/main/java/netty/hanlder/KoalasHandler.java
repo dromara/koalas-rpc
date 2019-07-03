@@ -22,6 +22,8 @@ import protocol.KoalasTrace;
 import server.config.AbstractKoalsServerPublisher;
 import server.domain.ErrorType;
 import transport.TKoalasFramedTransport;
+import utils.IPUtil;
+import utils.KoalasExceptionUtil;
 import utils.KoalasRsaUtil;
 import utils.TraceThreadContext;
 
@@ -115,7 +117,7 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
 
             if(this.privateKey != null && this.publicKey!=null){
                 if(b[8] != (byte) 1 || !(b[4]==TKoalasFramedTransport.first && b[5]==TKoalasFramedTransport.second)){
-                    logger.error ("rsa error the client is not ras support!  className={}");
+                    logger.error ("rsa error the client is not ras support!  className={}",className);
                     handlerException(b,ctx,new RSAException ( "rsa error" ),ErrorType.APPLICATION,privateKey,publicKey,thriftNative);
                     return;
                 }
@@ -263,9 +265,9 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
 
     public static void handlerException(byte[] b, ChannelHandlerContext ctx, Exception e, ErrorType type, String privateKey, String publicKey,boolean thriftNative){
 
-        String clientIP = getClientIP(ctx);
-
-        String value = MessageFormat.format("the remote ip: {0} invoke error ,the error message is: {1}", clientIP,e.getMessage ());
+        String serverIp = IPUtil.getIpV4 ();
+        String exceptionMessage = KoalasExceptionUtil.getExceptionInfo ( e );
+        String value = MessageFormat.format("error from server: {0}  invoke error : {1}", serverIp,exceptionMessage);
 
         boolean ifUserProtocol;
         if(b[4]==TKoalasFramedTransport.first && b[5]==TKoalasFramedTransport.second){
@@ -303,7 +305,7 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
                 } else{
                     try {
                         TMessage tMessage =  new TMessage("", TMessageType.EXCEPTION, -1);
-                        TApplicationException exception = new TApplicationException(9999,"【rsa error】:" + value);
+                        TApplicationException exception = new TApplicationException(9999,value);
                         out.writeMessageBegin ( tMessage );
                         exception.write (out  );
                         out.writeMessageEnd();
@@ -318,7 +320,7 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
                 if(e instanceof RSAException){
                     try {
                         TMessage tMessage =  new TMessage("", TMessageType.EXCEPTION, -1);
-                        TApplicationException exception = new TApplicationException(6699,"【rsa error】:" + value);
+                        TApplicationException exception = new TApplicationException(6699,value);
                         out.writeMessageBegin ( tMessage );
                         exception.write (out  );
                         out.writeMessageEnd();
@@ -352,23 +354,14 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
             out.writeMessageEnd();
             out.getTransport ().flush ();
             ctx.writeAndFlush ( outputStream);
-            logger.info ( "handlerException:" + tApplicationException.getType () + value );
+            logger.info ( "handlerException:" + tApplicationException.getType () + ":"+ value );
         } catch (TException e1) {
-            logger.error ( "unknown Exception:" + type + value,e1 );
+            logger.error ( "unknown Exception:" + type + ":"+  value,e1 );
             ctx.close ();
         }
     }
 
-    private static String getClientIP(ChannelHandlerContext ctx) {
-        String ip;
-        try {
-            InetSocketAddress socketAddress = (InetSocketAddress) ctx.channel().remoteAddress();
-            ip = socketAddress.getAddress().getHostAddress();
-        } catch (Exception e) {
-            ip = "unknown";
-        }
-        return ip;
-    }
+
 
     private KoalasMessage getTMessage(byte[] b){
         byte[] buff = new byte[b.length-4];

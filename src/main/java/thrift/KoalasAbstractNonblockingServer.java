@@ -39,6 +39,8 @@ import protocol.KoalasBinaryProtocol;
 import protocol.KoalasTrace;
 import server.domain.ErrorType;
 import transport.TKoalasFramedTransport;
+import utils.IPUtil;
+import utils.KoalasExceptionUtil;
 import utils.KoalasRsaUtil;
 import utils.TraceThreadContext;
 
@@ -409,7 +411,11 @@ public abstract class KoalasAbstractNonblockingServer extends TServer {
                             } else {
                                 tGenericProcessor.process (  inProt, outProt  );
                             }
+                            if(transaction!=null && cat)
+                                transaction.setStatus ( Transaction.SUCCESS );
                         } catch (Exception e){
+                            if(transaction!=null && cat)
+                                transaction.setStatus ( e);
                             byte[] _body = buffer_.array ();
                             byte[] len = new byte[4];
                             encodeFrameSize ( _body.length, len );
@@ -419,8 +425,6 @@ public abstract class KoalasAbstractNonblockingServer extends TServer {
                             handlerException(_b,e,ErrorType.APPLICATION,privateKey,publicKey);
                         }
 
-                        if(transaction!=null && cat)
-                            transaction.setStatus ( Transaction.SUCCESS );
                     } catch (Exception e){
                         if(transaction!=null && cat)
                             transaction.setStatus ( e );
@@ -447,7 +451,9 @@ public abstract class KoalasAbstractNonblockingServer extends TServer {
 
         public void handlerException(byte[] b, Exception e, ErrorType type, String privateKey, String publicKey) throws TException {
 
-            String value = MessageFormat.format("thrift server error，the error message is: {0}",e.getMessage ());
+            String serverIp = IPUtil.getIpV4 ();
+            String exceptionMessage = KoalasExceptionUtil.getExceptionInfo ( e );
+            String value = MessageFormat.format("error from server: {0}  invoke error : {1}", serverIp,exceptionMessage);
             boolean ifUserProtocol;
             if(b[4]==TKoalasFramedTransport.first && b[5]==TKoalasFramedTransport.second){
                 ifUserProtocol = true;
@@ -484,7 +490,7 @@ public abstract class KoalasAbstractNonblockingServer extends TServer {
                     } else{
                         try {
                             TMessage tMessage =  new TMessage("", TMessageType.EXCEPTION, -1);
-                            TApplicationException exception = new TApplicationException(9999,"【rsa error】:" + value);
+                            TApplicationException exception = new TApplicationException(9999,value);
                             out.writeMessageBegin ( tMessage );
                             exception.write (out  );
                             out.writeMessageEnd();
@@ -499,7 +505,7 @@ public abstract class KoalasAbstractNonblockingServer extends TServer {
                     if(e instanceof RSAException){
                         try {
                             TMessage tMessage =  new TMessage("", TMessageType.EXCEPTION, -1);
-                            TApplicationException exception = new TApplicationException(6699,"【rsa error】:" + value);
+                            TApplicationException exception = new TApplicationException(6699,value);
                             out.writeMessageBegin ( tMessage );
                             exception.write (out  );
                             out.writeMessageEnd();
@@ -532,9 +538,9 @@ public abstract class KoalasAbstractNonblockingServer extends TServer {
                 tApplicationException.write (out  );
                 out.writeMessageEnd();
                 out.getTransport ().flush ();
-                LOGGER.info ( "handlerException:" + tApplicationException.getType () + value );
+                LOGGER.info ( "handlerException:" + tApplicationException.getType () + ":"+ value );
             } catch (Exception e1) {
-                LOGGER.error ( "unknown Exception:" + type + value,e1 );
+                LOGGER.error ( "unknown Exception:" + type + ":"+  value,e1 );
                 throw  e1;
             }
 

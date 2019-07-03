@@ -16,6 +16,7 @@ import org.aopalliance.intercept.MethodInvocation;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.apache.thrift.TApplicationException;
 import org.apache.thrift.TBase;
+import org.apache.thrift.TException;
 import org.apache.thrift.async.AsyncMethodCallback;
 import org.apache.thrift.async.TAsyncClient;
 import org.apache.thrift.transport.TSocket;
@@ -179,7 +180,7 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
                     boolean ifReturn = false;
                     if (cause instanceof TApplicationException) {
                         if (((TApplicationException) cause).getType () == 6666) {
-                            LOG.info ( "the server{}--serverName【{}】,method:【{}】 thread pool is busy ,retry it!", serverObject.getRemoteServer (),koalasClientProxy.getServiceInterface () ,methodName);
+                            LOG.info ( "serverName【{}】,method:【{}】 thread pool is busy ,retry it!,error message from server 【{}】", koalasClientProxy.getServiceInterface () ,methodName,((TApplicationException) cause).getMessage ());
                             if (socket != null) {
                                 genericObjectPool.returnObject ( socket );
                                 ifReturn = true;
@@ -190,33 +191,33 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
                         }
 
                         if (((TApplicationException) cause).getType () == 9999) {
-                            LOG.error ( "rsa error with service--{}--serverName【{}】,method:【{}】", serverObject.getRemoteServer (),koalasClientProxy.getServiceInterface (),methodName);
+                            LOG.error ( "serverName【{}】,method:【{}】 ,error message from server 【{}】", koalasClientProxy.getServiceInterface (),methodName,((TApplicationException) cause).getMessage ());
                             if (socket != null) {
                                 genericObjectPool.returnObject ( socket );
                             }
                             if(transaction!=null&& cat)
                                 transaction.setStatus ( cause );
-                            throw new RSAException ("rsa error with service" + serverObject.getRemoteServer ().toString ()+koalasClientProxy.getServiceInterface ());
+                            throw new RSAException ("server ras error,serverName:"+koalasClientProxy.getServiceInterface ()+",method:"+methodName,cause);
                         }
 
                         if (((TApplicationException) cause).getType () == 6699) {
-                            LOG.error ( "this client is not rsa support,please get the privateKey and publickey with server--{}--serverName【{}】", serverObject.getRemoteServer (),koalasClientProxy.getServiceInterface ());
+                            LOG.error ( "serverName【{}】,method:【{}】 ,this client is not rsa support,please get the privateKey and publickey ,error message from server【{}】", koalasClientProxy.getServiceInterface (),methodName,((TApplicationException) cause).getMessage ());
                             if (socket != null) {
                                 genericObjectPool.returnObject ( socket );
                             }
                             if(transaction!=null&& cat)
                                 transaction.setStatus ( cause );
-                            throw new RSAException("this client is not rsa support,please get the privateKey and publickey with server" + serverObject.getRemoteServer ().toString ()+koalasClientProxy.getServiceInterface ());
+                            throw new RSAException ("this client is not rsa support,please get the privateKey and publickey with server,serverName:"+koalasClientProxy.getServiceInterface ()+",method:"+methodName,cause);
                         }
 
                         if (((TApplicationException) cause).getType () == TApplicationException.INTERNAL_ERROR) {
-                            LOG.error ( "this server is error, server--{}--serverName【{}】,,method:【{}】,the remote server error message data【{}】", serverObject.getRemoteServer (),koalasClientProxy.getServiceInterface (),methodName,((TApplicationException) cause).getMessage () );
+                            LOG.error ( "serverName【{}】,method:【{}】,the remote server process error:【{}】", koalasClientProxy.getServiceInterface (),methodName,((TApplicationException) cause).getMessage () );
                             if (socket != null) {
                                 genericObjectPool.returnObject ( socket );
                             }
                             if(transaction!=null&& cat)
                                 transaction.setStatus ( cause );
-                            throw new TApplicationException("this server is error serviceName:" + serverObject.getRemoteServer ()+koalasClientProxy.getServiceInterface () + "method:" + methodName + ",error message:" + ((TApplicationException) cause).getMessage ());
+                            throw new TException ("server process error, serviceName:" + koalasClientProxy.getServiceInterface () + ",method:" + methodName + ",error message:" + ((TApplicationException) cause).getMessage (),cause);
                         }
 
                         if (((TApplicationException) cause).getType () == TApplicationException.MISSING_RESULT) {
@@ -228,13 +229,13 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
                     }
 
                     if (cause instanceof RSAException) {
-                        LOG.error ( "this client privateKey or publicKey is error,please check it! --{}--serverName【{}】", serverObject.getRemoteServer (),koalasClientProxy.getServiceInterface () );
+                        LOG.error ( "this client privateKey or publicKey is error,please check it! ,serverName【{}】,method 【{}】", koalasClientProxy.getServiceInterface (), methodName);
                         if (socket != null) {
                             genericObjectPool.returnObject ( socket );
                         }
                         if(transaction!=null&& cat)
                             transaction.setStatus ( cause );
-                        throw new RSAException("this client privateKey or publicKey is error,please check it!" + serverObject.getRemoteServer ()+ koalasClientProxy.getServiceInterface ());
+                        throw new RSAException("this client privateKey or publicKey is error,please check it!" + "serverName:"+koalasClientProxy.getServiceInterface () + ",method:"+methodName);
                     }
 
                     if(cause instanceof OutMaxLengthException){
@@ -244,11 +245,11 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
                         }
                         if(transaction!=null&& cat)
                             transaction.setStatus ( cause );
-                        throw new OutMaxLengthException("to big content!" + serverObject.getRemoteServer ()+ koalasClientProxy.getServiceInterface ()+ ",method:" + methodName);
+                        throw new OutMaxLengthException("to big content!" + "serverName:"+ koalasClientProxy.getServiceInterface ()+ ",method:" + methodName,cause);
                     }
 
                     if (cause.getCause () != null && cause.getCause () instanceof ConnectException) {
-                        LOG.error ( "the server {}--serverName【{}】 maybe is shutdown ,retry it!", serverObject.getRemoteServer (),koalasClientProxy.getServiceInterface () );
+                        LOG.error ( "the server【{}】 maybe is shutdown ,retry it! serverName【{}】,,method 【{}】", serverObject.getRemoteServer (),koalasClientProxy.getServiceInterface (),methodName );
                         try {
                             if (socket != null) {
                                 genericObjectPool.returnObject ( socket );
@@ -263,7 +264,7 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
                     }
 
                     if (cause.getCause () != null && cause.getCause () instanceof SocketTimeoutException) {
-                        LOG.error ( "read timeout SocketTimeoutException,retry it! {}--serverName【{}】,method：【{}】", serverObject.getRemoteServer (),koalasClientProxy.getServiceInterface () ,methodName);
+                        LOG.error ( "the server【{}】read timeout SocketTimeoutException,retry it! --serverName【{}】,method：【{}】", serverObject.getRemoteServer (),koalasClientProxy.getServiceInterface () ,methodName);
                         if (socket != null) {
                             try {
                                 genericObjectPool.invalidateObject ( socket );
@@ -306,7 +307,7 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
                     }
 
                     if(cause instanceof TBase){
-                        LOG.warn ( "user exception--{}, {}--serverName【{}】,method：【{}】",cause.getClass ().getName (), serverObject.getRemoteServer (),koalasClientProxy.getServiceInterface (),methodName);
+                        LOG.warn ( "thrift exception--{}, {}--serverName【{}】,method：【{}】",cause.getClass ().getName (), serverObject.getRemoteServer (),koalasClientProxy.getServiceInterface (),methodName);
                         if (socket != null) {
                             genericObjectPool.returnObject ( socket );
                         }
@@ -323,7 +324,7 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
                     throw cause;
                 }
             }
-            IllegalStateException finallyException = new IllegalStateException("error!retry time-out of:" + retryTimes + "!!! " + koalasClientProxy.getServiceInterface () + "." + methodName);
+            IllegalStateException finallyException = new IllegalStateException("error!retry time-out of:" + retryTimes + "!!! " +"serverName:" +koalasClientProxy.getServiceInterface () + ",method:" + methodName);
             if(transaction!=null&& cat)
                   transaction.setStatus ( finallyException );
             throw finallyException;

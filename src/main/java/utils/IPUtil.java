@@ -1,5 +1,6 @@
 package utils;
 
+import io.netty.channel.ChannelHandlerContext;
 import org.apache.commons.lang3.StringUtils;
 
 import java.net.*;
@@ -54,4 +55,14 @@ public class IPUtil {
         return ip;
     }
 
+    public static String getClientIP(ChannelHandlerContext ctx) {
+        String ip;
+        try {
+            InetSocketAddress socketAddress = (InetSocketAddress) ctx.channel().remoteAddress();
+            ip = socketAddress.getAddress().getHostAddress();
+        } catch (Exception e) {
+            ip = "unknown";
+        }
+        return ip;
+    }
 }
