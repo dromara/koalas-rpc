@@ -271,6 +271,8 @@ public class KoalasAnnotationBean implements DisposableBean, BeanFactoryPostProc
             if(koalasServer.koalasThreadCount () !=0){
                 koalasServerPublisher.setKoalasThreadCount ( koalasServer.koalasThreadCount () );
             }
+
+            koalasServerPublisher.setMaxLength ( koalasServer.maxLength () );
             koalasServerPublisher.setEnv ( koalasServer.env () );
             koalasServerPublisher.setWeight ( koalasServer.weight () );
             koalasServerPublisher.setServerType ( koalasServer.serverType () );

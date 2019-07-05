@@ -22,6 +22,7 @@ public class TKoalasFramedTransport extends TTransport {
     protected static final int DEFAULT_MAX_LENGTH = 16384000;
 
     private int maxLength_;
+    private int readMaxLength_=Integer.MAX_VALUE;
 
     private TTransport transport_ = null;
 
@@ -86,6 +87,14 @@ public class TKoalasFramedTransport extends TTransport {
 
     public void setZip(byte zip) {
         this.zip = zip;
+    }
+
+    public int getReadMaxLength_() {
+        return readMaxLength_;
+    }
+
+    public void setReadMaxLength_(int readMaxLength_) {
+        this.readMaxLength_ = readMaxLength_;
     }
 
     public static class Factory extends TTransportFactory {
@@ -212,11 +221,11 @@ public class TKoalasFramedTransport extends TTransport {
         int size = decodeFrameSize ( i32buf );
 
         if (size < 0) {
-            throw new TTransportException ( "Read a negative frame size (" + size + ")!" );
+            throw new OutMaxLengthException ( "Read a negative frame size (" + size + ")!" );
         }
 
-        if (size > maxLength_) {
-            throw new TTransportException ( "Frame size (" + size + ") larger than max length (" + maxLength_ + ")!" );
+        if (size > readMaxLength_) {
+            throw new OutMaxLengthException ( "Frame size (" + size + ") larger than max length (" + readMaxLength_ + ")!" );
         }
 
         byte[] buff = new byte[size];

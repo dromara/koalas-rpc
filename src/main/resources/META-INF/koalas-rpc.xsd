@@ -66,6 +66,7 @@
                     <xsd:attribute name="bossThreadCount" type="xsd:int"/>
                     <xsd:attribute name="workThreadCount" type="xsd:int"/>
                     <xsd:attribute name="koalasThreadCount" type="xsd:int"/>
+                    <xsd:attribute name="maxLength" type="xsd:int"/>
                     <xsd:attribute name="env" type="xsd:string"/>
                     <xsd:attribute name="weight" type="xsd:int"/>
                     <xsd:attribute name="serverType" type="xsd:string"/>

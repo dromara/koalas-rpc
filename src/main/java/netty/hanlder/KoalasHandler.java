@@ -54,19 +54,19 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
 
     private String className;
 
-    private AbstractKoalsServerPublisher serverPublisher;
+    private int maxLength;
 
     private boolean cat;
 
     public KoalasHandler(AbstractKoalsServerPublisher serverPublisher, ExecutorService executorService){
-        this.serverPublisher = serverPublisher;
         this.executorService = executorService;
-        privateKey = serverPublisher.getPrivateKey ();
-        publicKey = serverPublisher.getPublicKey ();
-        className = serverPublisher.getServiceInterface ().getName ();
-        cat=serverPublisher.isCat ();
-        tprocessor = serverPublisher.getTProcessor ();
-        genericTprocessor=serverPublisher.getGenericTProcessor ();
+        this.privateKey = serverPublisher.getPrivateKey ();
+        this.publicKey = serverPublisher.getPublicKey ();
+        this.className = serverPublisher.getServiceInterface ().getName ();
+        this.cat=serverPublisher.isCat ();
+        this.tprocessor = serverPublisher.getTProcessor ();
+        this.genericTprocessor=serverPublisher.getGenericTProcessor ();
+        this.maxLength=serverPublisher.getMaxLength ();
     }
 
     @Override
@@ -113,6 +113,7 @@ public class KoalasHandler extends SimpleChannelInboundHandler<ByteBuf> {
             TIOStreamTransport tioStreamTransportOutput = new TIOStreamTransport (  outputStream);
 
             TKoalasFramedTransport inTransport = new TKoalasFramedTransport ( tioStreamTransportInput,2048000 );
+            inTransport.setReadMaxLength_ ( maxLength );
             TKoalasFramedTransport outTransport = new TKoalasFramedTransport ( tioStreamTransportOutput,2048000,ifUserProtocol );
 
             if(this.privateKey != null && this.publicKey!=null){

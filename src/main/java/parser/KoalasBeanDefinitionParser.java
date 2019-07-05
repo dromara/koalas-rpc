@@ -238,6 +238,12 @@ public class KoalasBeanDefinitionParser implements BeanDefinitionParser {
             if(!StringUtils.isEmpty ( koalasThreadCount )){
                 beanDefinition.getPropertyValues ().addPropertyValue ( "koalasThreadCount",Integer.valueOf ( koalasThreadCount ));
             }
+
+            String maxLength =element.getAttribute ( "maxLength" );
+            if(!StringUtils.isEmpty ( maxLength )){
+                beanDefinition.getPropertyValues ().addPropertyValue ( "maxLength",Integer.valueOf ( maxLength ));
+            }
+
             String env = element.getAttribute ( "env" );
             if(!StringUtils.isEmpty ( env )){
                 beanDefinition.getPropertyValues ().addPropertyValue ( "env",env);

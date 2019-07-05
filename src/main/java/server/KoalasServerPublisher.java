@@ -46,7 +46,8 @@ public class KoalasServerPublisher extends AbstractKoalsServerPublisher implemen
         } else if(THRIFT.equals ( this.serverType.toLowerCase ().trim () )){
             ikoalasServer = new ThriftServer ( this );
         } else{
-            throw  new IllegalArgumentException("other server is not support at since v1.0");
+            logger.error ( "other server is not support at since v1.0,className:{}",getServiceInterface ().getName () );
+            throw  new IllegalArgumentException("other server is not support at since v1.0,className="+getServiceInterface ().getName ());
         }
         ikoalasServer.run ();
     }

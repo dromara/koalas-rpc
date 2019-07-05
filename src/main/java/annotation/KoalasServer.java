@@ -18,6 +18,7 @@ public @interface KoalasServer {
     int bossThreadCount() default 0;
     int workThreadCount() default  0;
     int koalasThreadCount() default 0;
+    int maxLength() default Integer.MAX_VALUE;
     String env() default "dev";
     int weight() default  10;
     String serverType() default  "NETTY";

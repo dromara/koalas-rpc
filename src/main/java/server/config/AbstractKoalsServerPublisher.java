@@ -52,9 +52,18 @@ public class AbstractKoalsServerPublisher {
     //RSA service
     public String privateKey;
     public String publicKey;
-
+    public int maxLength=Integer.MAX_VALUE;
     public ApplicationContext applicationContext;
     public IkoalasServer ikoalasServer;
+
+    public int getMaxLength() {
+        return maxLength;
+    }
+
+    public void setMaxLength(int maxLength) {
+        this.maxLength = maxLength;
+    }
+
     public boolean cat=false;
 
     public boolean isCat() {
