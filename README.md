@@ -702,6 +702,7 @@ cat | （是否开启CAT数据大盘，需要配置CAT服务，即可查看详�
 bossThreadCount | 处理连接线程| N,当前CPU核心数
 workThreadCount | 读取线程|N，当前CPU核心数*2
 koalasThreadCount | 业务线程数| 256
+maxLength | 最大接收字节数| Integer.MAX_VALUE
 env | 环境| N,dev
 weight| 权重| N，10
 serverType | 采用哪些服务端，可以选NETTY和THRIFT，默认NETTY| N
