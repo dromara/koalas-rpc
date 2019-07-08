@@ -14,7 +14,7 @@ import java.util.List;
  */
 public abstract class AbstractLoadBalancer implements ILoadBalancer {
 
-    public int getWeight(RemoteServer remoteServer){
+    protected int getWeight(RemoteServer remoteServer){
         if(remoteServer != null && remoteServer.isEnable ()){
             return remoteServer.getWeight ();
         }
