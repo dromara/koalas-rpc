@@ -11,12 +11,12 @@ import java.util.List;
 public interface Icluster {
 
     //获取当前使用的远程服务
-    public RemoteServer getUseRemote();
+     RemoteServer getUseRemote();
 
     //销毁长连接资源等
-    public void destroy();
+     void destroy();
 
     //获取资源池
-    public ServerObject getObjectForRemote();
+     ServerObject getObjectForRemote();
 
 }
