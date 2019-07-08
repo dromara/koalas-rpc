@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 import java.net.SocketTimeoutException;
 
 /**
- * Copyright (C) 22018
+ * Copyright (C) 2018
  * All rights reserved
  * User: yulong.zhang
  * Date:2018年09月18日17:45:05
