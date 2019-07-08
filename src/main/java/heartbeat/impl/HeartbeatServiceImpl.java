@@ -25,6 +25,7 @@ public class HeartbeatServiceImpl implements HeartbeatService.Iface {
         logger.info ( "HeartBeat info :{}" ,heartBeat );
         HeartBeat heartBeatRespone = new HeartBeat();
         heartBeatRespone.setIp ( IPUtil.getIpV4 () );
+        heartBeatRespone.setServiceName (  heartBeat.getServiceName ());
         heartBeatRespone.setDate ( sdf.format ( new Date (  ) ) );
         return heartBeatRespone;
     }

@@ -177,17 +177,18 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
                 } catch (Exception e) {
                     Throwable cause = (e.getCause () == null) ? e : e.getCause ();
 
-                    boolean ifReturn = false;
                     if (cause instanceof TApplicationException) {
                         if (((TApplicationException) cause).getType () == 6666) {
                             LOG.info ( "serverName【{}】,method:【{}】 thread pool is busy ,retry it!,error message from server 【{}】", koalasClientProxy.getServiceInterface () ,methodName,((TApplicationException) cause).getMessage ());
                             if (socket != null) {
                                 genericObjectPool.returnObject ( socket );
-                                ifReturn = true;
                             }
                             Thread.yield ();
                             if (retryRequest)
                                 continue;
+                            if(transaction!=null&& cat)
+                                transaction.setStatus ( cause );
+                            throw new TApplicationException ("serverName:" + koalasClientProxy.getServiceInterface () + ",method:" +methodName +"error,thread pool is busy,error message:" + ((TApplicationException) cause).getMessage () );
                         }
 
                         if (((TApplicationException) cause).getType () == 9999) {
@@ -249,30 +250,28 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
                     }
 
                     if (cause.getCause () != null && cause.getCause () instanceof ConnectException) {
-                        LOG.error ( "the server【{}】 maybe is shutdown ,retry it! serverName【{}】,,method 【{}】", serverObject.getRemoteServer (),koalasClientProxy.getServiceInterface (),methodName );
-                        try {
-                            if (socket != null) {
-                                genericObjectPool.returnObject ( socket );
-                                ifReturn = true;
-                            }
-
-                            if (retryRequest)
-                                continue;
-                        } catch (Exception e1) {
-                            LOG.error ( "invalidateObject error!", e1 );
+                        LOG.error ( "the server【{}】 maybe is shutdown ,retry it! serverName【{}】,method 【{}】", serverObject.getRemoteServer (),koalasClientProxy.getServiceInterface (),methodName );
+                        if (socket != null) {
+                            genericObjectPool.returnObject ( socket );
                         }
+                        if (retryRequest)
+                            continue;
+                        if(transaction!=null&& cat)
+                            transaction.setStatus ( cause.getCause () );
+                        throw new TException ("serverName:" + koalasClientProxy.getServiceInterface () + ",method:" +methodName +"error,maybe is shutdown,error message:" + ((TApplicationException) cause).getMessage () );
                     }
 
                     if (cause.getCause () != null && cause.getCause () instanceof SocketTimeoutException) {
-                        LOG.error ( "the server【{}】read timeout SocketTimeoutException --serverName【{}】,method：【{}】", serverObject.getRemoteServer (),koalasClientProxy.getServiceInterface () ,methodName);
+                        LOG.error ( "read timeout SocketTimeoutException --serverName【{}】,method：【{}】",koalasClientProxy.getServiceInterface () ,methodName);
                         if (socket != null) {
                             try {
                                 genericObjectPool.invalidateObject ( socket );
                             } catch (Exception e1) {
-                                LOG.error ( "invalidateObject error ,", e );
+                                LOG.error ( "invalidateObject error", e );
                                 if(transaction!=null&& cat)
                                     transaction.setStatus ( e1 );
-                                throw new TException(new IllegalStateException("SocketTimeout and invalidateObject error" + serverObject.getRemoteServer () + koalasClientProxy.getServiceInterface ()));
+                                throw new TException(new IllegalStateException("SocketTimeout and invalidateObject error,className:" + koalasClientProxy.getServiceInterface ()) + ",method:" + methodName );
+
                             }
                         }
                         if(transaction!=null&& cat)
@@ -290,19 +289,29 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
                                     LOG.error ( "invalidateObject error", e );
                                     if(transaction!=null&& cat)
                                     transaction.setStatus ( e1 );
-                                    throw new TException ( new IllegalStateException("TTransportException and invalidateObject error" + serverObject.getRemoteServer () + koalasClientProxy.getServiceInterface ()) );
+                                    throw new TException ( new IllegalStateException("TTransportException.END_OF_FILE and invalidateObject error,className:" + koalasClientProxy.getServiceInterface ()) + ",method:" + methodName );
                                 }
                             }
                             if(transaction!=null&& cat)
                             transaction.setStatus ( cause );
-                            throw new TTransportException("the remote server is shutdown!" + serverObject.getRemoteServer () + koalasClientProxy.getServiceInterface ());
+                            throw new TException(new TTransportException("the remote server is shutdown!" + serverObject.getRemoteServer () + koalasClientProxy.getServiceInterface ()));
                         }
                         if(cause.getCause ()!=null && cause.getCause () instanceof SocketException){
-                            if(genericObjectPool.isClosed ()){
-                                LOG.warn ( "serverObject {} is close!,retry it",serverObject );
-                                if (retryRequest)
-                                    continue;
+                            if (socket != null) {
+                                try {
+                                    genericObjectPool.invalidateObject ( socket );
+                                } catch (Exception e1) {
+                                    LOG.error ( "invalidateObject error", e );
+                                    if(transaction!=null&& cat)
+                                        transaction.setStatus ( e1 );
+                                    throw new TException ( new IllegalStateException("TTransportException cause by SocketException and invalidateObject error,className:" + koalasClientProxy.getServiceInterface ()) + ",method:" + methodName );
+                                }
                             }
+                            if (retryRequest)
+                                continue;
+                            if(transaction!=null&& cat)
+                                transaction.setStatus ( cause );
+                            throw new TException(new TTransportException("the remote server is shutdown!" + serverObject.getRemoteServer () + koalasClientProxy.getServiceInterface ()));
                         }
                     }
 
@@ -316,8 +325,8 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
                         throw cause;
                     }
 
-                    if (socket != null && !ifReturn)
-                        genericObjectPool.returnObject ( socket );
+                    if (socket != null)
+                        genericObjectPool.invalidateObject ( socket );
                     LOG.error ( "invoke server error,server ip -【{}】,port -【{}】--serverName【{}】,method：【{}】", serverObject.getRemoteServer ().getIp (), serverObject.getRemoteServer ().getPort (),koalasClientProxy.getServiceInterface (),methodName  );
                     if(transaction!=null&& cat)
                     transaction.setStatus ( cause );
@@ -329,10 +338,13 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
                   transaction.setStatus ( finallyException );
             throw finallyException;
         } finally {
-            if(transaction!=null&& cat)
+            if(transaction!=null&& cat){
                 transaction.complete ();
-            if(serviceTop && cat)
+            }
+            if(serviceTop && cat){
+                System.out.println (123);
                 TraceThreadContext.remove ();
+            }
         }
     }
 

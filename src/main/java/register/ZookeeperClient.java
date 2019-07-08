@@ -440,6 +440,7 @@ public class ZookeeperClient {
                                                     key.remove ();
                                                     if(zookeeperClister.serverPollMap.containsKey (str)){
                                                         GenericObjectPool<TTransport> transport = zookeeperClister.serverPollMap.get (  str);
+                                                        zookeeperClister.serverPollMap.remove ( str );
                                                         transport.close ();
                                                     }
                                                     continue in;
