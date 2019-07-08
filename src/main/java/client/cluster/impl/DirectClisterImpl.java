@@ -10,6 +10,7 @@ import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.apache.thrift.transport.TTransport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import utils.KoalasRegexUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class DirectClisterImpl extends AbstractBaseIcluster {
     private static final Logger LOG = LoggerFactory.getLogger(DirectClisterImpl.class);
     public static final String REGEX = "[^0-9a-zA-Z_\\-\\.:#]+";
+    public static final String REGEX_IPS = "[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}:[0-9]{1,5}#[0-9]{1,}[,]{0,}]+";
 
     //ip:port
     private String hostAndPorts;
@@ -40,6 +42,10 @@ public class DirectClisterImpl extends AbstractBaseIcluster {
         this.hostAndPorts = hostAndPorts;
         this.iLoadBalancer = iLoadBalancer;
         this.serviceName = serviceName;
+
+        if(!KoalasRegexUtil.match (REGEX_IPS,hostAndPorts)){
+            throw new RuntimeException ( "error hostAndPorts:" + hostAndPorts +",serviceName:"+serviceName );
+        }
     }
 
     @Override

@@ -129,7 +129,7 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
             int currTryTimes = 0;
             while (currTryTimes++ < retryTimes) {
                 ServerObject serverObject = icluster.getObjectForRemote ();
-                if (serverObject == null) throw new IllegalStateException("no server list to use :" + koalasClientProxy.getServiceInterface ());
+                if (serverObject == null) throw new TException("no server list to use :" + koalasClientProxy.getServiceInterface ());
                 GenericObjectPool<TTransport> genericObjectPool = serverObject.getGenericObjectPool ();
                 try {
                     long before = System.currentTimeMillis ();
@@ -142,7 +142,7 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
                     LOG.error ( e.getMessage ()+" className:" + koalasClientProxy.getServiceInterface ()+",method:" + methodName, e );
                     if(transaction!=null && cat)
                         transaction.setStatus ( e );
-                    throw new IllegalStateException("borrowObject error :" + koalasClientProxy.getServiceInterface ());
+                    throw new TException("borrowObject error :" + koalasClientProxy.getServiceInterface ());
                 }
 
                 Object obj = koalasClientProxy.getInterfaceClientInstance ( socket, serverObject.getRemoteServer ().getServer () );
@@ -151,13 +151,13 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
                     ((TAsyncClient) obj).setTimeout ( asyncTimeOut );
                     if (args.length < 1) {
                         genericObjectPool.returnObject ( socket );
-                        throw new IllegalStateException ( "args number error" );
+                        throw new TException ( "args number error,className:" + koalasClientProxy.getServiceInterface ()+",method:" + methodName );
                     }
 
                     Object argslast = args[args.length - 1];
                     if (!(argslast instanceof AsyncMethodCallback)) {
                         genericObjectPool.returnObject ( socket );
-                        throw new IllegalStateException ( "args type error" );
+                        throw new TException ( "args type error,className:" + koalasClientProxy.getServiceInterface ()+",method:" + methodName );
                     }
 
                     AsyncMethodCallback callback = (AsyncMethodCallback) argslast;
@@ -264,20 +264,20 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
                     }
 
                     if (cause.getCause () != null && cause.getCause () instanceof SocketTimeoutException) {
-                        LOG.error ( "the server【{}】read timeout SocketTimeoutException,retry it! --serverName【{}】,method：【{}】", serverObject.getRemoteServer (),koalasClientProxy.getServiceInterface () ,methodName);
+                        LOG.error ( "the server【{}】read timeout SocketTimeoutException --serverName【{}】,method：【{}】", serverObject.getRemoteServer (),koalasClientProxy.getServiceInterface () ,methodName);
                         if (socket != null) {
                             try {
                                 genericObjectPool.invalidateObject ( socket );
-                                ifReturn = true;
                             } catch (Exception e1) {
                                 LOG.error ( "invalidateObject error ,", e );
                                 if(transaction!=null&& cat)
                                     transaction.setStatus ( e1 );
-                                throw new IllegalStateException("SocketTimeout and invalidateObject error" + serverObject.getRemoteServer () + koalasClientProxy.getServiceInterface ());
+                                throw new TException(new IllegalStateException("SocketTimeout and invalidateObject error" + serverObject.getRemoteServer () + koalasClientProxy.getServiceInterface ()));
                             }
                         }
-                        if (retryRequest)
-                            continue;
+                        if(transaction!=null&& cat)
+                            transaction.setStatus ( cause.getCause ()  );
+                        throw new TException(new SocketTimeoutException("SocketTimeout by --serverName:"+ koalasClientProxy.getServiceInterface () + ",method:"+methodName));
                     }
 
                     if(cause instanceof TTransportException){
@@ -290,7 +290,7 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
                                     LOG.error ( "invalidateObject error", e );
                                     if(transaction!=null&& cat)
                                     transaction.setStatus ( e1 );
-                                    throw new IllegalStateException("TTransportException and invalidateObject error" + serverObject.getRemoteServer () + koalasClientProxy.getServiceInterface ());
+                                    throw new TException ( new IllegalStateException("TTransportException and invalidateObject error" + serverObject.getRemoteServer () + koalasClientProxy.getServiceInterface ()) );
                                 }
                             }
                             if(transaction!=null&& cat)
@@ -324,7 +324,7 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
                     throw cause;
                 }
             }
-            IllegalStateException finallyException = new IllegalStateException("error!retry time-out of:" + retryTimes + "!!! " +"serverName:" +koalasClientProxy.getServiceInterface () + ",method:" + methodName);
+            TException finallyException = new TException("error!retry time-out of:" + retryTimes + "!!! " +"serverName:" +koalasClientProxy.getServiceInterface () + ",method:" + methodName);
             if(transaction!=null&& cat)
                   transaction.setStatus ( finallyException );
             throw finallyException;
