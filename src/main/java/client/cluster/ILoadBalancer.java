@@ -9,5 +9,5 @@ import java.util.List;
  * Date:2018年09月18日17:44:39
  */
 public interface ILoadBalancer {
-    public RemoteServer select(List<RemoteServer> list);
+     RemoteServer select(List<RemoteServer> list);
 }
