@@ -10,7 +10,7 @@
     <packaging>jar</packaging>
     <name>koalas</name>
     <url>http://maven.apache.org</url>
-    <description>koalas,没有最懒,只有更懒</description>
+    <description>koalas-rpc，三分钟接入，最快，最稳定，最效率的RPC框架！</description>
 
     <properties>
         <!-- 文件拷贝时的编码 -->
