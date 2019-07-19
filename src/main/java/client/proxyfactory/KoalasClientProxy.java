@@ -33,6 +33,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Copyright (C) 2018
@@ -52,6 +54,9 @@ public class KoalasClientProxy implements FactoryBean<Object>, ApplicationContex
     public static final int DEFUAL_CONNTIMEOUT = 5*1000;
     //读取超时
     public static final int DEFUAL_READTIMEOUT = 30*1000;
+
+    //异步请求并发问题
+    private volatile CountDownLatch countDownLatch = new CountDownLatch(1);
 
     //client端service
     private String serviceInterface;
@@ -447,6 +452,7 @@ public class KoalasClientProxy implements FactoryBean<Object>, ApplicationContex
                             for (int i = 0; i < asyncSelectorThreadCount; i++) {
                                 try {
                                     asyncClientManagerList.add(new TAsyncClientManager());
+                                    countDownLatch.countDown ();
                                 } catch (IOException e) {
                                     e.printStackTrace ();
                                 }
@@ -454,6 +460,16 @@ public class KoalasClientProxy implements FactoryBean<Object>, ApplicationContex
                         }
                     }
                 }
+
+                if(countDownLatch.getCount ()>0){
+                    try {
+                        //wait for other add TAsyncClientManager
+                        countDownLatch.await (5,TimeUnit.SECONDS);
+                    } catch (InterruptedException e) {
+                        logger.warn ( "InterruptedException at wait  for other add TAsyncClientManager class:"+serviceInterface, e );
+                    }
+                }
+
             Class<?> clazz = getAsyncClientClass ();
 
             if (asyncConstructor == null) {
