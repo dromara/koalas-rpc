@@ -44,7 +44,7 @@ public class GenericServiceImpl implements GenericService.Iface {
             realClassTypes = new ArrayList<> (  );
             for(String _classTypes:classTypes){
                 try {
-                    realClassTypes.add (this.getClass ().getClassLoader ().loadClass ( _classTypes ) );
+                    realClassTypes.add (getClassType(_classTypes));
                 } catch (ClassNotFoundException e) {
                     throw new TException ("class:" + realClassName +  ",classType:"+_classTypes+ " not found in the server side!" );
                 }
@@ -98,6 +98,29 @@ public class GenericServiceImpl implements GenericService.Iface {
             return "VOID";
         } else{
             return JSON.toJSONString ( ojb );
+        }
+    }
+
+    private Class<?> getClassType(String stringType) throws ClassNotFoundException {
+        switch (stringType){
+            case "int":
+                return int.class;
+            case "double":
+                return double.class;
+            case "long":
+                return long.class;
+            case "short":
+                return short.class;
+            case "byte":
+                return byte.class;
+            case "boolean":
+                return boolean.class;
+            case "char":
+                return char.class;
+            case "float":
+                return float.class;
+            default:
+                return this.getClass ().getClassLoader ().loadClass ( stringType );
         }
     }
 
