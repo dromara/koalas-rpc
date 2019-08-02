@@ -90,7 +90,7 @@ public class GenericServiceImpl implements GenericService.Iface {
                 ojb = method.invoke ( realImpl,realRequest.toArray ( new Object[0] ) );
             } catch (Exception e) {
                 Throwable cause = e.getCause ()!=null?e.getCause ():e;
-                throw new TException (cause.getMessage ());
+                throw new TException (cause);
             }
         }
 
