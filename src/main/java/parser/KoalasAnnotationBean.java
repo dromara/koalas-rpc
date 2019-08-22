@@ -5,6 +5,7 @@ import annotation.KoalasServer;
 import client.cluster.ILoadBalancer;
 import client.proxyfactory.KoalasClientProxy;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.aop.framework.autoproxy.AbstractAutoProxyCreator;
 import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.core.Ordered;
 import org.springframework.util.ClassUtils;
 import server.KoalasServerPublisher;
@@ -24,10 +26,12 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Copyright (C) 2018
@@ -231,6 +235,18 @@ public class KoalasAnnotationBean implements DisposableBean, BeanFactoryPostProc
             koalasClientProxy.setPublicKey (koalasClient.publicKey ()  );
         }
         koalasClientProxy.afterPropertiesSet ();
+
+        //apply spring aop
+        Object koalasClientProxyOBean = koalasClientProxy.getObject();
+        List<BeanPostProcessor> beanPostProcessors = ((DefaultListableBeanFactory) beanFactory).getBeanPostProcessors();
+        AtomicInteger atomicInteger = new AtomicInteger (  );
+        for (BeanPostProcessor bpp : beanPostProcessors) {
+            if(bpp instanceof AbstractAutoProxyCreator){
+                koalasClientProxyOBean=bpp.postProcessAfterInitialization(koalasClientProxyOBean, interfaceName+ atomicInteger.getAndAdd ( 1 ));
+            }
+        }
+        koalasClientProxy.setKoalasServiceProxy(koalasClientProxyOBean);
+
         if(StringUtils.isEmpty ( koalasClient.genericService () )){
             koalasClientProxyMap.put ( interfaceName, koalasClientProxy);
         } else{
