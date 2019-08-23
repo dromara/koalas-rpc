@@ -15,7 +15,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class WmCreateAccountServiceImpl implements WmCreateAccountService.Iface {
     private AtomicInteger atomicInteger = new AtomicInteger ( 0 );
 
-
     @Override
     public WmCreateAccountRespone getRPC(WmCreateAccountRequest wmCreateAccountRequest) throws  KoalasRpcException, KoalasRpcException1, KoalasRpcException2, TException {
         WmCreateAccountRespone wmCreateAccountRespone = new WmCreateAccountRespone ();

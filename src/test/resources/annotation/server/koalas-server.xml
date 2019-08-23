@@ -13,7 +13,7 @@
 	   http://www.koalas.com/schema/ch
 	   http://www.koalas.com/schema/ch.xsd">
 
-    <aop:aspectj-autoproxy proxy-target-class="true"/>
+    <aop:aspectj-autoproxy proxy-target-class="false"/>
     <context:component-scan base-package="thrift.annotation.server.impl"/>
     <koalas:annotation package="thrift.annotation.server.impl"/>
 
