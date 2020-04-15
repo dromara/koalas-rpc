@@ -22,7 +22,7 @@ koalas-RPC 个人作品，提供大家交流学习，有意见请私信，欢迎
 
 ##### 3：技术栈
 - [x] thrift 0.8.0
-- [x] spring-core-4.2.5，spring-context-4.2.5，spring-beans-4.2.5
+- [x] spring-core-4.2.5，spring-context-4.2.5，spring-beans-4.2.5等spring源码
 - [x] log4j，slf4j
 - [x] org.apache.commons(v2.0+)
 - [x] io.netty4
@@ -65,10 +65,7 @@ maven依赖
 正确的做法是将代理去掉，直接按照作者在pom.xml文件中给定的依赖仓库地址就可以了。
 
 
-首先需要编写自己的thrift idl文件了，这里多说一句，在群里的小伙伴曾经说过idl文件编写不熟悉，有可能出错 这里顺带说一嘴，thrift的ldl文件和写java的请求体和service几乎没有任何区别，熟能生巧，上手之后非常简单 这里推荐几篇thrift的文章，有兴趣可以看一看 https://blog.csdn.net/lk10207160511/article/details/50450541， https://blog.csdn.net/hrn1216/article/details/51306395 下面截图为测试的thrift文件
-
-##### 更新于2019年06月10日 
-如果大家实在不乐意手写idl文件，那么作者给大家提供了一个简单的插件。链接: https://pan.baidu.com/s/1d_Raox39zSdFrMGw--VUsQ 提取码: y7yu ,下载之后在src/test/java下面写自己的普通java接口对象，然后一键生成thrfit文件和便后之后的文件（前提条件是需要使用者把thrift编译环境设置到path中，否则不能正常运行），使用方式如下：写好了自己的接口文件之后直接运行ThriftFileBuilderTest测试类中方法。
+首先需要编写自己的thrift idl文件了，这里多说一句，在群里的小伙伴曾经说过idl文件编写不熟悉，有可能出错 这里顺带说一嘴，thrift的ldl文件和写java的请求体和service几乎没有任何区别，熟能生巧，上手之后非常简单，推荐大家去google一些相关的入门文章即可 下面截图为测试的thrift文件
 
 ```
 @Test
