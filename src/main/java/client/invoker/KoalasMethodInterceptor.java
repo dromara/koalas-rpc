@@ -39,8 +39,8 @@ import java.net.SocketTimeoutException;
  * User: yulong.zhang
  * Date:2018年11月23日11:13:33
  */
-public class KoalsaMothodInterceptor implements MethodInterceptor {
-    private static final Logger LOG = LoggerFactory.getLogger ( KoalsaMothodInterceptor.class );
+public class KoalasMethodInterceptor implements MethodInterceptor {
+    private static final Logger LOG = LoggerFactory.getLogger ( KoalasMethodInterceptor.class );
 
     private Icluster icluster;
     private int retryTimes;
@@ -49,7 +49,7 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
     private int asyncTimeOut;
     private boolean cat;
 
-    public KoalsaMothodInterceptor(Icluster icluster, int retryTimes, boolean retryRequest, KoalasClientProxy koalasClientProxy, int asyncTimeOut) {
+    public KoalasMethodInterceptor(Icluster icluster, int retryTimes, boolean retryRequest, KoalasClientProxy koalasClientProxy, int asyncTimeOut) {
         this.icluster = icluster;
         this.retryTimes = retryTimes;
         this.retryRequest = retryRequest;

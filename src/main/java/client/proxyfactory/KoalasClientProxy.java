@@ -5,7 +5,7 @@ import client.cluster.Icluster;
 import client.cluster.impl.DirectClisterImpl;
 import client.cluster.impl.RandomLoadBalancer;
 import client.cluster.impl.ZookeeperClusterImpl;
-import client.invoker.KoalsaMothodInterceptor;
+import client.invoker.KoalasMethodInterceptor;
 import client.invoker.LocalMockInterceptor;
 import generic.GenericService;
 import org.apache.commons.lang3.StringUtils;
@@ -645,10 +645,10 @@ public class KoalasClientProxy implements FactoryBean<Object>, ApplicationContex
             icluster = new ZookeeperClusterImpl ( zkPath ,iLoadBalancer == null ? new RandomLoadBalancer () : iLoadBalancer, serviceInterface,env,async,connTimeout,readTimeout,genericObjectPoolConfig,abandonedConfig);
         }
 
-        KoalsaMothodInterceptor koalsaMothodInterceptor = new KoalsaMothodInterceptor ( icluster, retryTimes, retryRequest, this,readTimeout );
+        KoalasMethodInterceptor koalasMethodInterceptor = new KoalasMethodInterceptor ( icluster, retryTimes, retryRequest, this,readTimeout );
         _interface = getIfaceInterface ();
 
-        koalasServiceProxy = new ProxyFactory ( _interface, koalsaMothodInterceptor ).getProxy ();
+        koalasServiceProxy = new ProxyFactory ( _interface, koalasMethodInterceptor ).getProxy ();
 
         logger.info ( "the service【{}】is start !", serviceInterface );
     }
