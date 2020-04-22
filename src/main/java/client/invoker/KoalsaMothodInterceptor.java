@@ -342,7 +342,6 @@ public class KoalsaMothodInterceptor implements MethodInterceptor {
                 transaction.complete ();
             }
             if(serviceTop && cat){
-                System.out.println (123);
                 TraceThreadContext.remove ();
             }
         }
