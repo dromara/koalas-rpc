@@ -88,7 +88,7 @@ public class ThriftServer implements IkoalasServer {
                     }
                 }
             });
-            new Thread (new ThriftRunable(tServer) ).start ();
+            new Thread (new ThriftRunnable(tServer) ).start ();
 
             if(StringUtils.isNotEmpty ( serverPublisher.zkpath )){
                 ZookServerConfig zookServerConfig = new ZookServerConfig ( serverPublisher.zkpath,serverPublisher.serviceInterface.getName (),serverPublisher.env,serverPublisher.port,serverPublisher.weight,"thrift" );
@@ -128,11 +128,11 @@ public class ThriftServer implements IkoalasServer {
          logger.info("thrift server stop success server={}",serverPublisher);
     }
 
-    private class ThriftRunable implements Runnable {
+    private class ThriftRunnable implements Runnable {
 
         private TServer tServer;
 
-        public ThriftRunable(TServer tServer) {
+        public ThriftRunnable(TServer tServer) {
             this.tServer = tServer;
         }
 
