@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>koalas.rpc</groupId>
-    <artifactId>com.Koalas.rpc</artifactId>
-    <version>Koalas-1.0-SNAPSHOT</version>
+    <artifactId>com.koalas.rpc</artifactId>
+    <version>koalas-1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>koalas</name>
     <url>http://maven.apache.org</url>
