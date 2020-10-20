@@ -745,6 +745,7 @@ CAT服务按需配置，不需要数据大盘不需要配置，不会影响RPC�
 
 Cat的client包在代码中有可能报错,可以把cat-client 3.0这个依赖包下载到本地 然后放到本地私服中，或者直接放到自己项目的classpath下面即可
 cat-client下载地址 http://unidal.org/nexus/content/repositories/releases/com/dianping/cat/
+或者下载cat代码 本地clean install一下即可 https://github.com/dianping/cat
 
 #### 开源协议 :
 Apache License Version 2.0 see http://www.apache.org/licenses/LICENSE-2.0.html
