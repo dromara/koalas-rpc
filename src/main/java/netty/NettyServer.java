@@ -23,6 +23,8 @@ import server.config.ZookServerConfig;
 import utils.KoalasThreadedSelectorWorkerExcutorUtil;
 
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.locks.ReentrantLock;
+
 /**
  * Copyright (C) 2018
  * All rights reserved
@@ -37,7 +39,7 @@ public class NettyServer implements IkoalasServer {
     private EventLoopGroup workerGroup;
     private ExecutorService executorService;
     private ZookeeperServer zookeeperServer;
-
+    private int stop =0;
     public NettyServer(AbstractKoalsServerPublisher serverPublisher) {
         this.serverPublisher = serverPublisher;
     }
@@ -65,20 +67,7 @@ public class NettyServer implements IkoalasServer {
             Runtime.getRuntime().addShutdownHook(new Thread(){
                 @Override
                 public void run(){
-                    logger.info ( "Shutdown by Runtime" );
-                    if(zookeeperServer != null){
-                        zookeeperServer.destroy ();
-                    }
-                    logger.info ( "wait for service over 3000ms" );
-                    try {
-                        Thread.sleep ( 3000 );
-                    } catch (Exception e) {
-                    }
-                    if(executorService!=null){
-                        executorService.shutdown ();
-                    }
-                    if(bossGroup != null) bossGroup.shutdownGracefully ();
-                    if(workerGroup != null) workerGroup.shutdownGracefully ();
+                    stopNettyServer();
                 }
             });
 
@@ -99,21 +88,37 @@ public class NettyServer implements IkoalasServer {
 
     @Override
     public void stop() {
-        logger.info ( "Shutdown by stop" );
-        if(zookeeperServer != null){
-            zookeeperServer.destroy ();
-        }
-        logger.info ( "wait for service over 3000ms" );
-        try {
-            Thread.sleep ( 3000 );
-        } catch (Exception e) {
-        }
-        if(executorService!=null){
-            executorService.shutdown ();
-        }
-        if(bossGroup != null) bossGroup.shutdownGracefully ();
-        if(workerGroup != null) workerGroup.shutdownGracefully ();
+        stopNettyServer();
+    }
+    private void stopNettyServer(){
+        if(stop == 0){
+            stop = 1;
+            logger.info ( "Shutdown by stop server={}",serverPublisher );
+            if(zookeeperServer != null){
+                zookeeperServer.destroy ();
+            }
+            logger.info ( "wait for service over 3000ms" );
+            try {
+                Thread.sleep ( 3000 );
+            } catch (Exception e) {
+            }
+            if(executorService!=null){
+                executorService.shutdown ();
+            }
+            if(bossGroup != null) bossGroup.shutdownGracefully ();
+            if(workerGroup != null) workerGroup.shutdownGracefully ();
 
-        logger.info("netty server stop success server={}",serverPublisher);
+            logger.info("netty server stop success server={}",serverPublisher);
+            stop = 2;
+        }
+
+        while (stop == 1){
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                logger.error("netty server stop waiting serverPublisher:" + serverPublisher, e);
+            }
+        }
+
     }
 }

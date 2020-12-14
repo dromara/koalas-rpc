@@ -26,4 +26,27 @@
 				   port="8002"
 				   zkpath="127.0.0.1:2181"/>
 
+	<koalas:server id="WmCreateAccountService8003"
+				   serviceInterface="thrift.service.WmCreateAccountService"
+				   serviceImpl="wmCreateAccountServiceImpl"
+				   port="8003"
+				   zkpath="127.0.0.1:2181"/>
+
+	<koalas:server id="WmCreateAccountService8004"
+				   serviceInterface="thrift.service.WmCreateAccountService"
+				   serviceImpl="wmCreateAccountServiceImpl"
+				   port="8004"
+				   zkpath="127.0.0.1:2181"/>
+
+	<koalas:server id="WmCreateAccountService8005"
+				   serviceInterface="thrift.service.WmCreateAccountService"
+				   serviceImpl="wmCreateAccountServiceImpl"
+				   port="8005"
+				   zkpath="127.0.0.1:2181"/>
+
+	<koalas:server id="WmCreateAccountService8006"
+				   serviceInterface="thrift.service.WmCreateAccountService"
+				   serviceImpl="wmCreateAccountServiceImpl"
+				   port="8006"
+				   zkpath="127.0.0.1:2181"/>
 </beans>

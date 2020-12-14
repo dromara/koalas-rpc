@@ -36,7 +36,7 @@ public class ThriftServer implements IkoalasServer {
     private ExecutorService executorService;
 
     private ZookeeperServer zookeeperServer;
-
+    private int stop =0;
 
     public ThriftServer(AbstractKoalsServerPublisher serverPublisher) {
         this.serverPublisher = serverPublisher;
@@ -72,20 +72,7 @@ public class ThriftServer implements IkoalasServer {
             Runtime.getRuntime().addShutdownHook(new Thread(){
                 @Override
                 public void run(){
-                    if(zookeeperServer != null){
-                        zookeeperServer.destroy ();
-                    }
-                    logger.info ( "wait for service over 3000ms" );
-                    try {
-                        Thread.sleep ( 3000 );
-                    } catch (InterruptedException e) {
-                    }
-                    if(tServer!= null && tServer.isServing ()){
-                        tServer.stop ();
-                    }
-                    if(executorService!=null){
-                        executorService.shutdown ();
-                    }
+                    stopThriftServer();
                 }
             });
             new Thread (new ThriftRunnable(tServer) ).start ();
@@ -97,7 +84,7 @@ public class ThriftServer implements IkoalasServer {
             }
 
          } catch (TTransportException e) {
-            logger.error ( "thrift server init faid service:" + serverPublisher.serviceInterface.getName (),e );
+            logger.error ( "thrift server init fail service:" + serverPublisher.serviceInterface.getName (),e );
             stop();
             throw new IllegalArgumentException("thrift server init faid service:" + serverPublisher.serviceInterface.getName ());
         }
@@ -106,28 +93,42 @@ public class ThriftServer implements IkoalasServer {
 
     @Override
     public void stop() {
-
-        if(zookeeperServer != null){
-            zookeeperServer.destroy ();
-        }
-
-        logger.info ( "wait for service over 3000ms" );
-        try {
-            Thread.sleep ( 3000 );
-        } catch (InterruptedException e) {
-        }
-
-        if(tServer!= null && tServer.isServing ()){
-            tServer.stop ();
-        }
-
-        if(executorService!=null){
-            executorService.shutdown ();
-        }
-
-         logger.info("thrift server stop success server={}",serverPublisher);
+        stopThriftServer();
     }
 
+    private void stopThriftServer(){
+        if(stop == 0){
+            stop = 1;
+            logger.info("thrift server stop start server={}",serverPublisher);
+            if(zookeeperServer != null){
+                zookeeperServer.destroy ();
+            }
+            logger.info ( "wait for service over 3000ms" );
+            try {
+                Thread.sleep ( 3000 );
+            } catch (InterruptedException e) {
+            }
+
+            if(tServer!= null && tServer.isServing ()){
+                tServer.stop ();
+            }
+
+            if(executorService!=null){
+                executorService.shutdown ();
+            }
+            stop = 2;
+            logger.info("thrift server stop success server={}",serverPublisher);
+        }
+
+        while (stop == 1){
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                logger.error("thrift server stop waiting serverPublisher:" + serverPublisher, e);
+            }
+        }
+
+    }
     private class ThriftRunnable implements Runnable {
 
         private TServer tServer;
