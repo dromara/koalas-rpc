@@ -39,6 +39,15 @@ koalas-RPC 个人作品，提供大家交流学习，有意见请私信，欢迎
 
 ##### 5：安装教程
 考拉RPC确保精简，轻量的原则，只需要zk服务器进行服务发现（后续版本服务治理可能需要Datasource），对于zookeeper的各个环境安装教程请自行google，不在本安装教程内特意说明 如果需要cat的数据大盘功能，想更方便的查看服务的调用情况，需要安装cat服务，至于cat的安装就更简单了，就是war包扔在tomcat里面运行，然后配置一些参数即可，当然你也可以不接入cat，单独的作为RPC框架来使用。 CAT接入参考：https://github.com/dianping/cat
+本地clean install有可能会本地报错 找不到maven依赖，这里推荐将cat下载到本地 clean  install一下即可
+
+```
+ <dependency>
+        <groupId>com.dianping.cat</groupId>
+        <artifactId>cat-client</artifactId>
+        <version>3.0.0</version>
+  </dependency>
+```
 
 
 # 二：使用说明
