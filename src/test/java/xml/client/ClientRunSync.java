@@ -16,16 +16,21 @@ public class ClientRunSync {
 
     @Test
     public void testRunSync(){
-        long a = System.currentTimeMillis ();
-        for (int i = 0; i < 1; i++) {
+        long a = 0;
+        for (int i = 0; i < 200000; i++) {
             try {
+                if(i==100000){
+                   a= System.currentTimeMillis ();
+                }
                 testServiceSync.getRemoteRpc ();
             }catch (Exception e){
                 e.printStackTrace ();
             }
-
         }
-        System.out.println (System.currentTimeMillis ()-a);
+        System.out.println ("单机测试单线程环境下，数据热启动之后 10万-20万区间调用次数QPS统计");
+        System.out.println ("10w次调用耗时 ：" + (System.currentTimeMillis ()-a));
+        System.out.println ("QPS ：" + 100000/((System.currentTimeMillis ()-a)/1000));
+
     }
 
     @Test
