@@ -39,6 +39,7 @@ public class NettyServer implements IkoalasServer {
     private EventLoopGroup workerGroup;
     private ExecutorService executorService;
     private ZookeeperServer zookeeperServer;
+    private int shutDownWaitTime = 3;
     private int stop =0;
     public NettyServer(AbstractKoalsServerPublisher serverPublisher) {
         this.serverPublisher = serverPublisher;
@@ -97,9 +98,9 @@ public class NettyServer implements IkoalasServer {
             if(zookeeperServer != null){
                 zookeeperServer.destroy ();
             }
-            logger.info ( "wait for service over 3000ms" );
+            logger.info ( "wait for netty service over " + shutDownWaitTime * 1000 + "ms" );
             try {
-                Thread.sleep ( 3000 );
+                Thread.sleep ( shutDownWaitTime * 1000 );
             } catch (Exception e) {
             }
             if(executorService!=null){

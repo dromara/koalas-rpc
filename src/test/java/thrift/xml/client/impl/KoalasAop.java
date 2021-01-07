@@ -8,8 +8,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.aop.support.AopUtils;
 import org.springframework.stereotype.Component;
 
-@Aspect
-@Component
+
 public class KoalasAop {
 
     @Pointcut("execution(public * thrift..*.Iface+.*(..))")

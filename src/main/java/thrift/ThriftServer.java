@@ -37,6 +37,7 @@ public class ThriftServer implements IkoalasServer {
 
     private ZookeeperServer zookeeperServer;
     private int stop =0;
+    private int shutDownWaitTime = 3;
 
     public ThriftServer(AbstractKoalsServerPublisher serverPublisher) {
         this.serverPublisher = serverPublisher;
@@ -103,9 +104,9 @@ public class ThriftServer implements IkoalasServer {
             if(zookeeperServer != null){
                 zookeeperServer.destroy ();
             }
-            logger.info ( "wait for service over 3000ms" );
+            logger.info ( "wait for thrift service over " + shutDownWaitTime * 1000 + "ms" );
             try {
-                Thread.sleep ( 3000 );
+                Thread.sleep ( shutDownWaitTime * 1000 );
             } catch (InterruptedException e) {
             }
 
