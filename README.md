@@ -8,7 +8,9 @@
     <img alt="996icu" src="https://img.shields.io/badge/license-NPL%20(The%20996%20Prohibited%20License)-blue.svg">
   </a>
 </p>
-![输入图片说明](https://images.gitee.com/uploads/images/2021/0111/210007_ac6e2b22_536094.png "屏幕截图.png")
+ <p align="center">
+  <img src="https://images.gitee.com/uploads/images/2021/0111/210007_ac6e2b22_536094.png">
+</p>
 # 一：项目介绍
 [开发者接入](https://gitee.com/a1234567891/koalas-rpc/wikis/%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E?sort_id=1424137)
 
