@@ -33,7 +33,7 @@
         <commons-pool.version>2.4.2</commons-pool.version>
         <netty.version>4.1.19.Final</netty.version>
         <alibaba.version>1.2.58</alibaba.version>
-        <httpclient.version>4.5.2</httpclient.version>
+        <httpclient.version>4.5.13</httpclient.version>
     </properties>
 
     <build>
