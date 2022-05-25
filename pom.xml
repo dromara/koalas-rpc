@@ -24,7 +24,7 @@
         <hystrix-metrics-event-stream.version>1.1.2</hystrix-metrics-event-stream.version>
         <junit.version>4.12</junit.version>
         <apache.version>0.8.0</apache.version>
-        <spring.version>4.2.5.RELEASE</spring.version>
+        <spring.version>5.2.22.RELEASE</spring.version>
         <aspectj.version>1.8.9</aspectj.version>
         <cglib.version>3.2.4</cglib.version>
         <log4j.version>1.2.17</log4j.version>
